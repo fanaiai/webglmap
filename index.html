@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仙女座地图可视化</title>
+    <style>
+        body {
+            background: #eee;
+        }
+
+        #globeArea {
+            position: relative;
+            /*transform: scale(1,.6);*/
+            /*background:url(/static/机场.png);*/
+        }
+    </style>
+    <script src="/static/worlddata.js"></script>
+    <script src="/static/HotNewsData.js"></script>
+
+    <!--    <script src="https://raw.githack.com/syt123450/giojs/master/assets/data/sampleData.js"></script>-->
+
+</head>
+<body>
+<a id="destory">销毁</a>
+<div id="globeArea" style="width: 800px; height: 800px"></div>
+</body>
+<script type="module">
+    var option = {};
+    var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
+</script>
+</html>
