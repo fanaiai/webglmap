@@ -36,6 +36,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         this.setLabelRender();
         this.initThree();
         this.addControl();
+        this.init();
         // this.addGlobal();
 
 
@@ -48,6 +49,51 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
     }
 
     XNWebglMap.prototype = {
+        init(){
+            this.addMap();
+        },
+        addMap(){
+            this.map=new THREE.Group();
+            this.scene.add(this.map)
+            this.getMapData((data)=>{
+                data.features.forEach(item=>{
+                    if(item.geometry.type=='Polygon'){
+                        item.geometry.coordinates=[item.geometry.coordinates]
+                    }
+                    var line = this.countryLine1(this.option.R * 1.002, item.geometry.coordinates);//国家边界
+                    this.map.add(line);//国家边界集合插入earth中
+                })
+            })
+
+        },
+        countryLine1(R,arry){
+            var group=new THREE.Group();
+            arry.forEach(area=>{
+                let positionArry=[];
+                var geometry=new THREE.BufferGeometry();
+                var material=new THREE.MeshBasicMaterial({
+                    color:'#fff'
+                });
+                var mesh=new THREE.Mesh(geometry,material);
+                area.forEach(a=>{
+                    a.forEach(points=>{
+                        positionArry.push(points[0],points[1],0)
+                    })
+                })
+                geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(positionArry),3))
+                group.add(mesh);
+            })
+            return group;
+        },
+        getMapData(callback) {
+            var loader = new THREE.FileLoader()
+            loader.setResponseType('json')
+            loader.load(staticpath + '/static/worldZh.json', (data) => {
+                if (typeof callback == 'function') {
+                    callback(data)
+                }
+            })
+        },
         getRandomString(len) {
             len = len || 8;
             var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz';
@@ -943,15 +989,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this.addLigthSphere();//添加光晕
             this.scene.add(this.earth)
         },
-        getWorldData(callback) {
-            var loader = new THREE.FileLoader()
-            loader.setResponseType('json')
-            loader.load(staticpath + '/static/worldZh.json', (data) => {
-                if (typeof callback == 'function') {
-                    callback(data)
-                }
-            })
-        },
+
         addGlobalBase() {
             var geo = new THREE.SphereBufferGeometry(this.option.R, 40, 40)
             if (this.option.baseGlobal.texture.show) {
