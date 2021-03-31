@@ -25,7 +25,255 @@
 <div id="globeArea" style="width: 800px; height: 800px"></div>
 </body>
 <script type="module">
-    var option = {};
+    var option = {
+        backgroundColor: '#000000',
+        backgroundOpacity: 1,
+        type: 'fly',//hot,fly
+        baseGlobal: {
+            color: '#000000',
+            opacity: 1,
+            countryPolygonType: 'area',//grid,area
+            gridSize: 2,
+            gridStep: 2,
+            gridColor: '#00ccc2',
+            areaColor: '#00ccc2',
+            areaLine: '#00ccc2',
+            showLine: false,
+            showArea: true,
+            hoverColor: '#ffffff',//鼠标移动至区域时的颜色
+            texture: {
+                show: false,
+                img: ''
+            },
+            "areaOpacity":1,
+            "areaLineOpacity":1,
+            "gridOpacity":1
+        },
+        tooltip: {
+            "show": true,
+            "content": "",
+            "backgroundColor": "rgba(8,85,139,.8)",
+            "backgroundImage": "",
+            "backgroundSize": "",
+            "borderColor": "#00B4FF",
+            "color": "#fff",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "padding": 4,
+        },
+        "label": {
+            "start": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": "",
+            },
+            "end": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": "<p class=\"paragraph\" style='padding:4px 6px'><span class=\"bi-label-field\" data-key=\"ZKUNNR_ZLANDX\" contenteditable=\"false\">money</span> <span class=\"bi-label-field\" data-key=\"money$$_sum\" contenteditable=\"false\">money</span>元<br></p>"
+            },
+        },
+        lightSphere: {
+            show: true,
+            color: '#048989',
+            opacity: 2
+        },
+        attr: {
+            area: {
+                colors: ['#ff0000', '#ffffff'],
+            },
+            hot: {
+                type: {
+                    'circleLight': {
+                        show: true,
+                        width: .032,
+                    },
+                    'lightBar': {
+                        show: true,
+                        width: .032
+                    },
+                    'bar': {
+                        show: false,
+                        segments: 6,
+                        radiusTop: 0.012,
+                        radiusBottom: 0.012
+                    },
+                    'wave': {
+                        show: true,
+                        width: .052,
+                    },
+                    'cone': {
+                        show: true,
+                        height: 1 / 16,
+                        ratio: 3,
+                        segments: 4,
+                    }
+                },//都添加什么元素
+                colors: ['#2c8ad7', '#3bd5ac', '#d5860c'],
+            },
+            fly: {
+                type: {
+                    'circleLight': {
+                        show: true,
+                        width: .032,
+                    },
+                    'lightBar': {
+                        show: true,
+                        width: .032
+                    },
+                    'bar': {
+                        show: false,
+                        segments: 6,
+                        radiusTop: 0.012,
+                        radiusBottom: 0.012
+                    },
+                    'wave': {
+                        show: true,
+                        width: .052,
+                    },
+                    'cone': {
+                        show: true,
+                        height: 1 / 16,
+                        ratio: 3,
+                        segments: 4,
+                    },
+                    'flyLine': {
+                        show: true,
+                        color: '#00ccc2',
+                        width: 2,
+                        lineType: 'Basic',//Dashed
+                        dashSize: 3,
+                        gapSize: 1
+                    },
+                    'flyPoint': {
+                        show: true,
+                        color: '#ffaa00',
+                        len: .2,
+                        pointSize: 6
+                    },
+                },//都添加什么元素
+                colors: ['#00ccc2', '#ffff4a',],
+            }
+        },
+        animate: {
+            open: true,
+            rotateStep: 0.002
+        },
+        "data": [
+            {
+                "zuobiao": "116.2,39.55",
+                "ZKUNNR_ZLANDX": "中国",
+                "money$$_sum": 5758386.75,
+                "countryname": "中国",
+                "lonlat": "116.2,39.55",
+                "$$_formatValue": 5758386.75
+            },
+            {
+            "zuobiao": "77.13,28.37",
+            "ZKUNNR_ZLANDX": "印度",
+            "money$$_sum": 5758386.75,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 5758386.75
+        }, {
+            "zuobiao": "114.10,22.20",
+            "ZKUNNR_ZLANDX": "中国香港",
+            "money$$_sum": 6912509.8,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 6912509.8
+        }, {
+            "zuobiao": "12.34,55.41",
+            "ZKUNNR_ZLANDX": "丹麦",
+            "money$$_sum": 7257241.69,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 7257241.69
+        }, {
+            "zuobiao": "-77.02,39.91",
+            "ZKUNNR_ZLANDX": "美国",
+            "money$$_sum": 2392107.99,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 2392107.99
+        }, {
+            "zuobiao": "4.54,52.23",
+            "ZKUNNR_ZLANDX": "荷兰",
+            "money$$_sum": 112812,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 112812
+        }, {
+            "zuobiao": "114.3,48.04",
+            "ZKUNNR_ZLANDX": "蒙古",
+            "money$$_sum": 360000,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 360000
+        }, {
+            "zuobiao": "100.35,13.45",
+            "ZKUNNR_ZLANDX": "泰国",
+            "money$$_sum": 999600,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 999600
+        }, {
+            "zuobiao": "103.45,1.22",
+            "ZKUNNR_ZLANDX": "新加坡",
+            "money$$_sum": 43958000,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 43958000
+        }, {
+            "zuobiao": "32.54,39.57",
+            "ZKUNNR_ZLANDX": "土耳其",
+            "money$$_sum": 7080000,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 7080000
+        }, {
+            "zuobiao": "10.11,36.5",
+            "ZKUNNR_ZLANDX": "突尼斯",
+            "money$$_sum": 1006400,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 1006400
+        }, {
+            "zuobiao": "73.1,33.4",
+            "ZKUNNR_ZLANDX": "巴基斯坦",
+            "money$$_sum": 517500,
+            "countryname": "中国",
+            "lonlat": "116.2,39.55",
+            "$$_formatValue": 517500
+        }
+        ],
+        "countryName": "countryname",
+        "lonlat": "lonlat",
+        "toLonlat": "zuobiao",
+        "valueName": "money$$_sum",
+        "toCountryName": "ZKUNNR_ZLANDX",
+        "formatValue": "$$_formatValue"
+    };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
 </script>
 </html>

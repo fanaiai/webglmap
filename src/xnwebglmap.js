@@ -16,7 +16,159 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
 (function (window, $) {
     // var that;
     var option = {
-
+        backgroundColor: '#000000',
+        backgroundOpacity: 1,
+        type: 'area',//hot,fly
+        baseGlobal: {
+            color: '#000000',
+            opacity: 1,
+            countryPolygonType: 'grid',//grid,area
+            gridSize: 2,
+            gridStep: 2,
+            gridColor: '#00ccc2',
+            areaColor: '#071c1c',
+            areaLine: '#00ccc2',
+            showLine: false,
+            showArea: true,
+            hoverColor: '#ffffff',//鼠标移动至区域时的颜色
+            texture: {
+                show: false,
+                img: ''
+            },
+            "areaOpacity":1,
+            "areaLineOpacity":1,
+            "gridOpacity":1
+        },
+        tooltip: {
+            "show": true,
+            "content": "",
+            "backgroundColor": "rgba(8,85,139,.8)",
+            "backgroundImage": "",
+            "backgroundSize": "",
+            "borderColor": "#00B4FF",
+            "color": "#fff",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "padding": 4,
+        },
+        "label": {
+            "start": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": "",
+            },
+            "end": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": "<p class=\"paragraph\" style='padding:4px 6px'><span class=\"bi-label-field\" data-key=\"ZKUNNR_ZLANDX\" contenteditable=\"false\">money</span> <span class=\"bi-label-field\" data-key=\"money$$_sum\" contenteditable=\"false\">money</span>元<br></p>"
+            },
+        },
+        lightSphere: {
+            show: true,
+            color: '#048989',
+            opacity: 2
+        },
+        attr: {
+            area: {
+                colors: ['#ff0000', '#ffffff'],
+            },
+            hot: {
+                type: {
+                    'circleLight': {
+                        show: true,
+                        width: .12,
+                    },
+                    'lightBar': {
+                        show: true,
+                        width: .12
+                    },
+                    'bar': {
+                        show: false,
+                        segments: 4,
+                        radiusTop: 4,
+                        radiusBottom: 4
+                    },
+                    'wave': {
+                        show: true,
+                        width: .22,
+                    },
+                    'cone': {
+                        show: false,
+                        height: 1 / 16,
+                        ratio: 3,
+                        segments: 4,
+                    }
+                },//都添加什么元素
+                colors: ['#2c8ad7', '#3bd5ac', '#d5860c'],
+            },
+            fly: {
+                type: {
+                    'circleLight': {
+                        show: true,
+                        width: .12,
+                    },
+                    'lightBar': {
+                        show: true,
+                        width: .12
+                    },
+                    'bar': {
+                        show: false,
+                        segments: '4',
+                        radiusTop: 2,
+                        radiusBottom: 2
+                    },
+                    'wave': {
+                        show: true,
+                        width: .22,
+                    },
+                    'flyLine': {
+                        show: true,
+                        color: '#00ccc2',
+                        width: 2,
+                        lineType: 'Basic',//Dashed
+                        dashSize: 3,
+                        gapSize: 1
+                    },
+                    'flyPoint': {
+                        show: true,
+                        color: '#ffaa00',
+                        len: .2,
+                        pointSize: 6
+                    },
+                    'cone': {
+                        show: true,
+                        height: 1 / 16,
+                        ratio: 3,
+                        segments: 4,
+                    }
+                },//都添加什么元素
+                colors: ['#00ccc2', '#ffff4a',],
+            }
+        },
+        animate: {
+            open: true,
+            rotateStep: 0.002
+        },
     }
 
     function XNWebglMap(dom, options) {
@@ -52,19 +204,39 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         init(){
             this.addMap();
         },
-        addMap(){
+        addMap(isNotArea){
             this.map=new THREE.Group();
             this.scene.add(this.map)
             this.getMapData((data)=>{
+                var dataColor = !isNotArea ? this.calcAreaCountryColor(this.option.data) : null;
                 data.features.forEach(item=>{
                     if(item.geometry.type=='Polygon'){
                         item.geometry.coordinates=[item.geometry.coordinates]
                     }
                     var line = this.countryLine1(this.option.R * 1.002, item.geometry.coordinates);//国家边界
+                    var mesh = this.countryMesh1(item.geometry.coordinates);//国家边界
+                    // mesh.material.color.set(dataColor[item.properties.nameZh])
+                    mesh.name = item.properties.nameZh;//设置每个国家mesh对应的中文名
+                    mesh.meshType = 'area'
+                    if (!isNotArea) {
+                        if (dataColor[mesh.name]) {//worldZh.json部分国家或地区在gdp.json文件中不存在，判断下，以免报错
+                            mesh.material.color.copy(dataColor[mesh.name].color);
+                            mesh.color = dataColor[mesh.name].color;//自定义颜色属性 用于射线拾取交互
+                            mesh.origindata = dataColor[mesh.name].origindata;//自定义颜色属性 用于射线拾取HTML标签显示
+                        } else {
+                            mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                            mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                        }
+                    } else {
+                        mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                        mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                        // this.addLabel(SphereCoord, obj, 'start')
+                    }
+                    this.map.add(mesh)
                     this.map.add(line);//国家边界集合插入earth中
                 })
             })
-
+            this._addEarthItem(this.option.attr.hot,true)
         },
         countryLine1(R,arry){
             var group=new THREE.Group();
@@ -74,16 +246,53 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 var material=new THREE.MeshBasicMaterial({
                     color:'#fff'
                 });
-                var mesh=new THREE.Mesh(geometry,material);
+                var mesh=new THREE.Line(geometry,material);
                 area.forEach(a=>{
                     a.forEach(points=>{
-                        positionArry.push(points[0],points[1],0)
+                        var coord=this.lonLat2Mercator(points[0],points[1])
+                        positionArry.push(coord.x,coord.y, this.mapSize*0.02+0.01);
+                        // vector2Arr.push(new THREE.Vector2(coord.x, coord.y))
+                        // positionArry.push(points[0],points[1],10+0.01)
                     })
                 })
                 geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(positionArry),3))
                 group.add(mesh);
             })
             return group;
+        },
+        countryMesh1(polygonArr) {
+            var shapeArr = [];//轮廓形状Shape集合
+            polygonArr.forEach(pointsArr => {
+                var vector2Arr = [];
+                // 转化为Vector2构成的顶点数组
+                pointsArr[0].forEach(elem => {
+                    var coord=this.lonLat2Mercator(elem[0],elem[1])
+                    vector2Arr.push(new THREE.Vector2(coord.x, coord.y))
+                });
+                var shape = new THREE.Shape(vector2Arr);
+                shapeArr.push(shape);
+            });
+            var material = new THREE.MeshLambertMaterial({
+                color: 0x004444,
+                side: THREE.DoubleSide, //两面可见
+            }); //材质对象
+            var extrudeSettings = {
+                depth: this.mapSize*0.02, //拉伸长度
+                bevelEnabled: false //无倒角
+            };
+            var geometry = new THREE.ExtrudeBufferGeometry(shapeArr,extrudeSettings);
+            var mesh = new THREE.Mesh(geometry, material); //网格模型对象
+            return mesh;
+        },
+        lonLat2Mercator(E, N) {
+            var x = parseFloat(E) * 20037508.34 / 180;
+            var y = Math.log(Math.tan((90 + parseFloat(N)) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            return {
+                x: x, //墨卡托x坐标——对应经度
+                y: y, //墨卡托y坐标——对应维度
+                z:0
+            }
         },
         getMapData(callback) {
             var loader = new THREE.FileLoader()
@@ -306,7 +515,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     }
                 })
             }
-            this.earth.add(hotDataMesh)
+            this.map.add(hotDataMesh)
         },
         getMaxMinFromJSON(json) {
             var min, max;
@@ -325,24 +534,25 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         },
         addBaseItem(hotDataMesh, attr, lon, lat, basetexture, lightbartexture, wavetexture, value, minNum, maxNum, origindata, isFly) {
             var circleLight, lightBar, wave, bar, ConeMesh
-            var SphereCoord = this.lon2xyz(this.option.R, lon, lat);//SphereCoord球面坐标
-            var SphereCoord1 = this.lon2xyz(this.option.R * 1.003, lon, lat);//SphereCoord球面坐标
+            var SphereCoord = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
+            var SphereCoord1 = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
+            // SphereCoord1={x:lon,y:lat,z:0}
             if (attr.type['circleLight'].show) {
-                circleLight = this.createPointBaseMesh(attr, this.option.R, SphereCoord1, basetexture);//光柱底座矩形平面
+                circleLight = this.createPointBaseMesh(attr, SphereCoord1, basetexture);//光柱底座矩形平面
                 hotDataMesh.add(circleLight);
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
             }
-            var height = 5 + this.option.R * 0.3 * value / maxNum;// 热度越高，光柱高度越高
+            var height = 5 + this.mapSize * 0.3 * value / maxNum;// 热度越高，光柱高度越高
             if (attr.type['lightBar'].show) {
-                lightBar = this.createLightPillar(attr, this.option.R, SphereCoord, height, lightbartexture);//光柱
+                lightBar = this.createLightPillar(attr, SphereCoord, height, lightbartexture);//光柱
                 hotDataMesh.add(lightBar);
                 this.calcMeshArry.push(lightBar)
                 lightBar.origindata = origindata;
             }
 
             if (attr.type['wave'].show) {
-                wave = this.createWaveMesh(attr, this.option.R, SphereCoord1, wavetexture);//波动光圈
+                wave = this.createWaveMesh(attr,this.mapSize,SphereCoord1, wavetexture);//波动光圈
                 hotDataMesh.add(wave);
                 this.WaveMeshArr.push(wave);
                 this.calcMeshArry.push(wave)
@@ -350,13 +560,13 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
 
             if (attr.type['bar'].show) {
-                bar = this.createPrism(this.option.R, SphereCoord, height, attr)
+                bar = this.createPrism(this.mapSize, SphereCoord, height, attr)
                 hotDataMesh.add(bar)
                 this.calcMeshArry.push(bar)
                 bar.origindata = origindata;
             }
             if (attr.type['cone'].show && !isFly) {
-                ConeMesh = this.createConeMesh(this.option.R * value * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
+                ConeMesh = this.createConeMesh(attr,this.mapSize* value * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
                 hotDataMesh.add(ConeMesh);
                 this.ConeMeshArry.push(ConeMesh)
                 this.calcMeshArry.push(ConeMesh)
@@ -397,15 +607,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // 经纬度转球面坐标
             // var coord = this.lon2xyz(this.option.R * 1.001, lon, lat)
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, SphereCoord.z);
-            // mesh姿态设置
-            // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
-            var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
-            // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
-            var meshNormal = new THREE.Vector3(0, 0, 1);
-            // 四元数属性.quaternion表示mesh的角度状态
-            //.setFromUnitVectors();计算两个向量之间构成的四元数值
-            mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));
+            // // mesh姿态设置
+            // // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
+            // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
+            // // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
+            // var meshNormal = new THREE.Vector3(0, 0, 1);
+            // // 四元数属性.quaternion表示mesh的角度状态
+            // //.setFromUnitVectors();计算两个向量之间构成的四元数值
+            // mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
 
             return mesh;
         },
@@ -649,7 +859,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         createPrism(R, SphereCoord, height, attr) {
 
             // var geometry = new THREE.BoxBufferGeometry(3, 3, height);// 长方体 也就是四棱柱
-            var geometry = new THREE.CylinderGeometry(attr.type.bar.radiusTop, attr.type.bar.radiusBottom, height, attr.type.bar.segments);//正六棱柱
+            var geometry = new THREE.CylinderGeometry(this.mapSize*attr.type.bar.radiusTop, this.mapSize*attr.type.bar.radiusBottom, height, attr.type.bar.segments);//正六棱柱
             geometry.computeFlatVertexNormals();//一种计算顶点法线方式，非光滑渲染
             geometry.rotateX(Math.PI / 2);//高度方向旋转到z轴上
 
@@ -660,15 +870,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            mesh.position.set(SphereCoord.x, SphereCoord.y, SphereCoord.z);//设置mesh位置
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
-            var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
-            // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
-            var meshNormal = new THREE.Vector3(0, 0, 1);
-            // 四元数属性.quaternion表示mesh的角度状态
-            //.setFromUnitVectors();计算两个向量之间构成的四元数值
-            mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
+            // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
+            // // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
+            // var meshNormal = new THREE.Vector3(0, 0, 1);
+            // // 四元数属性.quaternion表示mesh的角度状态
+            // //.setFromUnitVectors();计算两个向量之间构成的四元数值
+            // mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
             return mesh;
         },
         _calcColorSeg(value, min, max, colors) {
@@ -708,23 +918,14 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
             // mesh.scale.set(mesh.size*mesh._s,mesh.size*mesh._s,mesh.size*mesh._s);
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, SphereCoord.z);
-
-            // mesh姿态设置
-            // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
-            var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
-            // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
-            var meshNormal = new THREE.Vector3(0, 0, 1);
-            // 四元数属性.quaternion表示mesh的角度状态
-            //.setFromUnitVectors();计算两个向量之间构成的四元数值
-            mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
+            mesh.position.set(SphereCoord.x, SphereCoord.y,this.mapSize*(0.026));
 
             return mesh;
         },
-        createLightPillar(attr, R, SphereCoord, height, texture) {
+        createLightPillar(attr, SphereCoord, height, texture) {
             // 矩形平面网格模型设置背景透明的png贴图
             // var height = R*0.3;//光柱高度，和地球半径相关，这样调节地球半径，光柱尺寸跟着变化
-            var geometry = new THREE.PlaneBufferGeometry(R * attr.type.lightBar.width, height); //默认在XOY平面上
+            var geometry = new THREE.PlaneBufferGeometry(this.mapSize* attr.type.lightBar.width, height); //默认在XOY平面上
             geometry.rotateX(Math.PI / 2);//光柱高度方向旋转到z轴上
             geometry.translate(0, 0, height / 2);//平移使光柱底部与XOY平面重合
             var material = new THREE.MeshBasicMaterial({
@@ -741,18 +942,12 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             group.add(mesh, mesh.clone().rotateZ(Math.PI / 2));//几何体绕x轴旋转了，所以mesh旋转轴变为z
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            group.position.set(SphereCoord.x, SphereCoord.y, SphereCoord.z);//设置mesh位置
+            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
-            var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
-            // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
-            var meshNormal = new THREE.Vector3(0, 0, 1);
-            // 四元数属性.quaternion表示mesh的角度状态
-            //.setFromUnitVectors();计算两个向量之间构成的四元数值
-            group.quaternion.setFromUnitVectors(meshNormal, coordVec3);
             return group;
         },
-        createPointBaseMesh(attr, R, SphereCoord, texture) {
+        createPointBaseMesh(attr, SphereCoord, texture) {
             var geometry = new THREE.PlaneBufferGeometry(1, 1); //默认在XOY平面上
             var material = new THREE.MeshBasicMaterial({
                 color: '#ffffff',
@@ -764,26 +959,25 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var SphereCoord1 = this.lon2xyz(R * 1.001, lon, lat)
-            var size = R * attr.type.circleLight.width;//矩形平面Mesh的尺寸
+            var size = this.mapSize * attr.type.circleLight.width;//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
-
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, SphereCoord.z);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));
 
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
-            var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
+            // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, this.mapSize*0.02+0.01).normalize();
             // mesh默认在XOY平面上，法线方向沿着z轴new THREE.Vector3(0, 0, 1)
-            var meshNormal = new THREE.Vector3(0, 0, 1);
+            // var meshNormal = new THREE.Vector3(0, 0, 1);
             // 四元数属性.quaternion表示mesh的角度状态
             //.setFromUnitVectors();计算两个向量之间构成的四元数值
-            mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
+            // mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
 
             return mesh;
         },
         addarea(isNotArea) {
             this.calcMeshArry = [];
-            this.getWorldData(data => {
+            this.getMapData(data => {
                 var dataColor = !isNotArea ? this.calcAreaCountryColor(this.option.data) : null;
                 data.features.forEach((country) => {
                     // "Polygon"：国家country有一个封闭轮廓
@@ -1028,11 +1222,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var height = this.option.height;
             var k = width / height;
             var s = 180;
-            var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
-            camera.position.set(0, 0, 200); //相机在Three.js坐标系中的位置
-            camera.lookAt(0, 0, 0);//注意多边形轮廓不居中问题
-            // camera.position.set(-102, 205, -342); //相机在Three.js坐标系中的位置
-            // camera.lookAt(0, 0, 0); //相机指向Three.js坐标系原点
+            // var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+            // camera.position.set(0, -80, 200); //相机在Three.js坐标系中的位置
+            // camera.lookAt(0, 0, 0);//注意多边形轮廓不居中问题
+            this.mapSize = 25858105;
+            var s = this.mapSize/2;//根据地图尺寸设置相机渲染范围
+            //创建相机对象
+            var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, this.mapSize*10);
+            camera.position.set(0, -3465331.25, this.mapSize*5); //沿着z轴观察
+            camera.lookAt(0, 5465331.25, 0); //指向中国地图的几何中心
             var renderer = new THREE.WebGLRenderer({
                 antialias: true, //开启锯齿
                 alpha: true
@@ -1283,7 +1481,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     // console.log("射线投射器返回的对象 点point", intersects[0].point);
                     // console.log("射线投射器的对象 几何体",intersects[0].object.geometry.vertices)
                     // intersects.length大于0说明，说明选中了模型
-                    if (intersects.length > 0) {
+                    if (intersects.length > 0 && this.option.tooltip.show) {
                         this.chooseMesh = intersects[0].object;
                         this.tooltip.position.copy(intersects[0].point);
                         // console.log(intersects[0].point)
