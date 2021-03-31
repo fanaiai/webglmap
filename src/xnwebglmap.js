@@ -35,9 +35,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 show: false,
                 img: ''
             },
-            "areaOpacity":1,
-            "areaLineOpacity":1,
-            "gridOpacity":1
+            "areaOpacity": 1,
+            "areaLineOpacity": 1,
+            "gridOpacity": 1
         },
         tooltip: {
             "show": true,
@@ -201,17 +201,17 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
     }
 
     XNWebglMap.prototype = {
-        init(){
+        init() {
             this.addMap();
         },
-        addMap(isNotArea){
-            this.map=new THREE.Group();
+        addMap(isNotArea) {
+            this.map = new THREE.Group();
             this.scene.add(this.map)
-            this.getMapData((data)=>{
+            this.getMapData((data) => {
                 var dataColor = !isNotArea ? this.calcAreaCountryColor(this.option.data) : null;
-                data.features.forEach(item=>{
-                    if(item.geometry.type=='Polygon'){
-                        item.geometry.coordinates=[item.geometry.coordinates]
+                data.features.forEach(item => {
+                    if (item.geometry.type == 'Polygon') {
+                        item.geometry.coordinates = [item.geometry.coordinates]
                     }
                     var line = this.countryLine1(this.option.R * 1.002, item.geometry.coordinates);//国家边界
                     var mesh = this.countryMesh1(item.geometry.coordinates);//国家边界
@@ -236,26 +236,26 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     this.map.add(line);//国家边界集合插入earth中
                 })
             })
-            this._addEarthItem(this.option.attr.hot,true)
+            this._addEarthItem(this.option.attr.hot, true)
         },
-        countryLine1(R,arry){
-            var group=new THREE.Group();
-            arry.forEach(area=>{
-                let positionArry=[];
-                var geometry=new THREE.BufferGeometry();
-                var material=new THREE.MeshBasicMaterial({
-                    color:'#fff'
+        countryLine1(R, arry) {
+            var group = new THREE.Group();
+            arry.forEach(area => {
+                let positionArry = [];
+                var geometry = new THREE.BufferGeometry();
+                var material = new THREE.MeshBasicMaterial({
+                    color: '#fff'
                 });
-                var mesh=new THREE.Line(geometry,material);
-                area.forEach(a=>{
-                    a.forEach(points=>{
-                        var coord=this.lonLat2Mercator(points[0],points[1])
-                        positionArry.push(coord.x,coord.y, this.mapSize*0.02+0.01);
+                var mesh = new THREE.Line(geometry, material);
+                area.forEach(a => {
+                    a.forEach(points => {
+                        var coord = this.lonLat2Mercator(points[0], points[1])
+                        positionArry.push(coord.x, coord.y, this.mapSize * 0.02 + 0.01);
                         // vector2Arr.push(new THREE.Vector2(coord.x, coord.y))
                         // positionArry.push(points[0],points[1],10+0.01)
                     })
                 })
-                geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(positionArry),3))
+                geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positionArry), 3))
                 group.add(mesh);
             })
             return group;
@@ -266,7 +266,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 var vector2Arr = [];
                 // 转化为Vector2构成的顶点数组
                 pointsArr[0].forEach(elem => {
-                    var coord=this.lonLat2Mercator(elem[0],elem[1])
+                    var coord = this.lonLat2Mercator(elem[0], elem[1])
                     vector2Arr.push(new THREE.Vector2(coord.x, coord.y))
                 });
                 var shape = new THREE.Shape(vector2Arr);
@@ -277,10 +277,10 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 side: THREE.DoubleSide, //两面可见
             }); //材质对象
             var extrudeSettings = {
-                depth: this.mapSize*0.02, //拉伸长度
+                depth: this.mapSize * 0.02, //拉伸长度
                 bevelEnabled: false //无倒角
             };
-            var geometry = new THREE.ExtrudeBufferGeometry(shapeArr,extrudeSettings);
+            var geometry = new THREE.ExtrudeBufferGeometry(shapeArr, extrudeSettings);
             var mesh = new THREE.Mesh(geometry, material); //网格模型对象
             return mesh;
         },
@@ -291,7 +291,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             return {
                 x: x, //墨卡托x坐标——对应经度
                 y: y, //墨卡托y坐标——对应维度
-                z:0
+                z: 0
             }
         },
         getMapData(callback) {
@@ -376,7 +376,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         _setLabelStyle(div, css) {
 
             div.style.backgroundColor = css.backgroundColor;
-            div.style.backgroundImage = 'url('+css.backgroundImage+')';
+            div.style.backgroundImage = 'url(' + css.backgroundImage + ')';
             div.style.backgroundSize = css.backgroundSize;
             div.style.fontSize = css.fontSize;
             div.style.lineHeight = css.lineHeight;
@@ -480,9 +480,18 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     hotDataMesh.add(flyLine); //飞线插入flyArcGroup中
                     this.calcMeshArry.push(flyLine);
 
-                    this.flyArr.push(flyLine.flyLine);//获取飞线段
+                    this.flyArr.push(flyLine);//获取飞线段
                     flyLine.meshType = 'flyline'
                     flyLine.origindata = obj;
+
+                    var points = flyLine.flyTrackPoints;
+
+                    var index = 20; //飞线索引起点
+                    var flyPoint = this.flylineFun(index, points); //绘制一段飞线
+                    //飞线取点索引范围：points.length - flyline.num
+                    flyPoint.index = Math.floor((points.length - flyPoint.num) * Math.random()); //索引位置随机
+                    flyLine.add(flyPoint); //飞线段flyline作为飞线轨迹flyTrack子对象，可以继承飞线轨迹平移旋转等变换
+
                     obj.$$_endData = endData[obj[this.option.toCountryName]];
                     obj.$$_startData = startData[obj[this.option.countryName]];
                     this.addBaseItem(hotDataMesh, attr, tlon, tlat, basetexture, lightbartexture, wavetexture, obj.$$_endData.value, endMin, endMax, obj, isFly)
@@ -516,6 +525,57 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 })
             }
             this.map.add(hotDataMesh)
+        },
+        flylineFun(index, points) {
+            var choosePoints = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
+            var num = 11; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
+            for (var i = 0; i < num; i++) {
+                choosePoints.push(points[i + index])
+            }
+            // 创建一个LineGeometry几何体
+            var geometry = new THREE.BufferGeometry();
+            var pointArr = [];
+            //把样条曲线返回的顶点坐标Vector3中xyz坐标提取到pointArr数组中
+            choosePoints.forEach(function (v3) {
+                pointArr.push(v3.x, v3.y, v3.z)
+            })
+            var attribue = new THREE.BufferAttribute(new Float32Array(pointArr), 3);
+            // 设置几何体顶点位置坐标
+            geometry.attributes.position = attribue;
+            // 给几何体每个顶点设置对应颜色值
+            var colorArr = []
+            for (var i = 0; i < choosePoints.length; i++) {
+                var color1 = new THREE.Color(0x006666); //飞线轨迹相近的颜色
+                var color2 = new THREE.Color(0xffff00);
+                var colo = null
+                // posNum：插值计算的临界值  对应color2
+                // var posNum = points.length/2;//飞线段，黄色居中，两侧青色
+                var posNum = choosePoints.length - 2;
+                if (i < posNum) {
+                    colo = color1.lerp(color2, i / posNum)
+                } else {
+                    colo = color2.lerp(color1, (i - posNum) / (choosePoints.length - posNum))
+                }
+                colorArr.push(colo.r, colo.g, colo.b)
+            }
+            //设置几何体顶点颜色值，进行插值计算
+            // geometry.setColors(colorArr);
+            var colorattribue = new THREE.BufferAttribute(new Float32Array(colorArr), 3);
+            // 设置几何体顶点位置坐标
+            geometry.attributes.color = colorattribue;
+            //几何体LineGeometry对应的材质LineMaterial
+            var material = new THREE.LineBasicMaterial({
+                // color: 0xffff00,//使用顶点颜色，材质颜色不用设置
+                vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
+                // linewidth: 6.5, // 设置线宽
+            });
+            //材质输入Three.js渲染canvas画布的宽高度
+            // material.resolution.set(window.innerWidth, window.innerHeight);
+            var flyline = new THREE.Line(geometry, material);
+            // 自定义飞线属性flyline.num、flyline.index，用于飞线动画
+            flyline.num = num;
+            flyline.index = index;
+            return flyline;
         },
         getMaxMinFromJSON(json) {
             var min, max;
@@ -552,7 +612,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
 
             if (attr.type['wave'].show) {
-                wave = this.createWaveMesh(attr,this.mapSize,SphereCoord1, wavetexture);//波动光圈
+                wave = this.createWaveMesh(attr, this.mapSize, SphereCoord1, wavetexture);//波动光圈
                 hotDataMesh.add(wave);
                 this.WaveMeshArr.push(wave);
                 this.calcMeshArry.push(wave)
@@ -566,7 +626,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 bar.origindata = origindata;
             }
             if (attr.type['cone'].show && !isFly) {
-                ConeMesh = this.createConeMesh(attr,this.mapSize* value * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
+                ConeMesh = this.createConeMesh(attr, this.mapSize * value * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
                 hotDataMesh.add(ConeMesh);
                 this.ConeMeshArry.push(ConeMesh)
                 this.calcMeshArry.push(ConeMesh)
@@ -607,7 +667,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // 经纬度转球面坐标
             // var coord = this.lon2xyz(this.option.R * 1.001, lon, lat)
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (0.026));
             // // mesh姿态设置
             // // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
@@ -635,20 +695,37 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this._addEarthItem(this.option.attr.fly, true)
         },
         flyArc(lon1, lat1, lon2, lat2) {
-            var R = this.option.R;
-            var sphereCoord1 = this.lon2xyz(R, lon1, lat1);//经纬度坐标转球面坐标
+            var sphereCoord1 = this.lonLat2Mercator(lon1, lat1);//经纬度坐标转球面坐标
             // startSphereCoord：轨迹线起点球面坐标
-            var startSphereCoord = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, sphereCoord1.z);
-            var sphereCoord2 = this.lon2xyz(R, lon2, lat2);
+            var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize * (0.026));
+            var sphereCoord2 = this.lonLat2Mercator(lon2, lat2);
             // startSphereCoord：轨迹线结束点球面坐标
-            var endSphereCoord = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, sphereCoord2.z);
+            var end = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, this.mapSize * (0.026));
 
-            //计算绘制圆弧需要的关于y轴对称的起点、结束点和旋转四元数
-            var startEndQua = this._3Dto2D(startSphereCoord, endSphereCoord)
-            // 调用arcXOY函数绘制一条圆弧飞线轨迹
-            var arcline = this.arcXOY(startEndQua.startPoint, startEndQua.endPoint);
-            arcline.quaternion.multiply(startEndQua.quaternion)
-            return arcline;
+            var length = start.clone().sub(end).length();
+            var H = length * 0.1; //根据两点之间距离设置弧线高度
+            var middle = new THREE.Vector3(0, 0, 0);
+            middle.add(start).add(end).divideScalar(2)
+            // middle.y += H;
+            middle.z += H; //调整高度方向为z
+
+            var geometry = new THREE.Geometry(); //声明一个几何体对象Geometry
+            // 起始点坐标和弧线高度确定一条3D样条曲线
+            var curve = new THREE.CatmullRomCurve3([
+                start,
+                middle,
+                end
+            ]);
+            var points = curve.getPoints(100); //分段数100，返回101个顶点，返回一个vector3对象作为元素组成的数组
+            geometry.setFromPoints(points); // setFromPoints方法从points中提取数据改变几何体的顶点属性vertices
+            //材质对象
+            var material = new THREE.LineBasicMaterial({
+                color: 0x00aaaa,
+            });
+            //线条模型对象
+            var line = new THREE.Line(geometry, material);
+            line.flyTrackPoints = points; // 自定义属性用于飞线动画
+            return line;
         },
         _3Dto2D(startSphere, endSphere) {
             /*计算第一次旋转的四元数：表示从一个平面如何旋转到另一个平面*/
@@ -859,7 +936,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         createPrism(R, SphereCoord, height, attr) {
 
             // var geometry = new THREE.BoxBufferGeometry(3, 3, height);// 长方体 也就是四棱柱
-            var geometry = new THREE.CylinderGeometry(this.mapSize*attr.type.bar.radiusTop, this.mapSize*attr.type.bar.radiusBottom, height, attr.type.bar.segments);//正六棱柱
+            var geometry = new THREE.CylinderGeometry(this.mapSize * attr.type.bar.radiusTop, this.mapSize * attr.type.bar.radiusBottom, height, attr.type.bar.segments);//正六棱柱
             geometry.computeFlatVertexNormals();//一种计算顶点法线方式，非光滑渲染
             geometry.rotateX(Math.PI / 2);//高度方向旋转到z轴上
 
@@ -870,7 +947,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));//设置mesh位置
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (0.026));//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
@@ -918,14 +995,14 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
             // mesh.scale.set(mesh.size*mesh._s,mesh.size*mesh._s,mesh.size*mesh._s);
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y,this.mapSize*(0.026));
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (0.026));
 
             return mesh;
         },
         createLightPillar(attr, SphereCoord, height, texture) {
             // 矩形平面网格模型设置背景透明的png贴图
             // var height = R*0.3;//光柱高度，和地球半径相关，这样调节地球半径，光柱尺寸跟着变化
-            var geometry = new THREE.PlaneBufferGeometry(this.mapSize* attr.type.lightBar.width, height); //默认在XOY平面上
+            var geometry = new THREE.PlaneBufferGeometry(this.mapSize * attr.type.lightBar.width, height); //默认在XOY平面上
             geometry.rotateX(Math.PI / 2);//光柱高度方向旋转到z轴上
             geometry.translate(0, 0, height / 2);//平移使光柱底部与XOY平面重合
             var material = new THREE.MeshBasicMaterial({
@@ -942,7 +1019,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             group.add(mesh, mesh.clone().rotateZ(Math.PI / 2));//几何体绕x轴旋转了，所以mesh旋转轴变为z
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));//设置mesh位置
+            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (0.026));//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             return group;
@@ -962,7 +1039,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var size = this.mapSize * attr.type.circleLight.width;//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize*(0.026));
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (0.026));
 
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
@@ -1226,10 +1303,10 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // camera.position.set(0, -80, 200); //相机在Three.js坐标系中的位置
             // camera.lookAt(0, 0, 0);//注意多边形轮廓不居中问题
             this.mapSize = 25858105;
-            var s = this.mapSize/2;//根据地图尺寸设置相机渲染范围
+            var s = this.mapSize / 2;//根据地图尺寸设置相机渲染范围
             //创建相机对象
-            var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, this.mapSize*10);
-            camera.position.set(0, -3465331.25, this.mapSize*5); //沿着z轴观察
+            var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, this.mapSize * 10);
+            camera.position.set(0, -3465331.25, this.mapSize * 5); //沿着z轴观察
             camera.lookAt(0, 5465331.25, 0); //指向中国地图的几何中心
             var renderer = new THREE.WebGLRenderer({
                 antialias: true, //开启锯齿
@@ -1250,15 +1327,40 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this.rotate = 0;
             this.render();
         },
+        updateFlyGeo(flyline, index, points) {
+            var pointArr = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
+            for (var i = 0; i < flyline.num; i++) {
+                var v3 = points[i + index]
+                pointArr.push(v3.x, v3.y, v3.z)
+            }
+            // 设置几何体顶点位置坐标
+            flyline.geometry.attributes.position = new THREE.BufferAttribute(new Float32Array(pointArr), 3);
+            flyline.geometry.verticesNeedUpdate = true; //通知three.js几何体顶点位置坐标数据更新
+        },
         render() {
             if (!this.scene) {
                 cancelAnimationFrame(this.animationId)
                 return;
             }
-            if (this.flyArr && this.option.attr.fly.type.flyPoint) {
-                this.flyArr.forEach((fly) => {
-                    fly.rotation.z += 0.02; //调节飞线速度
-                    if (fly.rotation.z >= fly.flyEndAngle) fly.rotation.z = fly.startAngle;
+            // if (this.flyArr && this.option.attr.fly.type.flyPoint) {
+            //     this.flyArr.forEach((fly) => {
+            //         fly.rotation.z += 0.02; //调节飞线速度
+            //         if (fly.rotation.z >= fly.flyEndAngle) fly.rotation.z = fly.startAngle;
+            //     });
+            // }
+            if (this.flyArr) {
+                this.flyArr.forEach((flyTrack, i) => {
+                    // 获取飞线轨迹线上的顶点坐标，用于飞线段绘制
+                    var points = flyTrack.flyTrackPoints;
+                    var flyline = flyTrack.children[0];
+                    var indexMax = points.length - flyline.num; //飞线取点索引范围
+                    if (flyline.index < indexMax) {
+                        flyline.index += 1
+                    } else {
+                        flyline.index = 0
+                    }
+                    this.updateFlyGeo(flyline, flyline.index, points); //更新飞线的位置，生成飞行动画
+
                 });
             }
             if (this.WaveMeshArr) {
