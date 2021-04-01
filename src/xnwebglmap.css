@@ -1,11 +1,11 @@
 body{
 
 }
-.xnwebglobal-tooltip p,.xnwebglobal-label p{
+.xnmap-tooltip p,.xnmap-label p{
     margin:0;
     line-height: 1.4;
 }
-.xnwebglobal-label{
+.xnmap-label{
     position: absolute;
     color: #fff;
     background: blue;
