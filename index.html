@@ -30,12 +30,9 @@
         "baseGlobal": {
             "areaOpacity": 1,
             "color": "#000000",
-            "areaColor": "#071c1c",
+            "areaColor": "rgba(0,77,65,1)",
             "gridStep": 2,
-            "texture": {
-                "img": "",
-                "show": true
-            },
+            "texture": {"img": "", "show": true},
             "gridOpacity": 1,
             "countryPolygonType": "area",
             "areaLine": "#00ccc2",
@@ -77,7 +74,7 @@
                 "backgroundSize": "",
                 "fontSize": 12,
                 "borderStyle": "solid",
-                "content": ""
+                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp; &nbsp; &nbsp;<span class=\"bi-label-field\" data-key=\"B$$_sum\" contenteditable=\"false\">B$$_sum</span><br></p>"
             },
             "end": {
                 "padding": 4,
@@ -94,26 +91,13 @@
                 "content": ""
             }
         },
-        "type": "area",
+        "type": "hot",
         "attr": {
-            "area": {
-                "colors": [
-                    "#ff0000",
-                    "#ffffff"
-                ]
-            },
+            "area": {"colors": ["#ff0000", "#ffffff"]},
             "fly": {
                 "type": {
-                    "lightBar": {
-                        "show": true,
-                        "width": 0.12
-                    },
-                    "bar": {
-                        "radiusBottom": 2,
-                        "show": false,
-                        "radiusTop": 2,
-                        "segments": "4"
-                    },
+                    "lightBar": {"show": true, "width": 0.12,"ratio":1},
+                    "bar": {"radiusBottom": 2, "show": false, "radiusTop": 2, "segments": "4","ratio":1},
                     "flyLine": {
                         "dashSize": 3,
                         "color": "#00ccc2",
@@ -122,89 +106,38 @@
                         "width": 1,
                         "gapSize": 1
                     },
-                    "flyPoint": {
-                        "pointSize": 6,
-                        "color": "#ffaa00",
-                        "len": 0.2,
-                        "show": true
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": 0.0625,
-                        "ratio": 3,
-                        "segments": 4
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": 0.22
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    }
-                },
-                "colors": [
-                    "#00ccc2",
-                    "#ffff4a"
-                ]
+                    "flyPoint": {"pointSize": 6, "color": "#ffaa00", "len": 0.2, "show": true},
+                    "cone": {"show": true, "height": 0.0625, "ratio": 3, "segments": 4},
+                    "wave": {"show": true, "width": 0.22},
+                    "circleLight": {"show": true, "width": 0.12}
+                }, "colors": ["#00ccc2", "#ffff4a"]
             },
             "hot": {
                 "type": {
-                    "lightBar": {
-                        "show": true,
-                        "width": 0.12
-                    },
-                    "bar": {
-                        "radiusBottom": 4,
-                        "show": false,
-                        "radiusTop": 4,
-                        "segments": 4
-                    },
-                    "cone": {
-                        "show": false,
-                        "height": 0.0625,
-                        "ratio": 3,
-                        "segments": 4
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": 0.22
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    }
-                },
-                "colors": [
-                    "#2c8ad7",
-                    "#3bd5ac",
-                    "#d5860c"
-                ]
+                    "lightBar": {"show": true, "width": "0.032","ratio":1},
+                    "bar": {"radiusBottom": "0.004", "show": true, "radiusTop": "0.004", "segments": 4,"ratio":1},
+                    "cone": {"show": true, "height": 0.0225, "ratio": 3, "segments": 4},
+                    "wave": {"show": true, "width": "0.052"},
+                    "circleLight": {"show": true, "width": "0.032"}
+                }, "colors": ["rgba(230,81,0,1)", "rgba(255,213,79,1)", "rgba(144,202,249,1)"]
             }
         },
-        "animate": {
-            "rotateStep": 0.012,
-            "open": true
-        },
-        "lightSphere": {
-            "color": "#048989",
-            "show": true,
-            "opacity": 2
-        },
-        "data": [
-            {
-                "A": "上海市",
-                "B$$_sum": 2568
-            },
-            {
-                "A": "广东省",
-                "B$$_sum": 2555
-            },
-            {
-                "A": "重庆市",
-                "B$$_sum": 12223
-            }
-        ],
+        "animate": {"rotateStep": 0.012, "open": true},
+        "lightSphere": {"color": "#048989", "show": true, "opacity": 2},
+        "data": [{
+            "A": "上海市",
+            "B$$_sum": 2568,
+            "fromlonlat": "121.472644,31.231706",
+            "$$_formatValue": 2568
+        }, {"A": "广东省", "B$$_sum": 2555, "fromlonlat": "113.280637,23.125178", "$$_formatValue": 2555}, {
+            "A": "重庆市",
+            "B$$_sum": 12223,
+            "fromlonlat": "106.504962,29.533155",
+            "$$_formatValue": 12223
+        }],
+        "countryName": "A",
+        "lonlat": "fromlonlat",
+        "valueName": "B$$_sum",
         "formatValue": "$$_formatValue"
     };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
