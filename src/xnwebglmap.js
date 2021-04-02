@@ -191,16 +191,16 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         //
         this.tooltip = this.addtooltip();
         this.scene.add(this.tooltip);
-
-        console.log(this.calcMeshArry)
-        // var geometry=new THREE.BoxGeometry(10000,100,100)
-        // var material=new THREE.MeshBasicMaterial({color:'#fff'})
+        //
+        // var geometry=new THREE.BoxGeometry(1000,100,100)
+        // var material=new THREE.MeshLambertMaterial({color:'#fff'})
         // var mesh=new THREE.Mesh(geometry,material)
         // this.calcMeshArry=[]
         // this.calcMeshArry.push(mesh)
         // mesh.position.z=0;
         // var g=new THREE.Group();
         // g.add(mesh)
+        // // this.camera.position.z=1000;
         // this.centerCamera(g,this.camera)
         // console.log(this.mapSize)
         // this.scene.add(g)
@@ -254,6 +254,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                         mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                         // this.addLabel(SphereCoord, obj, 'start')
                     }
+                    // mesh.position.z=-(this.mapSize * parseFloat(this.option.baseGlobal.depth))/2;
                     this.map.add(mesh)
                 })
                 let backLine=this.boxGroup.clone();
@@ -263,6 +264,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 if(typeof callback=='function'){
                     callback()
                 }
+                setTimeout(()=>{
+                    this.updataLabelPos();
+                },500)
 
             })
         },
@@ -371,12 +375,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             div.style.top = y + 'px';
             this._setLabelStyle(div, this.option.label[content]);
             // var coor=this.lon2xyz(this.option.R*1.01,lon,lat);
-            if (position.z < 0) {
-                div.style.display = 'none'
-                // console.log(coor,cont)
-            } else {
-                div.style.display = 'block'
-            }
+            div.style.display = 'none'//初始化的时候设置none
             div.innerHTML = this.calcTextLabel(this.option.label[content].content, data);
             this.dom.appendChild(div)
             this.labelArry.push({
@@ -421,10 +420,6 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             div.style.padding = css.padding;
         },
         updataLabelPos() {
-            // if (!this.option.label[content].show) {
-            //     return;
-            // }
-            // return;
             this.labelArry.forEach((ele) => {
                 var div = ele.dom;
                 var position = ele.position;
@@ -918,8 +913,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             scene.add(directionLight2);
             var ambient = new THREE.AmbientLight(0xffffff, 0.6)
             scene.add(ambient);
-            var axesHelper = new THREE.AxesHelper(200);
-            scene.add(axesHelper)
+            // var axesHelper = new THREE.AxesHelper(20000000);
+            // scene.add(axesHelper)
             var width = this.option.width;
             var height = this.option.height;
             var k = width / height;
@@ -932,7 +927,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             //创建相机对象
             var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
             // camera.position.set(11, -280, 299); //沿着z轴观察
-            camera.position.set(0, 0, 299); //沿着z轴观察
+            camera.position.set(0,-60, 299); //沿着z轴观察
             camera.lookAt(scene.position); //指向中国地图的几何中心
             var renderer = new THREE.WebGLRenderer({
                 antialias: true, //开启锯齿
@@ -963,7 +958,6 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             mapGroup.position.x = mapGroup.position.x - center.x;
             mapGroup.position.y = mapGroup.position.y - center.y;
             mapGroup.position.z = mapGroup.position.z - center.z;
-
             this.center=center;
 
             var width = this.option.width;
@@ -977,17 +971,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // maxL=100;
             //重新设置s值 乘以0.5适当缩小显示范围，地图占canvas画布比例更大，自然渲染范围更大
             var s = maxL / 2 * 1;
+            // camera.rotation.x=0.19;
             camera.left = -s * k;
             camera.right = s * k;
             camera.top = s;
             camera.bottom = -s;
-            mapGroup.position.z = mapGroup.position.z - maxL;//物体往后移动，否则射线取不到
-            // camera.position.z=-maxL;//把相机往后移动一段距离，否则物体实际上是在相机之外的，射线取不到
-            // // 注意相机剪裁范围设置
-            camera.near = -maxL*200;
-            camera.far = maxL*200;
-
-            // //更新相机视图矩阵
+            camera.position.set(0,-maxL/2, maxL); //沿着z轴观察
+            camera.lookAt(this.scene.position); //指向中国地图的几何中心
+            camera.near = -maxL*4;
+            camera.far = maxL*4;
             camera.updateProjectionMatrix();
             this.mapSize=maxL;
         },
@@ -1018,12 +1010,6 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 cancelAnimationFrame(this.animationId)
                 return;
             }
-            // if (this.flyArr && this.option.attr.fly.type.flyPoint) {
-            //     this.flyArr.forEach((fly) => {
-            //         fly.rotation.z += 0.02; //调节飞线速度
-            //         if (fly.rotation.z >= fly.flyEndAngle) fly.rotation.z = fly.startAngle;
-            //     });
-            // }
             if (this.flyArr) {
                 this.flyArr.forEach((flyTrack, i) => {
                     // 获取飞线轨迹线上的顶点坐标，用于飞线段绘制
@@ -1057,14 +1043,13 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     mesh.rotation.z += 0.02
                 })
             }
-
             this.labelRenderer.render(this.scene, this.camera)
             this.renderer.render(this.scene, this.camera);
             this.animationId = requestAnimationFrame(this.render.bind(this))
+
         },
         addControl() {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-            // controls.target.set(103, 45, 0);
             this.controls.update();
             this.controls.addEventListener( 'change', ()=> {
                 this.updataLabelPos();
@@ -1257,9 +1242,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             html.innerHTML = content;
             html.querySelectorAll(".bi-label-field").forEach(function (el) {
                 var field = el.getAttribute("data-key");
-                while (el.childNodes.length > 1) {
-                    el = el.childNodes[1]
+                if (field == that.option.valueName && that.option.formatValue) {
+                    field = that.option.formatValue;
                 }
+                if (el && el.children) {
+                    while (el && el.children.length >= 1) {
+                        el = el.children[0]
+                    }
+                }
+
                 if (v && v[field] != undefined) {
                     el.innerHTML = (v[field]);
                 } else {
