@@ -14,6 +14,9 @@
             /*transform: scale(1,.6);*/
             /*background:url(/static/机场.png);*/
         }
+        .xnmap-label:nth-child(n+10){
+            display:none !important;
+        }
     </style>
     <script src="/static/worlddata.js"></script>
     <script src="/static/HotNewsData.js"></script>
@@ -26,118 +29,371 @@
 <div id="globeArea" style="width: 800px; height: 600px"></div>
 </body>
 <script type="module">
-    var option = {
+    var option ={
+        "R": 130,
+        "backgroundColor": "#901000",
+        "backgroundOpacity": 1,
+        "type": "hot",
         "baseGlobal": {
-            "areaOpacity": 1,
             "color": "#000000",
-            "areaColor": "rgba(0,77,65,1)",
-            "gridStep": 2,
-            "texture": {"img": "", "show": true},
-            "gridOpacity": 1,
+            "opacity": 1,
             "countryPolygonType": "area",
+            "gridSize": 2,
+            "gridStep": 2,
+            "gridColor": "#00ccc2",
+            "areaColor": "rgba(0,156,216,1)",
             "areaLine": "#00ccc2",
             "showArea": true,
-            "areaLineOpacity": 1,
-            "gridSize": 2,
-            "depth": 0.04,
-            "gridColor": "#00ccc2",
             "showLine": false,
-            "opacity": 1
-        },
-        "R": 130,
-        "backgroundColor": "#000000",
-        "tooltip": {
-            "padding": 4,
-            "backgroundColor": "rgba(8,85,139,.8)",
-            "borderColor": "#00B4FF",
-            "color": "#fff",
-            "borderRadius": 4,
-            "backgroundImage": "",
-            "borderWidth": 1,
-            "show": true,
-            "backgroundSize": "",
-            "fontSize": 12,
-            "borderStyle": "solid",
-            "content": ""
-        },
-        "backgroundOpacity": 1,
-        "label": {
-            "start": {
-                "padding": 4,
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
+            "texture": {
                 "show": true,
-                "backgroundSize": "",
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp; &nbsp; &nbsp;<span class=\"bi-label-field\" data-key=\"B$$_sum\" contenteditable=\"false\">B$$_sum</span><br></p>"
+                "img": ""
             },
-            "end": {
-                "padding": 4,
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
-                "show": true,
-                "backgroundSize": "",
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "content": ""
-            }
+            "areaOpacity": 1,
+            "areaLineOpacity": 1,
+            "gridOpacity": 1,
+            "depth": 0.04
         },
-        "type": "hot",
+        "lightSphere": {
+            "show": true,
+            "color": "#048989",
+            "opacity": 2
+        },
         "attr": {
-            "area": {"colors": ["#ff0000", "#ffffff"]},
-            "fly": {
-                "type": {
-                    "lightBar": {"show": true, "width": 0.12,"ratio":1},
-                    "bar": {"radiusBottom": 2, "show": false, "radiusTop": 2, "segments": "4","ratio":1},
-                    "flyLine": {
-                        "dashSize": 3,
-                        "color": "#00ccc2",
-                        "lineType": "Basic",
-                        "show": true,
-                        "width": 1,
-                        "gapSize": 1
-                    },
-                    "flyPoint": {"pointSize": 6, "color": "#ffaa00", "len": 0.2, "show": true},
-                    "cone": {"show": true, "height": 0.0625, "ratio": 3, "segments": 4},
-                    "wave": {"show": true, "width": 0.22},
-                    "circleLight": {"show": true, "width": 0.12}
-                }, "colors": ["#00ccc2", "#ffff4a"]
+            "area": {
+                "colors": [
+                    "rgba(152,10,11,1)",
+                    "#ffffff"
+                ]
             },
             "hot": {
                 "type": {
-                    "lightBar": {"show": true, "width": "0.032","ratio":1},
-                    "bar": {"radiusBottom": "0.004", "show": true, "radiusTop": "0.004", "segments": 4,"ratio":1},
-                    "cone": {"show": true, "height": 0.0225, "ratio": 3, "segments": 4},
-                    "wave": {"show": true, "width": "0.052"},
-                    "circleLight": {"show": true, "width": "0.032"}
-                }, "colors": ["rgba(230,81,0,1)", "rgba(255,213,79,1)", "rgba(144,202,249,1)"]
+                    "circleLight": {
+                        "show": true,
+                        "width": "0.032"
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.012",
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "show": true,
+                        "segments": 4,
+                        "radiusTop": "0.004",
+                        "radiusBottom": "0.004",
+                        "ratio": "0.4"
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": "0.052"
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": "0.0225",
+                        "ratio": "4",
+                        "segments": 4
+                    }
+                },
+                "colors": [
+                    "rgba(239,83,79,1)",
+                    "rgba(255,213,79,1)"
+                ]
+            },
+            "fly": {
+                "type": {
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
+                    },
+                    "lightBar": {
+                        "show": true,
+                        "width": 0.12,
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "show": false,
+                        "segments": "4",
+                        "radiusTop": 0.04,
+                        "radiusBottom": 0.04,
+                        "ratio": 1
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": 0.22
+                    },
+                    "flyLine": {
+                        "show": true,
+                        "color": "#00ccc2",
+                        "width": 1,
+                        "lineType": "Basic",
+                        "dashSize": 3,
+                        "gapSize": 1
+                    },
+                    "flyPoint": {
+                        "show": true,
+                        "color": "#ffaa00",
+                        "len": 0.2,
+                        "pointSize": 6
+                    },
+                    "cone": {
+                        "show": true,
+                        "height": 0.0625,
+                        "ratio": 1,
+                        "segments": 4
+                    }
+                },
+                "colors": [
+                    "#00ccc2",
+                    "#ffff4a"
+                ]
             }
         },
-        "animate": {"rotateStep": 0.012, "open": true},
-        "lightSphere": {"color": "#048989", "show": true, "opacity": 2},
-        "data": [{
-            "A": "上海市",
-            "B$$_sum": 2568,
-            "fromlonlat": "121.472644,31.231706",
-            "$$_formatValue": 2568
-        }, {"A": "广东省", "B$$_sum": 2555, "fromlonlat": "113.280637,23.125178", "$$_formatValue": 2555}, {
-            "A": "重庆市",
-            "B$$_sum": 12223,
-            "fromlonlat": "106.504962,29.533155",
-            "$$_formatValue": 12223
-        }],
-        "countryName": "A",
-        "lonlat": "fromlonlat",
-        "valueName": "B$$_sum",
+        "animate": {
+            "open": true,
+            "rotateStep": 0.012
+        },
+        "tooltip": {
+            "backgroundColor": "rgba(8,85,139,.8)",
+            "backgroundImage": "",
+            "backgroundSize": "",
+            "borderColor": "#00B4FF",
+            "color": "#fff",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "show": true,
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "padding": 4,
+            "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\">province</span>&nbsp; &nbsp;<span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\">ZKWZI2</span><br></p>"
+        },
+        "label": {
+            "start": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\">province</span>&nbsp;&nbsp;<br></p><p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\">ZKWZI2</span><br></p>"
+            },
+            "end": {
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": ""
+            }
+        },
+        "data": [
+            {
+                "ZKWZI2": 234571954,
+                "province": "浙江省",
+                "lonlat": "120.153576,30.287459",
+                "$$_formatValue": "23,457万"
+            },
+            {
+                "ZKWZI2": 159372076,
+                "province": "广东省",
+                "lonlat": "113.280637,23.125178",
+                "$$_formatValue": "15,937万"
+            },
+            {
+                "ZKWZI2": 143183782.4,
+                "province": "河南省",
+                "lonlat": "113.665412,34.757975",
+                "$$_formatValue": "14,318万"
+            },
+            {
+                "ZKWZI2": 128158292,
+                "province": "河北省",
+                "lonlat": "114.502461,38.045474",
+                "$$_formatValue": "12,816万"
+            },
+            {
+                "ZKWZI2": 119365244,
+                "province": "山东省",
+                "lonlat": "117.000923,36.675807",
+                "$$_formatValue": "11,937万"
+            },
+            {
+                "ZKWZI2": 89639103,
+                "province": "四川省",
+                "lonlat": "104.065735,30.659462",
+                "$$_formatValue": "8,964万"
+            },
+            {
+                "ZKWZI2": 81228310,
+                "province": "湖南省",
+                "lonlat": "112.982279,28.19409",
+                "$$_formatValue": "8,123万"
+            },
+            {
+                "ZKWZI2": 79026170,
+                "province": "贵州省",
+                "lonlat": "106.713478,26.578343",
+                "$$_formatValue": "7,903万"
+            },
+            {
+                "ZKWZI2": 76573863.5,
+                "province": "湖北省",
+                "lonlat": "114.298572,30.584355",
+                "$$_formatValue": "7,657万"
+            },
+            {
+                "ZKWZI2": 70414267,
+                "province": "安徽省",
+                "lonlat": "117.283042,31.86119",
+                "$$_formatValue": "7,041万"
+            },
+            {
+                "ZKWZI2": 68997347,
+                "province": "江西省",
+                "lonlat": "115.892151,28.676493",
+                "$$_formatValue": "6,900万"
+            },
+            {
+                "ZKWZI2": 63324458.8,
+                "province": "广西壮族自治区",
+                "lonlat": "108.320004,22.82402",
+                "$$_formatValue": "6,332万"
+            },
+            {
+                "ZKWZI2": 61375986,
+                "province": "陕西省",
+                "lonlat": "108.948024,34.263161",
+                "$$_formatValue": "6,138万"
+            },
+            {
+                "ZKWZI2": 55137046.6,
+                "province": "北京市",
+                "lonlat": "116.405285,39.904989",
+                "$$_formatValue": "5,514万"
+            },
+            {
+                "ZKWZI2": 54530627,
+                "province": "重庆市",
+                "lonlat": "106.504962,29.533155",
+                "$$_formatValue": "5,453万"
+            },
+            {
+                "ZKWZI2": 51611490,
+                "province": "福建省",
+                "lonlat": "119.306239,26.075302",
+                "$$_formatValue": "5,161万"
+            },
+            {
+                "ZKWZI2": 49851265,
+                "province": "云南省",
+                "lonlat": "102.712251,25.040609",
+                "$$_formatValue": "4,985万"
+            },
+            {
+                "ZKWZI2": 47774855,
+                "province": "江苏省",
+                "lonlat": "118.767413,32.041544",
+                "$$_formatValue": "4,777万"
+            },
+            {
+                "ZKWZI2": 45059786,
+                "province": "山西省",
+                "lonlat": "112.549248,37.857014",
+                "$$_formatValue": "4,506万"
+            },
+            {
+                "ZKWZI2": 31475712,
+                "province": "辽宁省",
+                "lonlat": "123.429096,41.796767",
+                "$$_formatValue": "3,148万"
+            },
+            {
+                "ZKWZI2": 22830180,
+                "province": "内蒙古自治区",
+                "lonlat": "111.670801,40.818311",
+                "$$_formatValue": "2,283万"
+            },
+            {
+                "ZKWZI2": 21838948,
+                "province": "上海市",
+                "lonlat": "121.472644,31.231706",
+                "$$_formatValue": "2,184万"
+            },
+            {
+                "ZKWZI2": 20911300,
+                "province": "新疆维吾尔族自治区",
+                "lonlat": "87.617733,43.792818",
+                "$$_formatValue": "2,091万"
+            },
+            {
+                "ZKWZI2": 15847126,
+                "province": "黑龙江省",
+                "lonlat": "126.642464,45.756967",
+                "$$_formatValue": "1,585万"
+            },
+            {
+                "ZKWZI2": 15258369.5,
+                "province": "天津市",
+                "lonlat": "117.190182,39.125596",
+                "$$_formatValue": "1,526万"
+            },
+            {
+                "ZKWZI2": 14863000,
+                "province": "宁夏回族自治区",
+                "lonlat": "106.278179,38.46637",
+                "$$_formatValue": "1,486万"
+            },
+            {
+                "ZKWZI2": 8667394,
+                "province": "吉林省",
+                "lonlat": "125.3245,43.886841",
+                "$$_formatValue": "867万"
+            },
+            {
+                "ZKWZI2": 4854509.8,
+                "province": "香港特别行政区",
+                "lonlat": "114.173355,22.320048",
+                "$$_formatValue": "485万"
+            },
+            {
+                "ZKWZI2": 3801600,
+                "province": "甘肃省",
+                "lonlat": "103.823557,36.058039",
+                "$$_formatValue": "380万"
+            },
+            {
+                "ZKWZI2": 1368000,
+                "province": "西藏自治区",
+                "lonlat": "91.132212,29.660361",
+                "$$_formatValue": "137万"
+            },
+            {
+                "ZKWZI2": 1330120,
+                "province": "青海省",
+                "lonlat": "101.778916,36.623178",
+                "$$_formatValue": "133万"
+            },
+            {
+                "ZKWZI2": 104000,
+                "province": "",
+                "lonlat": "",
+                "$$_formatValue": "10万"
+            }
+        ],
+        "countryName": "province",
+        "lonlat": "lonlat",
+        "valueName": "ZKWZI2",
         "formatValue": "$$_formatValue"
     };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
