@@ -490,8 +490,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     }
                     startData[startName].value += obj[this.option.valueName];
                 })
-                var [endMin, endMax] = this.getMaxMinFromJSON(endData);
-                var [startMin, startMax] = this.getMaxMinFromJSON(startData);
+                var [endMin, endMax,endisLog] = this.getMaxMinFromJSON(endData);
+                var [startMin, startMax,startisLog] = this.getMaxMinFromJSON(startData);
                 this.option.data.forEach((obj, i) => {
                     var lonlat = obj[this.option.lonlat].split(',');//经度
                     var lon = lonlat[0]
@@ -516,13 +516,21 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
 
                     obj.$$_endData = endData[obj[this.option.toCountryName]];
                     obj.$$_startData = startData[obj[this.option.countryName]];
+                    var endValue=obj.$$_endData.value;
+                    if(endisLog){
+                        endValue=Math.log(endValue);
+                    }
                     var labelMesh=this.addBaseItem(hotDataMesh, attr, tlon, tlat, basetexture, lightbartexture, wavetexture, obj.$$_endData.value, endMin, endMax, obj, isFly)
                     var SphereCoord = this.lonLat2Mercator(tlon, tlat);//SphereCoord球面坐标
                     this.addLabel(SphereCoord, obj, 'end')
                     if (obj.$$_startData && !obj.$$_startData.rendered) {//是起始点的时候画棱锥
                         if (!endData[obj[this.option.countryName]]) {
                             var SphereCoord = this.lonLat2Mercator( lon, lat);//SphereCoord球面坐标
-                            var color = this._calcColorSeg(obj.$$_startData.value, startMin, startMax, attr.colors)
+                            var startValue=obj.$$_startData.value;
+                            if(startisLog){
+                                startValue=Math.log(startValue);
+                            }
+                            var color = this._calcColorSeg(startValue, startMin, startMax, attr.colors)
                             if (attr.type.cone.show) {
                                 var ConeMesh = this.createConeMesh(attr, this.mapSize *  obj.$$_startData.value * attr.type['cone'].height / (startMax), SphereCoord);//棱锥
                                 hotDataMesh.add(ConeMesh);
@@ -625,9 +633,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
             }
-            var height = 5 + this.mapSize * 0.3 * (value-minNum) / maxNum;// 热度越高，光柱高度越高
+            var height = 5 + this.mapSize * (value-minNum) / (maxNum-minNum);// 热度越高，光柱高度越高
             if (attr.type['lightBar'].show) {
-                height=height*this.option.attr[this.option.type].type.lightBar.ratio;
+                height=height*parseFloat(this.option.attr[this.option.type].type.lightBar.ratio);
                 lightBar = this.createLightPillar(attr, SphereCoord, height, lightbartexture);//光柱
                 hotDataMesh.add(lightBar);
                 this.calcMeshArry.push(lightBar)
@@ -643,7 +651,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
 
             if (attr.type['bar'].show) {
-                height=height*this.option.attr[this.option.type].type.bar.ratio;
+                height=height*parseFloat(this.option.attr[this.option.type].type.bar.ratio);
                 bar = this.createPrism(this.mapSize, SphereCoord, height, attr)
                 hotDataMesh.add(bar)
                 this.calcMeshArry.push(bar)
