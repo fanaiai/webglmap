@@ -88,7 +88,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         },
         attr: {
             area: {
-                colors: ['#ff0000', '#ffffff'],
+                colors: ['#ffff00','#ffcc00','#ff0000', '#cc0000'],
             },
             hot: {
                 type: {
@@ -335,7 +335,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         getMapData(callback) {
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/china1.json', (data) => {
+            loader.load(staticpath + '/static/worldZh.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }

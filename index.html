@@ -5,17 +5,19 @@
     <title>仙女座地图可视化</title>
     <style>
         body {
-            background: #eee;
+            background: #fff;
         }
 
         #globeArea {
             position: relative;
+            width:100%;
+            height:100%;
             /*margin-top:200px;*/
             /*transform: scale(1,.6);*/
             /*background:url(/static/机场.png);*/
         }
         .xnmap-label:nth-child(n+10){
-            display:none !important;
+            /*display:none !important;*/
         }
     </style>
     <script src="/static/worlddata.js"></script>
@@ -26,7 +28,7 @@
 </head>
 <body>
 <a id="destory">销毁</a>
-<div id="globeArea" style="width: 800px; height: 600px"></div>
+<div id="globeArea" style="width: 1920px; height: 1080px"></div>
 </body>
 <script type="module">
     var option ={
@@ -67,20 +69,20 @@
             "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\"><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">province</span></span><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">&nbsp;</span><span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\"><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">ZKWZI2</span></span><br></p>"
         },
         "backgroundOpacity": "0",
-        "label": {
+        "label":{
             "start": {
                 "padding": 4,
-                "backgroundColor": "rgba(251,140,1,1)",
-                "borderColor": "rgba(255,213,79,1)",
+                "backgroundColor": "#d60b0b",
+                "borderColor": "#cf4103",
                 "color": "#fff",
                 "borderRadius": 4,
                 "backgroundImage": "",
                 "borderWidth": 1,
                 "show": true,
                 "backgroundSize": "",
-                "fontSize": 12,
+                "fontSize": 16,
                 "borderStyle": "solid",
-                "content": "<p class=\"paragraph\"><span class=\"colour\" style=\"color:rgba(251,140,1,1)\"></span><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\">province</span>&nbsp;&nbsp;<span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\">ZKWZI2</span><span class=\"colour\" style=\"color:rgba(255,213,79,1)\"></span><br></p>"
+                "content": "<p class=\"paragraph\"><span class=\"colour\" style=\"color:rgba(245,124,2,1)\"></span><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp;&nbsp;<span class=\"bi-label-field\" data-key=\"B\" contenteditable=\"false\">B</span><br></p>"
             },
             "end": {
                 "padding": 4,
@@ -200,201 +202,154 @@
         },
         "data": [
             {
-                "ZKWZI2": 229161726,
-                "province": "浙江省",
-                "lonlat": "120.153576,30.287459",
-                "$$_formatValue": "22,916万"
+                "A": "中国",
+                "B": 65820566,
+                "C": "116.2,39.55",
+                "$$_formatValue": "6,582万"
             },
             {
-                "ZKWZI2": 149152586.2,
-                "province": "广东省",
-                "lonlat": "113.280637,23.125178",
-                "$$_formatValue": "14,915万"
+                "A": "巴西",
+                "B": 41139616,
+                "C": "-47.55,-15.47",
+                "$$_formatValue": "4,114万"
             },
             {
-                "ZKWZI2": 133463390.6,
-                "province": "河南省",
-                "lonlat": "113.665412,34.757975",
-                "$$_formatValue": "13,346万"
+                "A": "土耳其",
+                "B": 27568373,
+                "C": "32.54,39.57",
+                "$$_formatValue": "2,757万"
             },
             {
-                "ZKWZI2": 123728814,
-                "province": "河北省",
-                "lonlat": "114.502461,38.045474",
-                "$$_formatValue": "12,373万"
+                "A": "印度尼西亚",
+                "B": 51641416,
+                "C": "106.49,-6.09",
+                "$$_formatValue": "5,164万"
             },
             {
-                "ZKWZI2": 115059218,
-                "province": "山东省",
-                "lonlat": "117.000923,36.675807",
-                "$$_formatValue": "11,506万"
+                "A": "智利",
+                "B": 11983976,
+                "C": "-70.4,-33.24",
+                "$$_formatValue": "1,198万"
             },
             {
-                "ZKWZI2": 82418059,
-                "province": "四川省",
-                "lonlat": "104.065735,30.659462",
-                "$$_formatValue": "8,242万"
+                "A": "阿塞拜疆",
+                "B": 500000,
+                "C": "49.56,40.29",
+                "$$_formatValue": "50万"
             },
             {
-                "ZKWZI2": 76451930,
-                "province": "湖南省",
-                "lonlat": "112.982279,28.19409",
-                "$$_formatValue": "7,645万"
+                "A": "中国香港",
+                "B": 2000000,
+                "C": "114.10,22.20",
+                "$$_formatValue": "200万"
             },
             {
-                "ZKWZI2": 74377430,
-                "province": "贵州省",
-                "lonlat": "106.713478,26.578343",
-                "$$_formatValue": "7,438万"
+                "A": "乌拉圭",
+                "B": 1750000,
+                "C": "-56.11,-34.5",
+                "$$_formatValue": "175万"
             },
             {
-                "ZKWZI2": 73182063.5,
-                "province": "湖北省",
-                "lonlat": "114.298572,30.584355",
-                "$$_formatValue": "7,318万"
+                "A": "泰国",
+                "B": 992000,
+                "C": "100.35,13.45",
+                "$$_formatValue": "99万"
             },
             {
-                "ZKWZI2": 64061507,
-                "province": "江西省",
-                "lonlat": "115.892151,28.676493",
-                "$$_formatValue": "6,406万"
+                "A": "贝宁",
+                "B": 203000,
+                "C": "2.42,6.23",
+                "$$_formatValue": "20万"
             },
             {
-                "ZKWZI2": 62043986,
-                "province": "安徽省",
-                "lonlat": "117.283042,31.86119",
-                "$$_formatValue": "6,204万"
+                "A": "柬埔寨",
+                "B": 1500000,
+                "C": "104.55,11.33",
+                "$$_formatValue": "150万"
             },
             {
-                "ZKWZI2": 60680776,
-                "province": "陕西省",
-                "lonlat": "108.948024,34.263161",
-                "$$_formatValue": "6,068万"
+                "A": "哥伦比亚",
+                "B": 2499964,
+                "C": "-74,4.34",
+                "$$_formatValue": "250万"
             },
             {
-                "ZKWZI2": 57780893.8,
-                "province": "广西壮族自治区",
-                "lonlat": "108.320004,22.82402",
-                "$$_formatValue": "5,778万"
+                "A": "吉布提",
+                "B": 300000,
+                "C": "42.2,11.08",
+                "$$_formatValue": "30万"
             },
             {
-                "ZKWZI2": 55130746.6,
-                "province": "北京市",
-                "lonlat": "116.405285,39.904989",
-                "$$_formatValue": "5,513万"
+                "A": "多米尼加",
+                "B": 1768000,
+                "C": "-61.24,15.2",
+                "$$_formatValue": "177万"
             },
             {
-                "ZKWZI2": 50543127,
-                "province": "重庆市",
-                "lonlat": "106.504962,29.533155",
-                "$$_formatValue": "5,054万"
+                "A": "厄瓜多尔",
+                "B": 1000000,
+                "C": "-78.35,-0.15",
+                "$$_formatValue": "100万"
             },
             {
-                "ZKWZI2": 47263855,
-                "province": "江苏省",
-                "lonlat": "118.767413,32.041544",
-                "$$_formatValue": "4,726万"
+                "A": "马来西亚",
+                "B": 1152381,
+                "C": "101.41,3.09",
+                "$$_formatValue": "115万"
             },
             {
-                "ZKWZI2": 46848305,
-                "province": "云南省",
-                "lonlat": "102.712251,25.040609",
-                "$$_formatValue": "4,685万"
+                "A": "墨西哥",
+                "B": 4000000,
+                "C": "-99.1,19.2",
+                "$$_formatValue": "400万"
             },
             {
-                "ZKWZI2": 46347145,
-                "province": "福建省",
-                "lonlat": "119.306239,26.075302",
-                "$$_formatValue": "4,635万"
+                "A": "新加坡",
+                "B": 200000,
+                "C": "103.45,1.22",
+                "$$_formatValue": "20万"
             },
             {
-                "ZKWZI2": 43317760,
-                "province": "山西省",
-                "lonlat": "112.549248,37.857014",
-                "$$_formatValue": "4,332万"
+                "A": "萨尔瓦多",
+                "B": 1150000,
+                "C": "-89.1,13.4",
+                "$$_formatValue": "115万"
             },
             {
-                "ZKWZI2": 23375832,
-                "province": "辽宁省",
-                "lonlat": "123.429096,41.796767",
-                "$$_formatValue": "2,338万"
+                "A": "突尼斯",
+                "B": 200000,
+                "C": "10.11,36.5",
+                "$$_formatValue": "20万"
             },
             {
-                "ZKWZI2": 21838948,
-                "province": "上海市",
-                "lonlat": "121.472644,31.231706",
-                "$$_formatValue": "2,184万"
+                "A": "阿联酋",
+                "B": 20000,
+                "C": "55.17,25.13",
+                "$$_formatValue": "2万"
             },
             {
-                "ZKWZI2": 21430720,
-                "province": "内蒙古自治区",
-                "lonlat": "111.670801,40.818311",
-                "$$_formatValue": "2,143万"
+                "A": "乌克兰",
+                "B": 215000,
+                "C": "30.28,50.3",
+                "$$_formatValue": "22万"
             },
             {
-                "ZKWZI2": 19852900,
-                "province": "新疆维吾尔族自治区",
-                "lonlat": "87.617733,43.792818",
-                "$$_formatValue": "1,985万"
-            },
+                "A": "津巴布韦",
+                "B": 1200000,
+                "C": "31.02,-17.43",
+                "$$_formatValue": "120万"
+            }
+            ,
             {
-                "ZKWZI2": 14975649.5,
-                "province": "天津市",
-                "lonlat": "117.190182,39.125596",
-                "$$_formatValue": "1,498万"
-            },
-            {
-                "ZKWZI2": 14899046,
-                "province": "黑龙江省",
-                "lonlat": "126.642464,45.756967",
-                "$$_formatValue": "1,490万"
-            },
-            {
-                "ZKWZI2": 14863000,
-                "province": "宁夏回族自治区",
-                "lonlat": "106.278179,38.46637",
-                "$$_formatValue": "1,486万"
-            },
-            {
-                "ZKWZI2": 8177044,
-                "province": "吉林省",
-                "lonlat": "125.3245,43.886841",
-                "$$_formatValue": "818万"
-            },
-            {
-                "ZKWZI2": 4800473.4,
-                "province": "香港特别行政区",
-                "lonlat": "114.173355,22.320048",
-                "$$_formatValue": "480万"
-            },
-            {
-                "ZKWZI2": 2970200,
-                "province": "甘肃省",
-                "lonlat": "103.823557,36.058039",
-                "$$_formatValue": "297万"
-            },
-            {
-                "ZKWZI2": 1368000,
-                "province": "西藏自治区",
-                "lonlat": "91.132212,29.660361",
-                "$$_formatValue": "137万"
-            },
-            {
-                "ZKWZI2": 1231520,
-                "province": "青海省",
-                "lonlat": "101.778916,36.623178",
-                "$$_formatValue": "123万"
-            },
-            {
-                "ZKWZI2": 104000,
-                "province": "",
-                "lonlat": "",
-                "$$_formatValue": "10万"
+                "A": "菲律宾",
+                "B": 2000000,
+                "C": "121.03,14.4",
+                "$$_formatValue": "200万"
             }
         ],
-        "countryName": "province",
-        "lonlat": "lonlat",
-        "valueName": "ZKWZI2",
+        "countryName": "A",
+        "lonlat": "C",
+        "valueName": "B",
         "formatValue": "$$_formatValue"
     };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
