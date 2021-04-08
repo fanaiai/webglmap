@@ -380,7 +380,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this.dom.appendChild(div)
             this.labelArry.push({
                 dom: div,
-                position: position
+                position: position,
+                x:x,
+                y:y
             })
         },
         calcTextLabel: function (content, v) {
@@ -420,7 +422,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             div.style.padding = css.padding;
         },
         updataLabelPos() {
-            this.labelArry.forEach((ele) => {
+            this.labelArry.forEach((ele,j) => {
                 var div = ele.dom;
                 var position = ele.position;
 
@@ -442,8 +444,37 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 /**
                  * 更新立方体元素位置
                  */
+
+                this.computeScatterPosition(j,x,y,div)
+
                 div.style.left = x + 'px';
                 div.style.top = y  + 'px';
+
+            })
+        },
+        isAnchorMeet(target) {
+            let react = this.getCurrentRect(),
+                targetReact = target.getCurrentRect();
+            if ((react.minX < targetReact.maxX) && (targetReact.minX < react.maxX) &&
+                (react.minY < targetReact.maxY) && (targetReact.minY < react.maxY)) {
+                return true;
+            }
+            return false;
+        },
+        computeScatterPosition(j,x,y,div){
+            this.labelArry.forEach((ele) => {
+                var dom=ele.dom;
+                var width=dom.offsetWidth;
+                var height=dom.offsetHeight;
+                var dx=ele.x;
+                var dy=ele.y;
+                if (dx + width  > x &&
+                    x + div.offsetWidth  > dx &&
+                    dy + height > y &&
+                    y + div.offsetHeight > dy
+                ){
+
+                }
             })
         },
         _addEarthItem(attr, isFly) {
