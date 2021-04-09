@@ -542,22 +542,6 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
             return false;
         },
-        computeScatterPosition(j,x,y,div){
-            this.labelArry.forEach((ele) => {
-                var dom=ele.dom;
-                var width=dom.offsetWidth;
-                var height=dom.offsetHeight;
-                var dx=ele.x;
-                var dy=ele.y;
-                if (dx + width  > x &&
-                    x + div.offsetWidth  > dx &&
-                    dy + height > y &&
-                    y + div.offsetHeight > dy
-                ){
-
-                }
-            })
-        },
         _addEarthItem(attr, isFly) {
             var textureLoader = new THREE.TextureLoader(); // TextureLoader创建一个纹理加载器对象
             var basetexture = textureLoader.load(staticpath + '/static/标注.png');
