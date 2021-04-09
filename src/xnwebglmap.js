@@ -260,12 +260,12 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 let backLine=this.boxGroup.clone();
                 backLine.position.z=-10;
                 this.map.add(backLine)
-                this.boxGroup.position.z=this.mapSize * parseFloat(this.option.baseGlobal.depth)*1.1;
+                this.boxGroup.position.z=this.mapSize * parseFloat(this.option.baseGlobal.depth)*1.05;
                 if(typeof callback=='function'){
                     callback()
                 }
                 setTimeout(()=>{
-                    this.updataLabelPos();
+                    this.updateLabelPos();
                 },500)
 
             })
@@ -421,7 +421,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             div.style.borderColor = css.borderColor;
             div.style.padding = css.padding;
         },
-        updataLabelPos() {
+        updateLabelPos() {
             this.labelArry.forEach((ele,j) => {
                 var div = ele.dom;
                 var position = ele.position;
@@ -433,9 +433,12 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 );
                 if ((this.camera.rotation._x>-0.7 && this.camera.rotation._x<0.9) && (this.camera.rotation._y>-0.7 && this.camera.rotation._y<0.9)) {
                     div.style.display = 'block'
+                    ele.show=true
                 } else {
-                    div.style.display = 'none'
+                    div.style.display = 'none';
+                    ele.show=false
                 }
+                ele.index=0;
                 var standardVector = worldVector.project(this.camera);//世界坐标转标准设备坐标
                 var a = this.option.width / 2;
                 var b = this.option.height / 2;
@@ -445,16 +448,94 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                  * 更新立方体元素位置
                  */
 
-                this.computeScatterPosition(j,x,y,div)
-
-                div.style.left = x + 'px';
-                div.style.top = y  + 'px';
-
+                // this.computeScatterPosition(j,x,y,div)
+                ele.x=x;
+                ele.y=y;
+                this.getRect(ele);
+                // div.style.left = x + 'px';
+                // div.style.top = y  + 'px';
             })
+            for(let i=0;i<this.labelArry.length;i++){
+                let temp=this.labelArry[i];
+                let div=temp.dom;
+                temp.index=0;
+                temp.show=!this._literalCheckMeet(i,temp)
+                if(temp.show){
+                    div.style.left = temp.rect[temp.index].minX + 'px';
+                    div.style.top = temp.rect[temp.index].minY + 'px';
+                }
+                else{
+                    div.style.display = 'none'
+                }
+            }
         },
-        isAnchorMeet(target) {
-            let react = this.getCurrentRect(),
-                targetReact = target.getCurrentRect();
+        _literalCheckMeet(i,temp){
+            for(let j=0;j<i;j++){
+                if(i!=j && this.labelArry[j].show && temp.show && this.isAnchorMeet(this.labelArry[j].rect[this.labelArry[j].index],temp.rect[temp.index])){
+                    temp.index++;
+                    if(temp.index>3){
+                        return true;
+                    }
+                    return this._literalCheckMeet(i,temp);
+                }
+            }
+            return false;
+        },
+        getRect(ele){
+            let offsetX=10;
+            let offsetY=10;
+            let width=ele.dom.offsetWidth;
+            let height=ele.dom.offsetHeight;
+            ele.rect=[
+                this._getLeftRect(ele,offsetX,offsetY,width,height),
+                this._getRightRect(ele,offsetX,offsetY,width,height),
+                this._getTopRect(ele,offsetX,offsetY,width,height),
+                this._getBottomRect(ele,offsetX,offsetY,width,height),
+            ]
+        },
+        _getRightRect(ele,offsetX,offsetY,width,height){
+            return {
+                maxX:ele.x+offsetX+width,
+                maxY: ele.y+height/2,
+                minX: ele.x+offsetX,
+                minY: ele.y-height/2,
+                width: width,
+                height: height,
+            }
+        },
+        _getLeftRect(ele,offsetX,offsetY,width,height){
+            return {
+                maxX:ele.x-offsetX,
+                maxY: ele.y+height/2,
+                minX: ele.x-offsetX-width,
+                minY: ele.y-height/2,
+                width: width,
+                height: height,
+            }
+        },
+        _getTopRect(ele,offsetX,offsetY,width,height){
+            return {
+                maxX:ele.x+width/2,
+                maxY: ele.y-offsetY,
+                minX: ele.x-width/2,
+                minY: ele.y-offsetY-height,
+                width: width,
+                height: height,
+            }
+        },
+        _getBottomRect(ele,offsetX,offsetY,width,height){
+            return {
+                maxX:ele.x+width/2,
+                minX: ele.x-width/2,
+                minY: ele.y+offsetY,
+                maxY: ele.y+offsetY+height,
+                width: width,
+                height: height,
+            }
+        },
+        isAnchorMeet(t1,t2) {
+            let react = t1,
+                targetReact = t2;
             if ((react.minX < targetReact.maxX) && (targetReact.minX < react.maxX) &&
                 (react.minY < targetReact.maxY) && (targetReact.minY < react.maxY)) {
                 return true;
@@ -585,6 +666,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     }
                 })
             }
+            // this.updateLabelPos()
             this.map.add(hotDataMesh)
         },
         flylineFun(index, points) {
@@ -1091,7 +1173,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
             this.controls.update();
             this.controls.addEventListener( 'change', ()=> {
-                this.updataLabelPos();
+                this.updateLabelPos();
             });
         },
         pointInPolygon(point, vs) {
