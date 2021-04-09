@@ -433,6 +433,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 );
                 if ((this.camera.rotation._x>-0.7 && this.camera.rotation._x<0.9) && (this.camera.rotation._y>-0.7 && this.camera.rotation._y<0.9)) {
                     div.style.display = 'block'
+                    ele.isFirst=!ele.show;
                     ele.show=true
                 } else {
                     div.style.display = 'none';
