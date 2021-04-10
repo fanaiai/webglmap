@@ -10,6 +10,7 @@ import './xnwebglmap.css'
 import * as THREE from './three/three.module.js'
 import {OrbitControls} from './three/OrbitControls.js';
 import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
+import lerp from '@sunify/lerp-color'
 
 (function (window, $) {
     // var that;
@@ -52,7 +53,13 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             "padding": 4,
         },
         "label": {
+            "wordAvoidance":true,
+            "showAllLabel":true,
             "start": {
+                "hideLabel":false,//false,或范围，按照数据从小到大排序
+                "labelScope":[1,5],
+                "sort":"desc",
+                "col":"D",
                 "backgroundColor": "rgba(8,85,139,.8)",
                 "backgroundImage": "",
                 "backgroundSize": "",
@@ -88,7 +95,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         },
         attr: {
             area: {
-                colors: ['#ffff00','#ffcc00','#ff0000', '#cc0000'],
+                colors: ['#ffff00', '#ffcc00', '#ff0000', '#cc0000'],
             },
             hot: {
                 type: {
@@ -169,9 +176,10 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         },
     }
 
-    function XNWebglMap(dom, options) {
+    function XNWebglMap(dom, options, mapData) {
         this.dom = dom;
         this.dom.innerHTML = ''
+        this.mapData = mapData;
         dom.classList.add("xnmap-container");
         this.id = this.getRandomString();
         dom.setAttribute('data-id', this.id);
@@ -209,9 +217,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
     }
 
     XNWebglMap.prototype = {
-        addarea(isNotArea,callback) {
+        addarea(isNotArea, callback) {
             this.map = new THREE.Group();
-            this.boxGroup=new THREE.Group();
+            this.boxGroup = new THREE.Group();
             this.scene.add(this.map)
             this.getMapData((data) => {
                 var dataColor = !isNotArea ? this.calcAreaCountryColor(this.option.data) : null;
@@ -219,15 +227,15 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     if (item.geometry.type == 'Polygon') {
                         item.geometry.coordinates = [item.geometry.coordinates]
                     }
-                    if(!item.properties.nameZh){
-                        item.properties.nameZh=item.properties.name
+                    if (!item.properties.nameZh) {
+                        item.properties.nameZh = item.properties.name
                     }
                     var line = this.countryLine1(item.geometry.coordinates);//国家边界
                     this.boxGroup.add(line)
 
                 })
                 this.map.add(this.boxGroup);//国家边界集合插入earth中
-                this.centerCamera(this.map,this.camera)
+                this.centerCamera(this.map, this.camera)
                 data.features.forEach(item => {
                     if (item.geometry.type == 'Polygon') {
                         // item.geometry.coordinates = [item.geometry.coordinates]
@@ -249,24 +257,40 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                             mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
                             mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                         }
-                    } else {
-                        mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
-                        mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
-                        // this.addLabel(SphereCoord, obj, 'start')
+                    } else {//hot 或 fly
+                        if (this.option.layer && this.option.layer.length > 0) {
+                            for (let i = 0; i < this.option.layer.length; i++) {
+                                let attr = this.option.layer[i];
+                                if (attr.type.area.show) {
+                                    let dataColor = this.calcAreaCountryColor(this.option.data, attr.col, attr.type.area);
+                                    if (dataColor[mesh.name]) {//worldZh.json部分国家或地区在gdp.json文件中不存在，判断下，以免报错
+                                        mesh.material.color.copy(dataColor[mesh.name].color);
+                                        mesh.color = dataColor[mesh.name].color;//自定义颜色属性 用于射线拾取交互
+                                        mesh.origindata = dataColor[mesh.name].origindata;//自定义颜色属性 用于射线拾取HTML标签显示
+                                    } else {
+                                        mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                                        mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                                    }
+                                }
+                            }
+                        } else {
+                            mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                            mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                        }
+
                     }
-                    // mesh.position.z=-(this.mapSize * parseFloat(this.option.baseGlobal.depth))/2;
                     this.map.add(mesh)
                 })
-                let backLine=this.boxGroup.clone();
-                backLine.position.z=-10;
+                let backLine = this.boxGroup.clone();
+                backLine.position.z = -10;
                 this.map.add(backLine)
-                this.boxGroup.position.z=this.mapSize * parseFloat(this.option.baseGlobal.depth)*1.05;
-                if(typeof callback=='function'){
+                this.boxGroup.position.z = this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.05;
+                if (typeof callback == 'function') {
                     callback()
                 }
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.updateLabelPos();
-                },500)
+                }, 500)
 
             })
         },
@@ -322,7 +346,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             //     y: N, //墨卡托y坐标——对应维度
             //     z: 0
             // }
-            var n=20037508.34;
+            var n = 20037508.34;
             var x = parseFloat(E) * n / 180;
             var y = Math.log(Math.tan((90 + parseFloat(N)) * Math.PI / 360)) / (Math.PI / 180);
             y = y * n / 180;
@@ -333,6 +357,10 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
         },
         getMapData(callback) {
+            if (this.mapData) {
+                callback(this.mapData)
+                return;
+            }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
             loader.load(staticpath + '/static/worldZh.json', (data) => {
@@ -381,8 +409,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             this.labelArry.push({
                 dom: div,
                 position: position,
-                x:x,
-                y:y
+                x: x,
+                y: y
             })
         },
         calcTextLabel: function (content, v) {
@@ -422,7 +450,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             div.style.padding = css.padding;
         },
         updateLabelPos() {
-            this.labelArry.forEach((ele,j) => {
+            this.labelArry.forEach((ele, j) => {
                 var div = ele.dom;
                 var position = ele.position;
 
@@ -431,15 +459,17 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     position.y - this.center.y,
                     position.z - this.center.z
                 );
-                if ((this.camera.rotation._x>-0.7 && this.camera.rotation._x<0.9) && (this.camera.rotation._y>-0.7 && this.camera.rotation._y<0.9)) {
+                if ((this.camera.rotation._x > -0.7 && this.camera.rotation._x < 0.9) && (this.camera.rotation._y > -0.7 && this.camera.rotation._y < 0.9)) {
                     div.style.display = 'block'
-                    ele.isFirst=!ele.show;
-                    ele.show=true
+                    ele.isFirst = !ele.show;
+                    ele.show = true
+                    ele.z=1;
                 } else {
                     div.style.display = 'none';
-                    ele.show=false
+                    ele.show = false;
+                    ele.z=-1;
                 }
-                ele.index=0;
+                ele.index = 0;
                 var standardVector = worldVector.project(this.camera);//世界坐标转标准设备坐标
                 var a = this.option.width / 2;
                 var b = this.option.height / 2;
@@ -450,127 +480,196 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                  */
 
                 // this.computeScatterPosition(j,x,y,div)
-                ele.x=x;
-                ele.y=y;
-                this.getRect(ele);
-                // div.style.left = x + 'px';
-                // div.style.top = y  + 'px';
+                ele.x = x;
+                ele.y = y;
+                if (this.option.label.wordAvoidance) {
+                    this.getRect(ele);
+                } else {
+                    div.style.left = x + 'px';
+                    div.style.top = y + 'px';
+                }
+
+
             })
-            for(let i=0;i<this.labelArry.length;i++){
-                let temp=this.labelArry[i];
-                let div=temp.dom;
-                temp.index=0;
-                temp.show=!this._literalCheckMeet(i,temp)
-                if(temp.show){
-                    div.style.left = temp.rect[temp.index].minX + 'px';
-                    div.style.top = temp.rect[temp.index].minY + 'px';
-                }
-                else{
-                    div.style.display = 'none'
-                }
-            }
-        },
-        _literalCheckMeet(i,temp){
-            for(let j=0;j<i;j++){
-                if(i!=j && this.labelArry[j].show && temp.show && this.isAnchorMeet(this.labelArry[j].rect[this.labelArry[j].index],temp.rect[temp.index])){
-                    temp.index++;
-                    if(temp.index>3){
-                        return true;
+            if (this.option.label.wordAvoidance) {
+                for (let i = 0; i < this.labelArry.length; i++) {
+                    let temp = this.labelArry[i];
+                    let div = temp.dom;
+                    temp.index = 0;
+                    temp.available = {};
+                    temp.show = !this._literalCheckMeet(i, temp, 0)
+                    if (temp.show) {
+                        div.style.left = temp.rect[temp.index].minX + 'px';
+                        div.style.top = temp.rect[temp.index].minY + 'px';
+                    } else {
+                        if(temp.z>0 && this.option.label.showAllLabel){
+                            div.style.left = temp.rect[temp.index].minX + 'px';
+                            div.style.top = temp.rect[temp.index].minY + 'px';
+                            div.style.display = 'block'
+                        }
+                        else{
+                            div.style.display = 'none'
+                        }
+                        // this.getMinIndex(temp);
                     }
-                    return this._literalCheckMeet(i,temp);
                 }
             }
-            return false;
         },
-        getRect(ele){
-            let offsetX=10;
-            let offsetY=10;
-            let width=ele.dom.offsetWidth;
-            let height=ele.dom.offsetHeight;
-            ele.rect=[
-                this._getLeftRect(ele,offsetX,offsetY,width,height),
-                this._getRightRect(ele,offsetX,offsetY,width,height),
-                this._getTopRect(ele,offsetX,offsetY,width,height),
-                this._getBottomRect(ele,offsetX,offsetY,width,height),
+        _literalCheckMeet(i, temp, index) {
+            let meet = true;
+            for (let k = 0; k < 3; k++) {
+                let ismeet = false;
+                let meetarea = -1;
+                for (let j = 0; j < this.labelArry.length; j++) {
+                    if (i != j && this.labelArry[j].show && temp.show && index < 3) {
+                        meetarea = this.isAnchorMeet(this.labelArry[j].rect[this.labelArry[j].index], temp.rect[k]);
+                        if (meetarea > 0) {
+                            ismeet = true;
+                        }
+                    }
+                }
+                if (!ismeet) {
+                    if (meet) {
+                        meet = false;
+                        temp.index = k;
+                    }
+
+                } else {
+                    temp.available[k] = meetarea;
+                }
+            }
+            return meet;
+        },
+        getRect(ele) {
+            let offsetX = 10;
+            let offsetY = 10;
+            let width = ele.dom.offsetWidth;
+            let height = ele.dom.offsetHeight;
+            ele.rect = [
+                this._getLeftRect(ele, offsetX, offsetY, width, height),
+                this._getRightRect(ele, offsetX, offsetY, width, height),
+                this._getTopRect(ele, offsetX, offsetY, width, height),
+                this._getBottomRect(ele, offsetX, offsetY, width, height),
             ]
         },
-        _getRightRect(ele,offsetX,offsetY,width,height){
+        _getRightRect(ele, offsetX, offsetY, width, height) {
             return {
-                maxX:ele.x+offsetX+width,
-                maxY: ele.y+height/2,
-                minX: ele.x+offsetX,
-                minY: ele.y-height/2,
+                maxX: ele.x + offsetX + width,
+                maxY: ele.y + height / 2,
+                minX: ele.x + offsetX,
+                minY: ele.y - height / 2,
                 width: width,
                 height: height,
             }
         },
-        _getLeftRect(ele,offsetX,offsetY,width,height){
+        _getLeftRect(ele, offsetX, offsetY, width, height) {
             return {
-                maxX:ele.x-offsetX,
-                maxY: ele.y+height/2,
-                minX: ele.x-offsetX-width,
-                minY: ele.y-height/2,
+                maxX: ele.x - offsetX,
+                maxY: ele.y + height / 2,
+                minX: ele.x - offsetX - width,
+                minY: ele.y - height / 2,
                 width: width,
                 height: height,
             }
         },
-        _getTopRect(ele,offsetX,offsetY,width,height){
+        _getTopRect(ele, offsetX, offsetY, width, height) {
             return {
-                maxX:ele.x+width/2,
-                maxY: ele.y-offsetY,
-                minX: ele.x-width/2,
-                minY: ele.y-offsetY-height,
+                maxX: ele.x + width / 2,
+                maxY: ele.y - offsetY,
+                minX: ele.x - width / 2,
+                minY: ele.y - offsetY - height,
                 width: width,
                 height: height,
             }
         },
-        _getBottomRect(ele,offsetX,offsetY,width,height){
+        _getBottomRect(ele, offsetX, offsetY, width, height) {
             return {
-                maxX:ele.x+width/2,
-                minX: ele.x-width/2,
-                minY: ele.y+offsetY,
-                maxY: ele.y+offsetY+height,
+                maxX: ele.x + width / 2,
+                minX: ele.x - width / 2,
+                minY: ele.y + offsetY,
+                maxY: ele.y + offsetY + height,
                 width: width,
                 height: height,
             }
         },
-        isAnchorMeet(t1,t2) {
+        isAnchorMeet(t1, t2) {
             let react = t1,
                 targetReact = t2;
+            // return (Math.min(react.minY, targetReact.minY) - Math.max(react.maxY, targetReact.maxY)) * (Math.min(react.maxX, targetReact.maxX) - Math.max(react.minX, targetReact.minX))
+            //
+            // let area=(targetReact.maxX-react.minX) * (targetReact.maxY - react.minY)
+            // return area;
             if ((react.minX < targetReact.maxX) && (targetReact.minX < react.maxX) &&
                 (react.minY < targetReact.maxY) && (targetReact.minY < react.maxY)) {
-                return true;
+                let area = Math.abs((Math.min(react.minY, targetReact.minY) - Math.max(react.maxY, targetReact.maxY)) * (Math.min(react.maxX, targetReact.maxX) - Math.max(react.minX, targetReact.minX)))
+                return area;
             }
-            return false;
+            return -1;
+        },
+        addHotItems(hotDataMesh) {
+            var sortCol=this.option.label.start.col||this.option.valueName
+            this.option.data.sort((a,b)=>{
+                if(a[sortCol]<b[sortCol]){
+                    return this.option.label.start.sort=='asc'?-1:1;
+                }
+                else{
+                    return this.option.label.start.sort=='asc'?1:-1;
+                }
+            })
+            this.option.data.forEach((obj, i) => {
+                var lonlat = obj[this.option.lonlat].split(',');//经度
+                if (!obj[this.option.lonlat]) {
+                    return;
+                }
+                obj.$$lon = lonlat[0]
+                obj.$$lat = lonlat[1]//纬度
+                var SphereCoord1 = this.lonLat2Mercator(obj.$$lon, obj.$$lat);//SphereCoord球面坐标
+                if((this.option.label.start.hideLabel && i>=this.option.label.start.labelScope[0] && i<=this.option.label.start.labelScope[1]) || !this.option.label.start.hideLabel){
+                    this.addLabel(SphereCoord1, obj, 'start')
+                }
+            })
+            if (this.option.layer && this.option.layer.length > 0) {
+                for (let i = 0; i < this.option.layer.length; i++) {
+                    this.addOneLayerItem(this.option.layer[i].col, this.option.layer[i], hotDataMesh)
+                }
+            } else {
+                this.addOneLayerItem(this.option.valueName, this.option.attr.hot, hotDataMesh)
+            }
+
+            // this.addOneLayerItem(col,attr);
+
+        },
+        addOneLayerItem(col, attr, hotDataMesh) {
+
+            var [min, max, isLog] = this.getMaxMin(this.option.data, col);
+            console.log(min,max)
+            var maxNum = max[col];
+            var minNum = min[col];
+            this.option.data.forEach((obj, i) => {
+                var value = obj[col];
+                if (isLog) {
+                    value = Math.log(value);
+                }
+                if (!obj[this.option.lonlat]) {
+                    return;
+                }
+                var lon = obj.$$lon
+                var lat = obj.$$lat//纬度
+                // console.log(value,col)
+                this.addBaseItem(hotDataMesh, attr, lon, lat, this.basetexture, this.lightbartexture, this.wavetexture, value, minNum, maxNum, obj, false)
+            })
         },
         _addEarthItem(attr, isFly) {
             var textureLoader = new THREE.TextureLoader(); // TextureLoader创建一个纹理加载器对象
-            var basetexture = textureLoader.load(staticpath + '/static/标注.png');
-            var lightbartexture = textureLoader.load(staticpath + '/static/光柱.png');
-            var wavetexture = textureLoader.load(staticpath + '/static/光圈贴图.png');
+            this.basetexture = textureLoader.load(staticpath + '/static/标注.png');
+            this.lightbartexture = textureLoader.load(staticpath + '/static/光柱.png');
+            this.wavetexture = textureLoader.load(staticpath + '/static/光圈贴图.png');
             this.calcMeshArry = [];
             this.WaveMeshArr = [];
             this.flyArr = [];
             this.ConeMeshArry = []
             var hotDataMesh = new THREE.Group();
-            var [min, max] = this.getMaxMin(this.option.data, this.option.valueName);
-            var maxNum = max[this.option.valueName];
-            var minNum = min[this.option.valueName];
-            if (!isFly) {
-                this.option.data.forEach((obj, i) => {
-                    var value=obj[this.option.valueName];
-                    if(this.isLog){
-                        value=Math.log(value);
-                    }
-                    if(!obj[this.option.lonlat]){
-                        return;
-                    }
-                    var lonlat = obj[this.option.lonlat].split(',');//经度
-                    var lon = lonlat[0]
-                    var lat = lonlat[1]//纬度
-                    this.addBaseItem(hotDataMesh, attr, lon, lat, basetexture, lightbartexture, wavetexture, value, minNum, maxNum, obj, isFly)
-                })
-            }
+            this.addHotItems(hotDataMesh);
             if (isFly) {//飞线时需要重新计算起点和终点的值
                 var endData = {};
                 var startData = {};
@@ -587,8 +686,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     }
                     startData[startName].value += obj[this.option.valueName];
                 })
-                var [endMin, endMax,endisLog] = this.getMaxMinFromJSON(endData);
-                var [startMin, startMax,startisLog] = this.getMaxMinFromJSON(startData);
+                var [endMin, endMax, endisLog] = this.getMaxMinFromJSON(endData);
+                var [startMin, startMax, startisLog] = this.getMaxMinFromJSON(startData);
                 this.option.data.forEach((obj, i) => {
                     var lonlat = obj[this.option.lonlat].split(',');//经度
                     var lon = lonlat[0]
@@ -613,23 +712,23 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
 
                     obj.$$_endData = endData[obj[this.option.toCountryName]];
                     obj.$$_startData = startData[obj[this.option.countryName]];
-                    var endValue=obj.$$_endData.value;
-                    if(endisLog){
-                        endValue=Math.log(endValue);
+                    var endValue = obj.$$_endData.value;
+                    if (endisLog) {
+                        endValue = Math.log(endValue);
                     }
-                    var labelMesh=this.addBaseItem(hotDataMesh, attr, tlon, tlat, basetexture, lightbartexture, wavetexture, obj.$$_endData.value, endMin, endMax, obj, isFly)
+                    var labelMesh = this.addBaseItem(hotDataMesh, attr, tlon, tlat, basetexture, lightbartexture, wavetexture, obj.$$_endData.value, endMin, endMax, obj, isFly)
                     var SphereCoord = this.lonLat2Mercator(tlon, tlat);//SphereCoord球面坐标
                     this.addLabel(SphereCoord, obj, 'end')
                     if (obj.$$_startData && !obj.$$_startData.rendered) {//是起始点的时候画棱锥
                         if (!endData[obj[this.option.countryName]]) {
-                            var SphereCoord = this.lonLat2Mercator( lon, lat);//SphereCoord球面坐标
-                            var startValue=obj.$$_startData.value;
-                            if(startisLog){
-                                startValue=Math.log(startValue);
+                            var SphereCoord = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
+                            var startValue = obj.$$_startData.value;
+                            if (startisLog) {
+                                startValue = Math.log(startValue);
                             }
                             var color = this._calcColorSeg(startValue, startMin, startMax, attr.colors)
                             if (attr.type.cone.show) {
-                                var ConeMesh = this.createConeMesh(attr, this.mapSize *  obj.$$_startData.value * attr.type['cone'].height / (startMax), SphereCoord);//棱锥
+                                var ConeMesh = this.createConeMesh(attr, this.mapSize * obj.$$_startData.value * attr.type['cone'].height / (startMax), SphereCoord);//棱锥
                                 hotDataMesh.add(ConeMesh);
                                 ConeMesh.material.color.set(color)
                                 this.ConeMeshArry.push(ConeMesh)
@@ -724,16 +823,20 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var circleLight, lightBar, wave, bar, ConeMesh
             var SphereCoord = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
             var SphereCoord1 = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
+            // if (!isFly) {
+            //     this.addLabel(SphereCoord1, origindata, 'start')
+            // }
             // SphereCoord1={x:lon,y:lat,z:0}
             if (attr.type['circleLight'].show) {
-                circleLight = this.createPointBaseMesh(attr, SphereCoord1, basetexture);//光柱底座矩形平面
+                circleLight = this.createPointBaseMesh(attr, SphereCoord1, basetexture, (value - minNum) / (maxNum - minNum));//光柱底座矩形平面
                 hotDataMesh.add(circleLight);
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
             }
-            var height = 5 + this.mapSize * (value-minNum) / (maxNum-minNum);// 热度越高，光柱高度越高
+            var height = 5 + this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
             if (attr.type['lightBar'].show) {
-                height=height*parseFloat(this.option.attr[this.option.type].type.lightBar.ratio);
+                // console.log((value - minNum),maxNum , minNum)
+                height = height * parseFloat(attr.type.lightBar.ratio);
                 lightBar = this.createLightPillar(attr, SphereCoord, height, lightbartexture);//光柱
                 hotDataMesh.add(lightBar);
                 this.calcMeshArry.push(lightBar)
@@ -741,7 +844,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
 
             if (attr.type['wave'].show) {
-                wave = this.createWaveMesh(attr, this.mapSize, SphereCoord1, wavetexture);//波动光圈
+                wave = this.createWaveMesh(attr, this.mapSize, SphereCoord1, wavetexture, (value - minNum) / (maxNum - minNum));//波动光圈
                 hotDataMesh.add(wave);
                 this.WaveMeshArr.push(wave);
                 this.calcMeshArry.push(wave)
@@ -749,22 +852,20 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
 
             if (attr.type['bar'].show) {
-                height=height*parseFloat(this.option.attr[this.option.type].type.bar.ratio);
+                height = height * parseFloat(attr.type.bar.ratio);
                 bar = this.createPrism(this.mapSize, SphereCoord, height, attr)
                 hotDataMesh.add(bar)
                 this.calcMeshArry.push(bar)
                 bar.origindata = origindata;
             }
             if (attr.type['cone'].show && !isFly) {
-                ConeMesh = this.createConeMesh(attr, this.mapSize * (value-minNum) * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
+                ConeMesh = this.createConeMesh(attr, this.mapSize * (value - minNum) * attr.type['cone'].height / (maxNum), SphereCoord);//棱锥
                 hotDataMesh.add(ConeMesh);
                 this.ConeMeshArry.push(ConeMesh)
                 this.calcMeshArry.push(ConeMesh)
                 ConeMesh.origindata = origindata;
             }
-            if (!isFly) {
-                this.addLabel(SphereCoord1, origindata, 'start')
-            }
+
             this.changeColor(attr, lightBar, circleLight, wave, bar, ConeMesh, value, minNum, maxNum);//设置热点Mesh颜色
         },
         createConeMesh(attr, radius, SphereCoord) {
@@ -784,7 +885,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // MeshBasicMaterial MeshLambertMaterial
             var material = new THREE.MeshLambertMaterial({
                 color: 0x00ffff,
-                side:THREE.DoubleSide,
+                side: THREE.DoubleSide,
             });
             var mesh = new THREE.Mesh(geometry, material);
 
@@ -798,7 +899,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // 经纬度转球面坐标
             // var coord = this.lon2xyz(this.option.R * 1.001, lon, lat)
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
             // // mesh姿态设置
             // // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             // var coordVec3 = new THREE.Vector3(SphereCoord.x, SphereCoord.y, SphereCoord.z).normalize();
@@ -822,7 +923,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             ConMesh && (ConMesh.material.color.set(color));
         },
         addfly() {
-            this.addarea(true,()=>{
+            this.addarea(true, () => {
                 this._addEarthItem(this.option.attr.fly, true)
             })
 
@@ -830,10 +931,10 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         flyArc(lon1, lat1, lon2, lat2) {
             var sphereCoord1 = this.lonLat2Mercator(lon1, lat1);//经纬度坐标转球面坐标
             // startSphereCoord：轨迹线起点球面坐标
-            var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);
+            var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
             var sphereCoord2 = this.lonLat2Mercator(lon2, lat2);
             // startSphereCoord：轨迹线结束点球面坐标
-            var end = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);
+            var end = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
 
             var length = start.clone().sub(end).length();
             var H = length * 0.1; //根据两点之间距离设置弧线高度
@@ -849,7 +950,6 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 middle,
                 end
             ]);
-            console.log(start,end)
             var points = curve.getPoints(100); //分段数100，返回101个顶点，返回一个vector3对象作为元素组成的数组
             geometry.setFromPoints(points); // setFromPoints方法从points中提取数据改变几何体的顶点属性vertices
             //材质对象
@@ -862,8 +962,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             return line;
         },
         addhot() {
-            this.addarea(true,()=>{
+            this.addarea(true, () => {
                 this._addEarthItem(this.option.attr.hot)
+
             })
         },
         createPrism(R, SphereCoord, height, attr) {
@@ -876,7 +977,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 color: '#ffffff',
             });
             var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);//设置mesh位置
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);//设置mesh位置
             this.calcMeshArry.push(mesh)
             return mesh;
         },
@@ -897,7 +998,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             }
             return colors[colors.length - 1]
         },
-        createWaveMesh(attr, R, SphereCoord, texture) {
+        createWaveMesh(attr, R, SphereCoord, texture, valueSize) {
             var geometry = new THREE.PlaneBufferGeometry(1, 1); //默认在XOY平面上
             // 如果不同mesh材质的透明度、颜色等属性不同，材质不能共享
             var material = new THREE.MeshBasicMaterial({
@@ -911,13 +1012,13 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var coord = this.lon2xyz(R * 1.001, lon, lat)
-            var size = R * attr.type.wave.width;//矩形平面Mesh的尺寸
+            var size = R * attr.type.wave.width * (valueSize || 1);//矩形平面Mesh的尺寸
             mesh.size = size;//自顶一个属性，表示mesh静态大小
             mesh.scale.set(size, size, size);//设置mesh大小
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
             // mesh.scale.set(mesh.size*mesh._s,mesh.size*mesh._s,mesh.size*mesh._s);
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
 
             return mesh;
         },
@@ -941,12 +1042,12 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             group.add(mesh, mesh.clone().rotateZ(Math.PI / 2));//几何体绕x轴旋转了，所以mesh旋转轴变为z
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);//设置mesh位置
+            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             return group;
         },
-        createPointBaseMesh(attr, SphereCoord, texture) {
+        createPointBaseMesh(attr, SphereCoord, texture, valueSize) {
             var geometry = new THREE.PlaneBufferGeometry(1, 1); //默认在XOY平面上
             var material = new THREE.MeshBasicMaterial({
                 color: '#ffffff',
@@ -954,35 +1055,38 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                 transparent: true, //使用背景透明的png贴图，注意开启透明计算
                 // side: THREE.DoubleSide, //双面可见
                 depthWrite: false,//禁止写入深度缓冲区数据
-                depthTest:false
+                depthTest: false
             });
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var SphereCoord1 = this.lon2xyz(R * 1.001, lon, lat)
-            var size = this.mapSize * attr.type.circleLight.width;//矩形平面Mesh的尺寸
+            var size = this.mapSize * attr.type.circleLight.width * (valueSize || 1);//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize  * parseFloat(this.option.baseGlobal.depth)*1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
             return mesh;
         },
-        calcAreaCountryColor(data) {
+        calcAreaCountryColor(data, col, attr) {
+            var col = col || this.option.valueName;
             var json = {};
-            var color1 = new THREE.Color(this.option.attr.area.colors[0]);
-            var color2 = new THREE.Color(this.option.attr.area.colors[1]);
-            var [min, max] = this.getMaxMin(data, this.option.valueName);
-            var maxNum = max[this.option.valueName];
-            var minNum = min[this.option.valueName];
+            var colors = attr ? attr.colors : this.option.attr.area.colors;
+            // var color1 = new THREE.Color(this.option.attr.area.colors[0]);
+            // var color2 = new THREE.Color(this.option.attr.area.colors[1]);
+            var [min, max, isLog] = this.getMaxMin(data, col);
+            var maxNum = max[col];
+            var minNum = min[col];
             data.forEach(obj => {
                 var name = obj[this.option.countryName];
-                var value = obj[this.option.valueName];
-                if(this.isLog){
-                    value=Math.log(value);
+                var value = obj[col];
+                if (isLog) {
+                    value = Math.log(value);
                 }
                 var color = null;
                 if (!value) {
                     value = 0;
                 }
-                color = color1.clone().lerp(color2.clone(), Math.sqrt((value-minNum) / maxNum));
+                // color = color1.clone().lerp(color2.clone(), Math.sqrt((value - minNum) / maxNum));
+                color = new THREE.Color(lerp(colors, Math.sqrt((value - minNum) / (maxNum - minNum))));
                 json[name] = {
                     color: color,
                     origindata: obj
@@ -991,8 +1095,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             return json;
         },
         getMaxMin(data1, name) {
-            this.isLog=false;
-            var data=$.extend(true,[],data1)
+            let isLog = false;
+            var data = $.extend(true, [], data1)
             data.sort((d1, d2) => {
                 if (d1[name] > d2[name]) {
                     return 1;
@@ -1000,14 +1104,14 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     return -1;
                 }
             })
-            var min=$.extend(true,{},data[0]);
-            var max=$.extend(true,{},data[data.length - 1]);
-            if(max[this.option.valueName]/min[this.option.valueName]>1){
-                min[this.option.valueName]=Math.log(min[this.option.valueName]);
-                max[this.option.valueName]=Math.log(max[this.option.valueName]);
-                this.isLog=true;
+            var min = $.extend(true, {}, data[0]);
+            var max = $.extend(true, {}, data[data.length - 1]);
+            if (max[name] / min[name] > 1) {
+                min[name] = Math.log(min[name]);
+                max[name] = Math.log(max[name]);
+                isLog = true;
             }
-            return [min,max]
+            return [min, max, isLog]
         },
         initThree() {
             var scene = new THREE.Scene();
@@ -1033,7 +1137,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             //创建相机对象
             var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
             // camera.position.set(11, -280, 299); //沿着z轴观察
-            camera.position.set(0,-60, 299); //沿着z轴观察
+            camera.position.set(0, -60, 299); //沿着z轴观察
             camera.lookAt(scene.position); //指向中国地图的几何中心
             var renderer = new THREE.WebGLRenderer({
                 antialias: true, //开启锯齿
@@ -1064,7 +1168,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             mapGroup.position.x = mapGroup.position.x - center.x;
             mapGroup.position.y = mapGroup.position.y - center.y;
             mapGroup.position.z = mapGroup.position.z - center.z;
-            this.center=center;
+            this.center = center;
 
             var width = this.option.width;
             var height = this.option.height;
@@ -1082,12 +1186,12 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             camera.right = s * k;
             camera.top = s;
             camera.bottom = -s;
-            camera.position.set(0,-maxL/2, maxL); //沿着z轴观察
+            camera.position.set(0, -maxL / 2, maxL); //沿着z轴观察
             camera.lookAt(this.scene.position); //指向中国地图的几何中心
-            camera.near = -maxL*4;
-            camera.far = maxL*4;
+            camera.near = -maxL * 4;
+            camera.far = maxL * 4;
             camera.updateProjectionMatrix();
-            this.mapSize=maxL;
+            this.mapSize = maxL;
         },
         maxLFun(v3) {
             var max;
@@ -1096,7 +1200,8 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             } else {
                 max = v3.y
             }
-            if (max > v3.z) {} else {
+            if (max > v3.z) {
+            } else {
                 max = v3.z
             }
             return max;
@@ -1157,7 +1262,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         addControl() {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
             this.controls.update();
-            this.controls.addEventListener( 'change', ()=> {
+            this.controls.addEventListener('change', () => {
                 this.updateLabelPos();
             });
         },
@@ -1212,7 +1317,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
         },
         minMax(arr1) {
             // 数组元素排序
-            var arr=$.extend(true,[],arr1);
+            var arr = $.extend(true, [], arr1);
             arr.sort((num1, num2) => {
                 if (num1 < num2) {
                     return -1;
@@ -1274,7 +1379,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     var x = (Sx / this.dom.getBoundingClientRect().width) * 2 - 1; //WebGL标准设备横坐标
                     var y = -(Sy / this.dom.getBoundingClientRect().height) * 2 + 1; //WebGL标准设备纵坐标
 
-                    var standardVector  = new THREE.Vector3(x, y, 0.5);//标准设备坐标
+                    var standardVector = new THREE.Vector3(x, y, 0.5);//标准设备坐标
                     //标准设备坐标转世界坐标
                     var worldVector = standardVector.unproject(this.camera);
                     //射线投射方向单位向量(worldVector坐标减相机位置坐标)
@@ -1285,7 +1390,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                     // raycaster.far=this.mapSize*10000000;
                     // raycaster.near=0;
                     //返回射线选中的对象
-                    raycaster.setFromCamera( new THREE.Vector2(x,y), this.camera );
+                    raycaster.setFromCamera(new THREE.Vector2(x, y), this.camera);
                     var intersects = raycaster.intersectObjects(this.calcMeshArry);
 
                     // //创建一个射线投射器`Raycaster`
@@ -1310,7 +1415,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
                         this.tooltip.element.style.visibility = 'visible';
                         if (this.chooseMesh.meshType == 'area') {
                             this.chooseMesh.material.color.set(this.option.baseGlobal.hoverColor)
-                            if(this.option.type=='area' && this.chooseMesh.origindata){
+                            if (this.option.type == 'area' && this.chooseMesh.origindata) {
                                 var content = (this.calcTextTooltip(this.option.tooltip.content, this.chooseMesh.origindata))
                                 this.tooltip.element.innerHTML = content;
                             }
@@ -1371,7 +1476,7 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             })
         },
         resize(width, height) {
-            if(!this.camera){
+            if (!this.camera) {
                 return;
             }
             this.renderer.setSize(width, height);
@@ -1381,9 +1486,9 @@ import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
             // this.camera.right = s * k;
             // // 更新相机投影矩阵
             // this.camera.updateProjectionMatrix();
-            this.option.width=width;
-            this.option.height=height;
-            var k=width / height;
+            this.option.width = width;
+            this.option.height = height;
+            var k = width / height;
             var s = this.mapSize / 2 * 1;
             this.camera.left = -s * k;
             this.camera.right = s * k;
