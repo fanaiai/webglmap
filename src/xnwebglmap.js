@@ -258,6 +258,8 @@ import lerp from '@sunify/lerp-color'
                             mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                         }
                     } else {//hot 或 fly
+                        mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                        mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                         if (this.option.layer && this.option.layer.length > 0) {
                             for (let i = 0; i < this.option.layer.length; i++) {
                                 let attr = this.option.layer[i];
@@ -274,8 +276,8 @@ import lerp from '@sunify/lerp-color'
                                 }
                             }
                         } else {
-                            mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
-                            mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                            // mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                            // mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                         }
 
                     }
@@ -642,7 +644,6 @@ import lerp from '@sunify/lerp-color'
         addOneLayerItem(col, attr, hotDataMesh) {
 
             var [min, max, isLog] = this.getMaxMin(this.option.data, col);
-            console.log(min,max)
             var maxNum = max[col];
             var minNum = min[col];
             this.option.data.forEach((obj, i) => {
@@ -1111,6 +1112,9 @@ import lerp from '@sunify/lerp-color'
                 max[name] = Math.log(max[name]);
                 isLog = true;
             }
+            if(min==max){
+                min=0;
+            }
             return [min, max, isLog]
         },
         initThree() {
@@ -1493,6 +1497,7 @@ import lerp from '@sunify/lerp-color'
             this.camera.left = -s * k;
             this.camera.right = s * k;
             this.camera.updateProjectionMatrix();
+            this.updateLabelPos();
             // this.calcMeshArry = [];
             // this['add' + this.option.type]()
             // this.centerCamera(this.map,this.camera)
@@ -1547,7 +1552,6 @@ import lerp from '@sunify/lerp-color'
             this.id = null;
             cancelAnimationFrame(this.animationId)
             this.animationId = null;
-            console.log('怎么回事啊', this.id, this.animationId)
             removeEventListener('mousemove', this.choosePointMesh)
             removeEventListener('click', this.clickPointMesh)
         }

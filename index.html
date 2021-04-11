@@ -32,571 +32,35 @@
 </body>
 <script type="module">
     var option ={
-        "baseGlobal": {
-            "areaOpacity": 1,
-            "color": "#000000",
-            "areaColor": "rgba(2,155,229,1)",
-            "gridStep": 2,
-            "texture": {
-                "img": "",
-                "show": true
-            },
-            "gridOpacity": 1,
-            "countryPolygonType": "area",
-            "areaLine": "rgba(127,222,234,1)",
-            "showArea": true,
-            "areaLineOpacity": 1,
-            "gridSize": 2,
-            "depth": 0.04,
-            "gridColor": "#00ccc2",
-            "showLine": false,
-            "opacity": 1
-        },
         "R": 130,
-        "backgroundColor": "rgba(0,0,0,0)",
-        "tooltip": {
-            "padding": 4,
-            "backgroundColor": "rgba(127,222,234,1)",
-            "borderColor": "#00B4FF",
-            "color": "#fff",
-            "borderRadius": 4,
-            "backgroundImage": "",
-            "borderWidth": 1,
-            "show": true,
-            "backgroundSize": "",
-            "fontSize": 12,
-            "borderStyle": "solid",
-            "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\"><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">province</span></span><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">&nbsp;</span><span class=\"bi-label-field\" data-key=\"B\" contenteditable=\"false\"><span class=\"colour\" style=\"color:rgba(0,0,0,1)\">ZKWZI2</span></span><br></p>"
-        },
-        "backgroundOpacity": "0",
-        "label":{
-            "wordAvoidance":true,
-            "showAllLabel":true,
-            "start": {
-                "hideLabel":true,//false,或范围，按照数据从小到大排序
-                "labelScope":[1,5],
-                "sort":"desc",
-                "col":"D",
-                "padding": 4,
-                "backgroundColor": "#d60b0b",
-                "borderColor": "#cf4103",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
-                "show": true,
-                "backgroundSize": "",
-                "fontSize": 16,
-                "borderStyle": "solid",
-                "content": "<p class=\"paragraph\"><span class=\"colour\" style=\"color:rgba(245,124,2,1)\"></span><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp;&nbsp;<span class=\"bi-label-field\" data-key=\"B\" contenteditable=\"false\">B</span><span class=\"bi-label-field\" data-key=\"D\" contenteditable=\"false\">B</span><br></p>"
-            },
-            "end": {
-                "padding": 4,
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
-                "show": true,
-                "backgroundSize": "",
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "content": ""
-            }
-        },
-        "type": "hot",
-        "attr": {
-            "area": {
-                "colors": [
-                    "#ff0000",
-                    "#ffffff"
-                ]
-            },
-            "fly": {
-                "type": {
-                    "lightBar": {
-                        "show": true,
-                        "width": 0.12,
-                        "ratio": 1
-                    },
-                    "bar": {
-                        "radiusBottom": 0.04,
-                        "show": false,
-                        "radiusTop": 0.04,
-                        "segments": "4",
-                        "ratio": 1
-                    },
-                    "flyLine": {
-                        "dashSize": 3,
-                        "color": "#00ccc2",
-                        "lineType": "Basic",
-                        "show": true,
-                        "width": 1,
-                        "gapSize": 1
-                    },
-                    "flyPoint": {
-                        "pointSize": 6,
-                        "color": "#ffaa00",
-                        "len": 0.2,
-                        "show": true
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": 0.0625,
-                        "ratio": 1,
-                        "segments": 4
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": 0.22
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    }
-                },
-                "colors": [
-                    "#00ccc2",
-                    "#ffff4a"
-                ]
-            },
-            "hot": {
-                "type": {
-                    "area": {
-                        "colors": [
-                            "#ff0000",
-                            "#ffffff"
-                        ]
-                    },
-                    "lightBar": {
-                        "show": false,
-                        "width": "0.012",
-                        "ratio": 1,
-                    },
-                    "bar": {
-                        "radiusBottom": 0.04,
-                        "show": false,
-                        "radiusTop": 0.04,
-                        "segments": 4,
-                        "ratio": 1,
-
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": "0.0425",
-                        "ratio": "2",
-                        "segments": 4,
-
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": "0.052",
-
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": "0.012",
-
-                    }
-                },
-                "colors": [
-                    "rgba(247,223,143,1)",
-                    "rgba(255,193,6,1)",
-                    "rgba(239,83,79,1)"
-                ]
-            }
-        },
-        "animate": {
-            "rotateStep": 0.012,
-            "open": true
-        },
-        "lightSphere": {
-            "color": "#048989",
-            "show": true,
-            "opacity": 2
-        },
-        "layer":[
-            {
-                "col":"D",
-                "type": {
-                    "area": {
-                        "show":true,
-                        "colors": [
-                            "#ffffff",
-                            "#ff0000"
-                        ]
-                    },
-                    "lightBar": {
-                        "show": false,
-                        "width": "0.012",
-                        "ratio": 1,
-                    },
-                    "bar": {
-                        "radiusBottom": 0.04,
-                        "show": false,
-                        "radiusTop": 0.04,
-                        "segments": 4,
-                        "ratio": 1,
-
-                    },
-                    "cone": {
-                        "show": false,
-                        "height": "0.0425",
-                        "ratio": "2",
-                        "segments": 4,
-
-                    },
-                    "wave": {
-                        "show": false,
-                        "width": "0.052",
-
-                    },
-                    "circleLight": {
-                        "show": false,
-                        "width": "0.012",
-
-                    }
-                },
-                "colors": [
-                    "rgba(247,223,143,1)",
-                    "rgba(255,193,6,1)",
-                    "rgba(239,83,79,1)"
-                ]
-            },
-            {
-                "col":"B",
-                "type": {
-                    "area": {
-                        "show":"false",
-                        "colors": [
-                            "#ff0000",
-                            "#ffffff"
-                        ]
-                    },
-                    "lightBar": {
-                        "show": false,
-                        "width": "0.012",
-                        "ratio": 1,
-                    },
-                    "bar": {
-                        "radiusBottom": 0.04,
-                        "show": false,
-                        "radiusTop": 0.04,
-                        "segments": 4,
-                        "ratio": 1,
-
-                    },
-                    "cone": {
-                        "show": false,
-                        "height": "0.0425",
-                        "ratio": "2",
-                        "segments": 4,
-
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": "0.052",
-
-                    },
-                    "circleLight": {
-                        "show": false,
-                        "width": "0.012",
-
-                    }
-                },
-                "colors": [
-                    "rgba(247,223,143,1)",
-                    "rgba(255,193,6,1)",
-                    "rgba(239,83,79,1)"
-                ]
-            },
-            {
-                "col":"E",
-                "type": {
-                    "area": {
-                        "show":"false",
-                        "colors": [
-                            "#ff0000",
-                            "#ffffff"
-                        ]
-                    },
-                    "lightBar": {
-                        "show": false,
-                        "width": "0.012",
-                        "ratio": 1,
-                    },
-                    "bar": {
-                        "radiusBottom": 0.004,
-                        "show": true,
-                        "radiusTop": 0.004,
-                        "segments": 4,
-                        "ratio": 0.1,
-
-                    },
-                    "cone": {
-                        "show": false,
-                        "height": "0.0425",
-                        "ratio": "2",
-                        "segments": 4,
-
-                    },
-                    "wave": {
-                        "show": false,
-                        "width": "0.052",
-
-                    },
-                    "circleLight": {
-                        "show": false,
-                        "width": "0.012",
-
-                    }
-                },
-                "colors": [
-                    "rgba(247,223,143,1)",
-                ]
-            }
-        ],
-        "data": [
-            {
-                "A": "中国",
-                "B": 65820566,
-                "D": 20566,
-                "E": 120566,
-                "C": "116.2,39.55",
-                "$$_formatValue": "6,582万"
-            },
-            {
-                "A": "巴西",
-                "B": 41139616,
-                "D": 139616,
-                "E": 139616,
-                "C": "-47.55,-15.47",
-                "$$_formatValue": "4,114万"
-            },
-            {
-                "A": "土耳其",
-                "B": 27568373,
-                "D": 568373,
-                "E": 868373,
-                "C": "32.54,39.57",
-                "$$_formatValue": "2,757万"
-            },
-            {
-                "A": "印度尼西亚",
-                "B": 51641416,
-                "D": 568373,
-                "E": 868373,
-                "C": "106.49,-6.09",
-                "$$_formatValue": "5,164万"
-            },
-            {
-                "A": "智利",
-                "B": 11983976,
-                "D": 568373,
-                "E": 868373,
-                "C": "-70.4,-33.24",
-                "$$_formatValue": "1,198万"
-            },
-            {
-                "A": "阿塞拜疆",
-                "B": 500000,
-                "D": 568373,
-                "E": 868373,
-                "C": "49.56,40.29",
-                "$$_formatValue": "50万"
-            },
-            {
-                "A": "中国香港",
-                "B": 2000000,
-                "D": 568373,
-                "E": 868373,
-                "C": "114.10,22.20",
-                "$$_formatValue": "200万"
-            },
-            {
-                "A": "乌拉圭",
-                "D": 568373,
-                "E": 868373,
-                "B": 1750000,
-                "C": "-56.11,-34.5",
-                "$$_formatValue": "175万"
-            },
-            // {
-            //     "A": "泰国",
-            //     "B": 992000,
-            //     "C": "100.35,13.45",
-            //     "$$_formatValue": "99万"
-            // },
-            // {
-            //     "A": "贝宁",
-            //     "B": 203000,
-            //     "C": "2.42,6.23",
-            //     "$$_formatValue": "20万"
-            // },
-            // {
-            //     "A": "柬埔寨",
-            //     "B": 1500000,
-            //     "C": "104.55,11.33",
-            //     "$$_formatValue": "150万"
-            // },
-            // {
-            //     "A": "吉布提",
-            //     "B": 300000,
-            //     "C": "42.2,11.08",
-            //     "$$_formatValue": "30万"
-            // },
-            // {
-            //     "A": "马来西亚",
-            //     "B": 1152381,
-            //     "C": "101.41,3.09",
-            //     "$$_formatValue": "115万"
-            // },
-            // {
-            //     "A": "墨西哥",
-            //     "B": 4000000,
-            //     "C": "-99.1,19.2",
-            //     "$$_formatValue": "400万"
-            // },
-            // {
-            //     "A": "新加坡",
-            //     "B": 200000,
-            //     "C": "103.45,1.22",
-            //     "$$_formatValue": "20万"
-            // },
-            // {
-            //     "A": "突尼斯",
-            //     "B": 200000,
-            //     "C": "10.11,36.5",
-            //     "$$_formatValue": "20万"
-            // },
-            // {
-            //     "A": "阿联酋",
-            //     "B": 20000,
-            //     "C": "55.17,25.13",
-            //     "$$_formatValue": "2万"
-            // },
-            // {
-            //     "A": "乌克兰",
-            //     "B": 215000,
-            //     "C": "30.28,50.3",
-            //     "$$_formatValue": "22万"
-            // },
-            // {
-            //     "A": "津巴布韦",
-            //     "B": 1200000,
-            //     "C": "31.02,-17.43",
-            //     "$$_formatValue": "120万"
-            // }
-            // ,
-            // {
-            //     "A": "菲律宾",
-            //     "B": 2000000,
-            //     "C": "121.03,14.4",
-            //     "$$_formatValue": "200万"
-            // },
-            // {
-            //     "A": "哥伦比亚",
-            //     "B": 2499964,
-            //     "C": "-74,4.34",
-            //     "$$_formatValue": "250万"
-            // },
-            //
-            // {
-            //     "A": "多米尼加",
-            //     "B": 1768000,
-            //     "C": "-61.24,15.2",
-            //     "$$_formatValue": "177万"
-            // },
-            // {
-            //     "A": "厄瓜多尔",
-            //     "B": 1000000,
-            //     "C": "-78.35,-0.15",
-            //     "$$_formatValue": "100万"
-            // },
-            //
-            // {
-            //     "A": "萨尔瓦多",
-            //     "B": 1150000,
-            //     "C": "-89.1,13.4",
-            //     "$$_formatValue": "115万"
-            // },
-
-        ],
-        "countryName": "A",
-        "lonlat": "C",
-        "valueName": "B",
-        "formatValue": "$$_formatValue"
-    };
-    option={
+        "backgroundColor": "rgba(255,255,255,1)",
+        "backgroundOpacity": 1,
+        "type": "area",
         "baseGlobal": {
-            "areaOpacity": 1,
             "color": "#000000",
-            "areaColor": "rgba(1,87,155,1)",
-            "gridStep": 2,
-            "texture": {
-                "img": "",
-                "show": true
-            },
-            "gridOpacity": 1,
+            "opacity": 1,
             "countryPolygonType": "area",
+            "gridSize": 2,
+            "gridStep": 2,
+            "gridColor": "#00ccc2",
+            "areaColor": "rgba(255,255,255,1)",
             "areaLine": "#00ccc2",
             "showArea": true,
-            "areaLineOpacity": 1,
-            "gridSize": 2,
-            "depth": 0.04,
-            "gridColor": "#00ccc2",
             "showLine": false,
-            "opacity": 1
-        },
-        "R": 130,
-        "backgroundColor": "#000000",
-        "tooltip": {
-            "padding": 4,
-            "backgroundColor": "rgba(8,85,139,.8)",
-            "borderColor": "#00B4FF",
-            "color": "#fff",
-            "borderRadius": 4,
-            "backgroundImage": "",
-            "borderWidth": 1,
-            "show": true,
-            "backgroundSize": "",
-            "fontSize": 12,
-            "borderStyle": "solid",
-            "content": ""
-        },
-        "backgroundOpacity": 1,
-        "label": {
-            "start": {
-                "padding": 4,
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
-                "show": false,
-                "backgroundSize": "",
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "content": ""
-            },
-            "end": {
-                "padding": 4,
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "backgroundImage": "",
-                "borderWidth": 1,
+            "texture": {
                 "show": true,
-                "backgroundSize": "",
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "content": ""
-            }
+                "img": ""
+            },
+            "areaOpacity": 1,
+            "areaLineOpacity": 1,
+            "gridOpacity": 1,
+            "depth": 0.04
         },
-        "type": "hot",
+        "lightSphere": {
+            "show": true,
+            "color": "#048989",
+            "opacity": 2
+        },
         "attr": {
             "area": {
                 "colors": [
@@ -604,81 +68,33 @@
                     "#ffffff"
                 ]
             },
-            "fly": {
+            "hot": {
                 "type": {
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
+                    },
                     "lightBar": {
                         "show": true,
                         "width": 0.12,
                         "ratio": 1
                     },
                     "bar": {
-                        "radiusBottom": 0.04,
                         "show": false,
+                        "segments": 4,
                         "radiusTop": 0.04,
-                        "segments": "4",
+                        "radiusBottom": 0.04,
                         "ratio": 1
-                    },
-                    "flyLine": {
-                        "dashSize": 3,
-                        "color": "#00ccc2",
-                        "lineType": "Basic",
-                        "show": true,
-                        "width": 1,
-                        "gapSize": 1
-                    },
-                    "flyPoint": {
-                        "pointSize": 6,
-                        "color": "#ffaa00",
-                        "len": 0.2,
-                        "show": true
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": 0.0625,
-                        "ratio": 1,
-                        "segments": 4
                     },
                     "wave": {
                         "show": true,
                         "width": 0.22
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    }
-                },
-                "colors": [
-                    "#00ccc2",
-                    "#ffff4a"
-                ]
-            },
-            "hot": {
-                "type": {
-                    "lightBar": {
-                        "show": true,
-                        "width": "0.012",
-                        "ratio": 1
-                    },
-                    "bar": {
-                        "radiusBottom": 0.04,
-                        "show": false,
-                        "radiusTop": 0.04,
-                        "segments": 4,
-                        "ratio": 1
                     },
                     "cone": {
                         "show": false,
                         "height": 0.0625,
                         "ratio": 3,
                         "segments": 4
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": "0.042"
-                    },
-                    "circleLight": {
-                        "show": true,
-                        "width": "0.032"
                     }
                 },
                 "colors": [
@@ -686,210 +102,156 @@
                     "#3bd5ac",
                     "#d5860c"
                 ]
+            },
+            "fly": {
+                "type": {
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
+                    },
+                    "lightBar": {
+                        "show": true,
+                        "width": 0.12,
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "show": false,
+                        "segments": "4",
+                        "radiusTop": 0.04,
+                        "radiusBottom": 0.04,
+                        "ratio": 1
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": 0.22
+                    },
+                    "flyLine": {
+                        "show": true,
+                        "color": "#00ccc2",
+                        "width": 1,
+                        "lineType": "Basic",
+                        "dashSize": 3,
+                        "gapSize": 1
+                    },
+                    "flyPoint": {
+                        "show": true,
+                        "color": "#ffaa00",
+                        "len": 0.2,
+                        "pointSize": 6
+                    },
+                    "cone": {
+                        "show": true,
+                        "height": 0.0625,
+                        "ratio": 1,
+                        "segments": 4
+                    }
+                },
+                "colors": [
+                    "#00ccc2",
+                    "#ffff4a"
+                ]
             }
         },
         "animate": {
-            "rotateStep": 0.012,
-            "open": true
+            "open": true,
+            "rotateStep": 0.012
         },
-        "lightSphere": {
-            "color": "#048989",
+        "tooltip": {
+            "backgroundColor": "rgba(8,85,139,.8)",
+            "backgroundImage": "",
+            "backgroundSize": "",
+            "borderColor": "#00B4FF",
+            "color": "#fff",
+            "borderRadius": 4,
+            "borderWidth": 1,
             "show": true,
-            "opacity": 2
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "padding": 4,
+            "content": ""
+        },
+        "label": {
+            "wordAvoidance": true,
+            "showAllLabel": false,
+            "start": {
+                "hideLabel": false,
+                "labelScope": [
+                    1,
+                    5
+                ],
+                "sort": "desc",
+                "col": "",
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": ""
+            },
+            "end": {
+                "hideLabel": false,
+                "labelScope": [
+                    1,
+                    5
+                ],
+                "sort": "desc",
+                "col": "",
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "backgroundImage": "",
+                "backgroundSize": "",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "show": true,
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "padding": 4,
+                "content": ""
+            }
         },
         "data": [
             {
-                "zuobiao": "77.13,28.37",
-                "ZKUNNR_ZLANDX": "印度",
-                "money": 8005786.76,
-                "$$_formatValue": 8005786.76
+                "count$$_sum": 658,
+                "province": "北京市",
+                "$$_formatValue": 658
             },
             {
-                "zuobiao": "114.10,22.20",
-                "ZKUNNR_ZLANDX": "中国香港",
-                "money": 50713509.8,
-                "$$_formatValue": 50713509.8
+                "count$$_sum": 308,
+                "province": "山东省",
+                "$$_formatValue": 308
             },
             {
-                "zuobiao": "12.34,55.41",
-                "ZKUNNR_ZLANDX": "丹麦",
-                "money": 12796227.41,
-                "$$_formatValue": 12796227.41
+                "count$$_sum": 1154,
+                "province": "河北省",
+                "$$_formatValue": 1154
             },
             {
-                "zuobiao": "-77.02,39.91",
-                "ZKUNNR_ZLANDX": "美国",
-                "money": 2545355.72,
-                "$$_formatValue": 2545355.72
+                "count$$_sum": 344,
+                "province": "海南省",
+                "$$_formatValue": 344
             },
             {
-                "zuobiao": "4.54,52.23",
-                "ZKUNNR_ZLANDX": "荷兰",
-                "money": 120000,
-                "$$_formatValue": 120000
+                "count$$_sum": 161,
+                "province": "辽宁省",
+                "$$_formatValue": 161
             },
             {
-                "zuobiao": "114.3,48.04",
-                "ZKUNNR_ZLANDX": "蒙古",
-                "money": 414000,
-                "$$_formatValue": 414000
-            },
-            {
-                "zuobiao": "100.35,13.45",
-                "ZKUNNR_ZLANDX": "泰国",
-                "money": 48939600,
-                "$$_formatValue": 48939600
-            },
-            {
-                "zuobiao": "32.54,39.57",
-                "ZKUNNR_ZLANDX": "土耳其",
-                "money": 294038442.08,
-                "$$_formatValue": 294038442.08
-            },
-            {
-                "zuobiao": "10.11,36.5",
-                "ZKUNNR_ZLANDX": "突尼斯",
-                "money": 2031000,
-                "$$_formatValue": 2031000
-            },
-            {
-                "zuobiao": "73.1,33.4",
-                "ZKUNNR_ZLANDX": "巴基斯坦",
-                "money": 517500,
-                "$$_formatValue": 517500
-            },
-            {
-                "zuobiao": "103.45,1.22",
-                "ZKUNNR_ZLANDX": "新加坡",
-                "money": 8408156,
-                "$$_formatValue": 8408156
-            },
-            {
-                "zuobiao": "106.49,-6.09",
-                "ZKUNNR_ZLANDX": "印度尼西亚",
-                "money": 385910091.42,
-                "$$_formatValue": 385910091.42
-            },
-            {
-                "zuobiao": "-47.55,-15.47",
-                "ZKUNNR_ZLANDX": "巴西",
-                "money": 235000017.5,
-                "$$_formatValue": 235000017.5
-            },
-            {
-                "zuobiao": "128.36,35.52",
-                "ZKUNNR_ZLANDX": "韩国",
-                "money": 1495185.5,
-                "$$_formatValue": 1495185.5
-            },
-            {
-                "zuobiao": "-70.4,-33.24",
-                "ZKUNNR_ZLANDX": "智利",
-                "money": 148523400.25,
-                "$$_formatValue": 148523400.25
-            },
-            {
-                "zuobiao": "-99.1,19.2",
-                "ZKUNNR_ZLANDX": "墨西哥",
-                "money": 88650000,
-                "$$_formatValue": 88650000
-            },
-            {
-                "zuobiao": "-74,4.34",
-                "ZKUNNR_ZLANDX": "哥伦比亚",
-                "money": 52799359.2,
-                "$$_formatValue": 52799359.2
-            },
-            {
-                "zuobiao": "-61.24,15.2",
-                "ZKUNNR_ZLANDX": "多米尼加",
-                "money": 33061280,
-                "$$_formatValue": 33061280
-            },
-            {
-                "zuobiao": "-56.11,-34.5",
-                "ZKUNNR_ZLANDX": "乌拉圭",
-                "money": 32550000,
-                "$$_formatValue": 32550000
-            },
-            {
-                "zuobiao": "101.41,3.09",
-                "ZKUNNR_ZLANDX": "马来西亚",
-                "money": 17376190.5,
-                "$$_formatValue": 17376190.5
-            },
-            {
-                "zuobiao": "27.3,53.52",
-                "ZKUNNR_ZLANDX": "白俄罗斯",
-                "money": 32340,
-                "$$_formatValue": 32340
-            },
-            {
-                "zuobiao": "55.17,25.13",
-                "ZKUNNR_ZLANDX": "阿联酋",
-                "money": 700000,
-                "$$_formatValue": 700000
-            },
-            {
-                "zuobiao": "42.2,11.08",
-                "ZKUNNR_ZLANDX": "吉布提",
-                "money": 1970160,
-                "$$_formatValue": 1970160
-            },
-            {
-                "zuobiao": "2.42,6.23",
-                "ZKUNNR_ZLANDX": "贝宁",
-                "money": 1648000,
-                "$$_formatValue": 1648000
-            },
-            {
-                "zuobiao": "31.02,-17.43",
-                "ZKUNNR_ZLANDX": "津巴布韦",
-                "money": 12000000,
-                "$$_formatValue": 12000000
-            },
-            {
-                "zuobiao": "30.28,50.3",
-                "ZKUNNR_ZLANDX": "乌克兰",
-                "money": 3440000,
-                "$$_formatValue": 3440000
-            },
-            {
-                "zuobiao": "104.55,11.33",
-                "ZKUNNR_ZLANDX": "柬埔寨",
-                "money": 15000000,
-                "$$_formatValue": 15000000
-            },
-            {
-                "zuobiao": "-89.1,13.4",
-                "ZKUNNR_ZLANDX": "萨尔瓦多",
-                "money": 17800000,
-                "$$_formatValue": 17800000
-            },
-            {
-                "zuobiao": "-78.35,-0.15",
-                "ZKUNNR_ZLANDX": "厄瓜多尔",
-                "money": 37000000,
-                "$$_formatValue": 37000000
-            },
-            {
-                "zuobiao": "121.03,14.4",
-                "ZKUNNR_ZLANDX": "菲律宾",
-                "money": 21000000,
-                "$$_formatValue": 21000000
-            },
-            {
-                "zuobiao": "49.56,40.29",
-                "ZKUNNR_ZLANDX": "阿塞拜疆",
-                "money": 6000000,
-                "$$_formatValue": 6000000
+                "count$$_sum": 902,
+                "province": "陕西省",
+                "$$_formatValue": 902
             }
         ],
-        "countryName": "ZKUNNR_ZLANDX",
-        "lonlat": "zuobiao",
-        "valueName": "money",
+        "countryName": "province",
+        "valueName": "count$$_sum",
         "formatValue": "$$_formatValue"
-    }
+    };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
 </script>
 </html>
