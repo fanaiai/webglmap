@@ -226,6 +226,7 @@ import lerp from '@sunify/lerp-color'
                 data.features.forEach(item => {
                     if (item.geometry.type == 'Polygon') {
                         item.geometry.coordinates = [item.geometry.coordinates]
+                        item.geometry.type='MultiPolygon';
                     }
                     if (!item.properties.nameZh) {
                         item.properties.nameZh = item.properties.name
@@ -365,7 +366,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/worldZh.json', (data) => {
+            loader.load(staticpath + '/static/china1.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
@@ -421,8 +422,12 @@ import lerp from '@sunify/lerp-color'
             html.innerHTML = content;
             html.querySelectorAll(".bi-label-field").forEach(function (el) {
                 var field = el.getAttribute("data-key");
-                if (field == that.option.valueName && that.option.formatValue) {
-                    field = that.option.formatValue;
+                // if (field == that.option.valueName && that.option.formatValue) {
+                //     field = that.option.formatValue;
+                // }
+                if(el.getAttribute("data-format")=='true'){
+                    field = '$$_format_'+field;
+                    console.log(field)
                 }
                 if (el && el.children) {
                     while (el && el.children.length >= 1) {
@@ -452,6 +457,9 @@ import lerp from '@sunify/lerp-color'
             div.style.padding = css.padding;
         },
         updateLabelPos() {
+            if(!this.camera){
+                return;
+            }
             this.labelArry.forEach((ele, j) => {
                 var div = ele.dom;
                 var position = ele.position;
@@ -1112,8 +1120,8 @@ import lerp from '@sunify/lerp-color'
                 max[name] = Math.log(max[name]);
                 isLog = true;
             }
-            if(min==max){
-                min=0;
+            if(min[name]==max[name]){
+                min[name]=0;
             }
             return [min, max, isLog]
         },
@@ -1225,7 +1233,9 @@ import lerp from '@sunify/lerp-color'
                 cancelAnimationFrame(this.animationId)
                 return;
             }
-            if (this.flyArr) {
+            let startAnimate=false;
+            if (this.flyArr && this.flyArr.length>0) {
+                startAnimate=true;
                 this.flyArr.forEach((flyTrack, i) => {
                     // 获取飞线轨迹线上的顶点坐标，用于飞线段绘制
                     var points = flyTrack.flyTrackPoints;
@@ -1240,7 +1250,8 @@ import lerp from '@sunify/lerp-color'
 
                 });
             }
-            if (this.WaveMeshArr) {
+            if (this.WaveMeshArr && this.WaveMeshArr.length>0) {
+                startAnimate=true;
                 this.WaveMeshArr.forEach(function (mesh) {
                     mesh._s += 0.007;
                     mesh.scale.set(mesh.size * mesh._s, mesh.size * mesh._s, mesh.size * mesh._s);
@@ -1253,14 +1264,18 @@ import lerp from '@sunify/lerp-color'
                     }
                 })
             }
-            if (this.ConeMeshArry) {
+            if (this.ConeMeshArry &&this.ConeMeshArry.length) {
+                startAnimate=true;
                 this.ConeMeshArry.forEach(mesh => {
                     mesh.rotation.z += 0.02
                 })
             }
             this.labelRenderer.render(this.scene, this.camera)
             this.renderer.render(this.scene, this.camera);
+            // console.log(startAnimate)
+            // if(startAnimate){
             this.animationId = requestAnimationFrame(this.render.bind(this))
+            // }
 
         },
         addControl() {
@@ -1457,8 +1472,11 @@ import lerp from '@sunify/lerp-color'
             html.innerHTML = content;
             html.querySelectorAll(".bi-label-field").forEach(function (el) {
                 var field = el.getAttribute("data-key");
-                if (field == that.option.valueName && that.option.formatValue) {
-                    field = that.option.formatValue;
+                // if (field == that.option.valueName && that.option.formatValue) {
+                //     field = that.option.formatValue;
+                // }
+                if(el.getAttribute("data-format")=='true'){
+                    field = '$$_format_'+field;
                 }
                 if (el && el.children) {
                     while (el && el.children.length >= 1) {

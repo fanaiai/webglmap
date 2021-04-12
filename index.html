@@ -32,35 +32,90 @@
 </body>
 <script type="module">
     var option ={
-        "R": 130,
-        "backgroundColor": "rgba(255,255,255,1)",
-        "backgroundOpacity": 1,
-        "type": "area",
         "baseGlobal": {
+            "areaOpacity": 1,
             "color": "#000000",
-            "opacity": 1,
-            "countryPolygonType": "area",
-            "gridSize": 2,
+            "areaColor": "#071c1c",
             "gridStep": 2,
-            "gridColor": "#00ccc2",
-            "areaColor": "rgba(255,255,255,1)",
+            "texture": {
+                "img": "",
+                "show": true
+            },
+            "gridOpacity": 1,
+            "countryPolygonType": "area",
             "areaLine": "#00ccc2",
             "showArea": true,
-            "showLine": false,
-            "texture": {
-                "show": true,
-                "img": ""
-            },
-            "areaOpacity": 1,
             "areaLineOpacity": 1,
-            "gridOpacity": 1,
-            "depth": 0.04
+            "gridSize": 2,
+            "depth": 0.04,
+            "gridColor": "#00ccc2",
+            "showLine": false,
+            "opacity": 1
         },
-        "lightSphere": {
+        "R": 130,
+        "backgroundColor": "#000000",
+        "tooltip": {
+            "padding": 4,
+            "backgroundColor": "rgba(8,85,139,.8)",
+            "borderColor": "#00B4FF",
+            "color": "#fff",
+            "borderRadius": 4,
+            "backgroundImage": "",
+            "borderWidth": 1,
             "show": true,
-            "color": "#048989",
-            "opacity": 2
+            "backgroundSize": "",
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp;<span class=\"bi-label-field\" data-key=\"B\" contenteditable=\"false\">B</span><br></p>"
         },
+        "backgroundOpacity": 1,
+        "label": {
+            "showAllLabel": false,
+            "start": {
+                "padding": 4,
+                "col": "B",
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "backgroundImage": "",
+                "show": true,
+                "sort": "desc",
+                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"A\" contenteditable=\"false\">A</span>&nbsp;<span class=\"bi-label-field\" data-key=\"B\" contenteditable=\"false\">B</span>&nbsp;&nbsp;<br></p><p class=\"paragraph\">和&nbsp;<span class=\"bi-label-field\" data-key=\"B$$_sum\" contenteditable=\"false\" data-format=\"true\">B$$_sum$_format</span><br></p>",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "backgroundSize": "",
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "labelScope": [
+                    "0",
+                    "1"
+                ],
+                "hideLabel": true
+            },
+            "wordAvoidance": true,
+            "end": {
+                "col": "",
+                "padding": 4,
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "backgroundImage": "",
+                "show": true,
+                "sort": "desc",
+                "content": "",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "backgroundSize": "",
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "labelScope": [
+                    1,
+                    5
+                ],
+                "hideLabel": false
+            }
+        },
+        "type": "hot",
         "attr": {
             "area": {
                 "colors": [
@@ -68,33 +123,81 @@
                     "#ffffff"
                 ]
             },
-            "hot": {
+            "fly": {
                 "type": {
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    },
                     "lightBar": {
                         "show": true,
                         "width": 0.12,
                         "ratio": 1
                     },
                     "bar": {
-                        "show": false,
-                        "segments": 4,
-                        "radiusTop": 0.04,
                         "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": "4",
                         "ratio": 1
+                    },
+                    "flyLine": {
+                        "dashSize": 3,
+                        "color": "#00ccc2",
+                        "lineType": "Basic",
+                        "show": true,
+                        "width": 1,
+                        "gapSize": 1
+                    },
+                    "flyPoint": {
+                        "pointSize": 6,
+                        "color": "#ffaa00",
+                        "len": 0.2,
+                        "show": true
+                    },
+                    "cone": {
+                        "show": true,
+                        "height": 0.0625,
+                        "ratio": 1,
+                        "segments": 4
                     },
                     "wave": {
                         "show": true,
                         "width": 0.22
+                    },
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
+                    }
+                },
+                "colors": [
+                    "#00ccc2",
+                    "#ffff4a"
+                ]
+            },
+            "hot": {
+                "type": {
+                    "lightBar": {
+                        "show": true,
+                        "width": 0.12,
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": 4,
+                        "ratio": 1
                     },
                     "cone": {
                         "show": false,
                         "height": 0.0625,
                         "ratio": 3,
                         "segments": 4
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": 0.22
+                    },
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
                     }
                 },
                 "colors": [
@@ -102,155 +205,140 @@
                     "#3bd5ac",
                     "#d5860c"
                 ]
-            },
-            "fly": {
-                "type": {
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    },
-                    "lightBar": {
-                        "show": true,
-                        "width": 0.12,
-                        "ratio": 1
-                    },
-                    "bar": {
-                        "show": false,
-                        "segments": "4",
-                        "radiusTop": 0.04,
-                        "radiusBottom": 0.04,
-                        "ratio": 1
-                    },
-                    "wave": {
-                        "show": true,
-                        "width": 0.22
-                    },
-                    "flyLine": {
-                        "show": true,
-                        "color": "#00ccc2",
-                        "width": 1,
-                        "lineType": "Basic",
-                        "dashSize": 3,
-                        "gapSize": 1
-                    },
-                    "flyPoint": {
-                        "show": true,
-                        "color": "#ffaa00",
-                        "len": 0.2,
-                        "pointSize": 6
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": 0.0625,
-                        "ratio": 1,
-                        "segments": 4
-                    }
-                },
-                "colors": [
-                    "#00ccc2",
-                    "#ffff4a"
-                ]
             }
         },
         "animate": {
-            "open": true,
-            "rotateStep": 0.012
+            "rotateStep": 0.012,
+            "open": true
         },
-        "tooltip": {
-            "backgroundColor": "rgba(8,85,139,.8)",
-            "backgroundImage": "",
-            "backgroundSize": "",
-            "borderColor": "#00B4FF",
-            "color": "#fff",
-            "borderRadius": 4,
-            "borderWidth": 1,
+        "lightSphere": {
+            "color": "#048989",
             "show": true,
-            "fontSize": 12,
-            "borderStyle": "solid",
-            "padding": 4,
-            "content": ""
+            "opacity": 2
         },
-        "label": {
-            "wordAvoidance": true,
-            "showAllLabel": false,
-            "start": {
-                "hideLabel": false,
-                "labelScope": [
-                    1,
-                    5
-                ],
-                "sort": "desc",
-                "col": "",
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "backgroundImage": "",
-                "backgroundSize": "",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "borderWidth": 1,
-                "show": true,
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "padding": 4,
-                "content": ""
-            },
-            "end": {
-                "hideLabel": false,
-                "labelScope": [
-                    1,
-                    5
-                ],
-                "sort": "desc",
-                "col": "",
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "backgroundImage": "",
-                "backgroundSize": "",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "borderWidth": 1,
-                "show": true,
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "padding": 4,
-                "content": ""
-            }
-        },
-        "data": [
+        "layer": [
             {
-                "count$$_sum": 658,
-                "province": "北京市",
-                "$$_formatValue": 658
+                "col": "B$$_sum",
+                "type": {
+                    "area": {
+                        "show": true,
+                        "colors": [
+                            "#ffffff",
+                            "#ff0000"
+                        ]
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.012",
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": 4,
+                        "ratio": 1
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": "0.0425",
+                        "ratio": "2",
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": false,
+                        "width": "0.052"
+                    },
+                    "circleLight": {
+                        "show": false,
+                        "width": "0.012"
+                    }
+                },
+                "colors": [
+                    "rgba(247,223,143,1)",
+                    "rgba(255,193,6,1)",
+                    "rgba(239,83,79,1)"
+                ]
             },
             {
-                "count$$_sum": 308,
-                "province": "山东省",
-                "$$_formatValue": 308
-            },
-            {
-                "count$$_sum": 1154,
-                "province": "河北省",
-                "$$_formatValue": 1154
-            },
-            {
-                "count$$_sum": 344,
-                "province": "海南省",
-                "$$_formatValue": 344
-            },
-            {
-                "count$$_sum": 161,
-                "province": "辽宁省",
-                "$$_formatValue": 161
-            },
-            {
-                "count$$_sum": 902,
-                "province": "陕西省",
-                "$$_formatValue": 902
+                "col": "B",
+                "type": {
+                    "area": {
+                        "show": false,
+                        "colors": [
+                            "rgba(1,87,155,1)",
+                            "rgba(152,10,11,1)"
+                        ]
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.012",
+                        "ratio": "0.5"
+                    },
+                    "bar": {
+                        "radiusBottom": "0.004",
+                        "show": true,
+                        "radiusTop": "0.004",
+                        "segments": 4,
+                        "ratio": "0.04"
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": "0.0425",
+                        "ratio": "2",
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": "0.062"
+                    },
+                    "circleLight": {
+                        "show": true,
+                        "width": "0.032"
+                    }
+                },
+                "colors": [
+                    "rgba(247,223,143,1)",
+                    "rgba(255,193,6,1)",
+                    "rgba(239,83,79,1)"
+                ]
             }
         ],
-        "countryName": "province",
-        "valueName": "count$$_sum",
-        "formatValue": "$$_formatValue"
+        "data": [
+            {
+                "A": "上海市",
+                "B": 2568,
+                "fromlonlat": "121.472644,31.231706",
+                "B$$_sum": 2568,
+                "$$_format_A": "上海市",
+                "$$_format_B": 2568,
+                "$$_format_fromlonlat": "121.472644,31.231706",
+                "$$_format_B$$_sum": "2,568"
+            },
+            {
+                "A": "广东省",
+                "B": 2555,
+                "fromlonlat": "113.280637,23.125178",
+                "B$$_sum": 2555,
+                "$$_format_A": "广东省",
+                "$$_format_B": 2555,
+                "$$_format_fromlonlat": "113.280637,23.125178",
+                "$$_format_B$$_sum": "2,555"
+            },
+            {
+                "A": "重庆市",
+                "B": 12223,
+                "fromlonlat": "106.504962,29.533155",
+                "B$$_sum": 12223,
+                "$$_format_A": "重庆市",
+                "$$_format_B": 12223,
+                "$$_format_fromlonlat": "106.504962,29.533155",
+                "$$_format_B$$_sum": "12,223"
+            }
+        ],
+        "countryName": "A",
+        "lonlat": "fromlonlat",
+        "valueName": "B"
     };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
 </script>
