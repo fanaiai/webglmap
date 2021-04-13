@@ -720,8 +720,11 @@ import lerp from '@sunify/lerp-color'
                     if (attr.type.flyPoint.show) {
                         var points = flyLine.flyTrackPoints;
                         var index = 20; //飞线索引起点
-                        var flyPoint = this.flylineFun(index, points); //绘制一段飞线
-                        //飞线取点索引范围：points.length - flyline.num
+
+                        // var flyPoint = this.flylineFun(index, points); //绘制一段飞线
+                        //
+                        var  flyPoint=this.addFlyPoint(index,points)
+                        // //飞线取点索引范围：points.length - flyline.num
                         flyPoint.index = Math.floor((points.length - flyPoint.num) * Math.random()); //索引位置随机
                         flyLine.add(flyPoint); //飞线段flyline作为飞线轨迹flyTrack子对象，可以继承飞线轨迹平移旋转等变换
                     }
@@ -769,6 +772,35 @@ import lerp from '@sunify/lerp-color'
             // this.updateLabelPos()
             this.map.add(hotDataMesh)
         },
+        addFlyPoint(index,points){
+            var choosePoints = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
+            var num = 11; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
+            var group=new THREE.Group();
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xffff00,//使用顶点颜色，材质颜色不用设置
+                // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
+                // linewidth: 6.5, // 设置线宽
+            });
+            for (var i = 1; i < num+1; i++) {
+                choosePoints.push(points[i + index])
+                let position=points[i + index];
+                let geometry=new THREE.SphereBufferGeometry(this.mapSize*i/(240*num),32,32);
+
+                // geometry.attributes.position.set();
+                let mesh=new THREE.Mesh(geometry,material);
+                mesh.position.x=position.x;
+                mesh.position.y=position.y;
+                mesh.position.z=position.z;
+                group.add(mesh)
+
+            }
+            group.num = num;
+            group.index = index;
+            // this.scene.add(group)
+            return group;
+            // console.log(choosePoints)
+
+        },
         flylineFun(index, points) {
             var choosePoints = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
             var num = 11; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
@@ -776,12 +808,29 @@ import lerp from '@sunify/lerp-color'
                 choosePoints.push(points[i + index])
             }
             // 创建一个LineGeometry几何体
-            var geometry = new THREE.BufferGeometry();
+            // var geometry = new THREE.BufferGeometry();
+            // var geometry = new THREE.SphereBufferGeometry(this.mapSize/10,32,32);
+            var group=new THREE.Group();
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xffff00,//使用顶点颜色，材质颜色不用设置
+                // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
+                // linewidth: 6.5, // 设置线宽
+            });
             var pointArr = [];
             //把样条曲线返回的顶点坐标Vector3中xyz坐标提取到pointArr数组中
-            choosePoints.forEach(function (v3) {
+            choosePoints.forEach((v3)=> {
+                var geometry = new THREE.SphereBufferGeometry(this.mapSize/10,32,32);
+                geometry.attributes.position=v3;
+                var flyline = new THREE.Mesh(geometry, material);
+                group.add(flyline)
                 pointArr.push(v3.x, v3.y, v3.z)
+                // let position=new THREE.Vector3()
+
             })
+            group.num = num;
+            group.index = index;
+            return group;
+
             var attribue = new THREE.BufferAttribute(new Float32Array(pointArr), 3);
             // 设置几何体顶点位置坐标
             geometry.attributes.position = attribue;
@@ -807,14 +856,14 @@ import lerp from '@sunify/lerp-color'
             // 设置几何体顶点位置坐标
             geometry.attributes.color = colorattribue;
             //几何体LineGeometry对应的材质LineMaterial
-            var material = new THREE.LineBasicMaterial({
-                // color: 0xffff00,//使用顶点颜色，材质颜色不用设置
-                vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xffff00,//使用顶点颜色，材质颜色不用设置
+                // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
                 // linewidth: 6.5, // 设置线宽
             });
             //材质输入Three.js渲染canvas画布的宽高度
             // material.resolution.set(window.innerWidth, window.innerHeight);
-            var flyline = new THREE.Line(geometry, material);
+            var flyline = new THREE.Mesh(geometry, material);
             // 自定义飞线属性flyline.num、flyline.index，用于飞线动画
             flyline.num = num;
             flyline.index = index;
@@ -1234,10 +1283,14 @@ import lerp from '@sunify/lerp-color'
             for (var i = 0; i < flyline.num; i++) {
                 var v3 = points[i + index]
                 pointArr.push(v3.x, v3.y, v3.z)
+                let mesh=flyline.children[i];
+                mesh.position.x=v3.x;
+                mesh.position.y=v3.y;
+                mesh.position.z=v3.z;
             }
             // 设置几何体顶点位置坐标
-            flyline.geometry.attributes.position = new THREE.BufferAttribute(new Float32Array(pointArr), 3);
-            flyline.geometry.verticesNeedUpdate = true; //通知three.js几何体顶点位置坐标数据更新
+            // flyline.geometry.attributes.position = new THREE.BufferAttribute(new Float32Array(pointArr), 3);
+            // flyline.geometry.verticesNeedUpdate = true; //通知three.js几何体顶点位置坐标数据更新
         },
         render() {
             if (!this.scene) {
