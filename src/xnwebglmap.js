@@ -997,6 +997,10 @@ import lerp from '@sunify/lerp-color'
 
         },
         flyArc(lon1, lat1, lon2, lat2) {
+            var attr = this.option.attr.fly.type.flyLine
+            var type = attr.lineType;
+            var dashSize = attr.dashSize;
+            var gapSize = attr.gapSize;
             var sphereCoord1 = this.lonLat2Mercator(lon1, lat1);//经纬度坐标转球面坐标
             // startSphereCoord：轨迹线起点球面坐标
             var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
@@ -1021,12 +1025,28 @@ import lerp from '@sunify/lerp-color'
             var points = curve.getPoints(100); //分段数100，返回101个顶点，返回一个vector3对象作为元素组成的数组
             geometry.setFromPoints(points); // setFromPoints方法从points中提取数据改变几何体的顶点属性vertices
             //材质对象
-            var material = new THREE.LineBasicMaterial({
-                color: 0x00aaaa,
+            var materialoption = {
+                color: attr.color || '#ffffff',
                 transparent: true,
-            });
+            }
+            if (type == 'Dashed') {
+                materialoption = {
+                    color: attr.color || '#ffffff',
+                    dashSize: dashSize,
+                    gapSize: gapSize,
+                    scale: 1,
+                    transparent: true,
+                }
+            }
+
+            var material = new THREE['Line' + type + 'Material'](materialoption);
             //线条模型对象
-            var line = new THREE.Line(geometry, material);
+            // var line = new THREE.Line(geometry, material);
+            if (type == 'Dashed') {
+                var line = new THREE.LineSegments(geometry, material);//线条模型对象
+            } else {
+                var line = new THREE.Line(geometry, material);//线条模型对象
+            }
             line.flyTrackPoints = points; // 自定义属性用于飞线动画
             return line;
         },
