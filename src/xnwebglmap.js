@@ -180,7 +180,7 @@ import lerp from '@sunify/lerp-color'
         this.dom = dom;
         this.dom.innerHTML = ''
         this.mapData = mapData;
-        this.legendData=null;
+        this.legendData = {};
         dom.classList.add("xnmap-container");
         this.id = this.getRandomString();
         dom.setAttribute('data-id', this.id);
@@ -199,37 +199,42 @@ import lerp from '@sunify/lerp-color'
         this.tooltip = this.addtooltip();
         this.scene.add(this.tooltip);
         this.initLegendData();
-        this.addLegendDom("ZKWZI2")
+        // this.addLegendDom("ZKWZI2")
         this.addLegendEvent();
         this.addEvent();
     }
 
     XNWebglMap.prototype = {
-        initLegendData(){
-            if(this.option.layer && this.option.layer.length>0){
-
-            }
-            else{
-                if(this.option.legend.show){
-                    console.log(this.option.valueName)
-                    let {min,max}=this._getMaxMinFunc(this.option.data,this.option.valueName);
-                    this.legendData[this.option.valueName]={
-                        min:min,
-                        max:max,
-                        curmin:min,
-                        curmax:max
-                    }
+        setLegend(legend, field,colors) {
+            if (legend) {
+                let {min, max} = this._getMaxMinFunc(this.option.data, field);
+                this.legendData[field] = {
+                    min: min,
+                    max: max,
+                    curmin: min,
+                    curmax: max,
+                    colors: colors
                 }
             }
-            for(let i in this.legendData){
-
-            }
-            // console.log(this.legendData)
         },
-        addLegendDom(id){
-            let legend=this.legendData[id]
-            let background=legend.colors.join(",")
-            let dom=`<div class="xnwebglobal-legend" data-legendkey="${id}">
+        initLegendData() {
+            if (this.option.layer && this.option.layer.length > 0) {
+                for (let i = 0; i < this.option.layer.length; i++) {
+                    let field = this.option.layer[i].col;
+                    let legend = this.option.legend;
+                    this.setLegend(legend, field,this.option.layer[i].colors);
+                }
+            } else {
+                this.setLegend(this.option.legend, this.option.valueName,this.option.attr[this.option.type].colors);
+            }
+            for (let i in this.legendData) {
+                this.addLegendDom(i);
+            }
+        },
+        addLegendDom(id) {
+            let legend = this.legendData[id]
+            let background = $.extend(true, [], legend.colors).reverse().join(",")
+            let dom = `<div class="xnwebglobal-legend" data-legendkey="${id}">
     <p>高</p>
     <div class="legend-bar">
         <div class="color-bar" style="background:linear-gradient(${background})"></div>
@@ -246,69 +251,76 @@ import lerp from '@sunify/lerp-color'
 </div>`
             $(this.dom).append(dom);
         },
-        addLegendEvent(){
-            let down=false;
-            let ele={
-
-            }
-            this.dom.addEventListener('mousedown',(e)=>{
-                let $t=$(e.target);
-                if($t.hasClass("bar")){
-                    down=true;
-                    ele.key=$t.attr("data-key");
-                    ele.id=$t.parents(".xnwebglobal-legend").attr("data-legendkey")
-                    ele.$colorBar=$t.parents(".xnwebglobal-legend").find(".legend-bar")
-                    ele.$dom=$t.parent();
-                    ele.bar=$t.attr("data-key");
-                    ele.height=ele.$colorBar.get(0).getBoundingClientRect().height;
-                    ele.$legendDom=$t.parents(".xnwebglobal-legend");
+        addLegendEvent() {
+            let down = false;
+            let ele = {}
+            this.dom.addEventListener('mousedown', (e) => {
+                let $t = $(e.target);
+                if ($t.hasClass("bar")) {
+                    down = true;
+                    ele.key = $t.attr("data-key");
+                    ele.id = $t.parents(".xnwebglobal-legend").attr("data-legendkey")
+                    ele.$colorBar = $t.parents(".xnwebglobal-legend").find(".legend-bar")
+                    ele.$dom = $t.parent();
+                    ele.bar = $t.attr("data-key");
+                    ele.height = ele.$colorBar.get(0).getBoundingClientRect().height;
+                    ele.$legendDom = $t.parents(".xnwebglobal-legend");
                 }
             })
-            document.addEventListener('mousemove',(e)=>{
-                let $t=$(e.target);
-                if(down){
-                    let legend=this.legendData[ele.id]
-                    var top=e.clientY-ele.$colorBar.get(0).getBoundingClientRect().top;
-                    if(top<0){
-                        top=0;
+            document.addEventListener('mousemove', (e) => {
+                let $t = $(e.target);
+                if (down) {
+                    let legend = this.legendData[ele.id]
+                    var top = e.clientY - ele.$colorBar.get(0).getBoundingClientRect().top;
+                    if (top < 0) {
+                        top = 0;
                     }
-                    if(top>ele.height){
-                        top=ele.height;
+                    if (top > ele.height) {
+                        top = ele.height;
                     }
-                    let value=(legend.max-legend.min)*(ele.height-top)/ele.height+legend.min;
-                    legend['cur'+ele.bar]=value;
-                    let otherbar=ele.bar=='min'?'max':'min';
-                    var equal=false;
-                    if(ele.bar=='min'){
-                        if(value>legend.curmax){
-                            equal=true;
+                    let value = (legend.max - legend.min) * (ele.height - top) / ele.height + legend.min;
+                    legend['cur' + ele.bar] = value;
+                    let otherbar = ele.bar == 'min' ? 'max' : 'min';
+                    var equal = false;
+                    if (ele.bar == 'min') {
+                        if (value > legend.curmax) {
+                            equal = true;
                         }
                     }
-                    if(ele.bar=='max'){
-                        if(value<legend.curmin){
-                            equal=true;
+                    if (ele.bar == 'max') {
+                        if (value < legend.curmin) {
+                            equal = true;
                         }
                     }
-                    if(equal){
-                        legend['cur'+otherbar]=value;
-                        ele.$legendDom.find('.'+otherbar+'-bar').css('top',top+'px');
-                        ele.$legendDom.find('.'+otherbar+'-bar').find('p').html(value);
+                    if (equal) {
+                        legend['cur' + otherbar] = value;
+                        ele.$legendDom.find('.' + otherbar + '-bar').css('top', top + 'px');
+                        ele.$legendDom.find('.' + otherbar + '-bar').find('p').html(value);
                     }
-                    ele.$dom.css("top",top+'px')
+                    ele.$dom.css("top", top + 'px')
                     ele.$dom.find('p').html(value);
+                    this.updateItemsVisible(ele.id, legend);
                 }
             })
-            document.addEventListener('mouseup',(e)=>{
-                let $t=$(e.target);
-                down=false;
+            document.addEventListener('mouseup', (e) => {
+                let $t = $(e.target);
+                down = false;
             })
         },
-        _checkLegend(data){
-            let r=true;
-            for((i) in this.legend){
-                console.log(i)
-                if(data[key]<i.curmin && data[key]>i.curmax){
-                    r=false;
+        updateItemsVisible(id, legend) {
+            this.hotDataMesh.children.forEach(e => {
+                let v = e.origindata[id]
+                e.visible = true;
+                if (v < legend.curmin || v > legend.curmax) {
+                    e.visible = false;
+                }
+            })
+        },
+        _checkLegend(data) {
+            let r = true;
+            for (let i in this.legendData) {
+                if (data[i] < this.legendData[i].curmin && data[i] > this.legendData[i].curmax) {
+                    r = false;
                     break;
                 }
             }
@@ -358,7 +370,7 @@ import lerp from '@sunify/lerp-color'
                     } else {//hot 或 fly
                         mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
                         mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
-                        if (this.option.layer && this.option.layer.length > 0 && this.option.type=='hot') {
+                        if (this.option.layer && this.option.layer.length > 0 && this.option.type == 'hot') {
                             for (let i = 0; i < this.option.layer.length; i++) {
                                 let attr = this.option.layer[i];
 
@@ -747,8 +759,8 @@ import lerp from '@sunify/lerp-color'
         },
         addOneLayerItem(col, attr, hotDataMesh) {
             var [min, max, isLog] = this.getMaxMin(this.option.data, col);
-            var maxNum = max[col];
-            var minNum = min[col];
+            var maxNum = max;
+            var minNum = min;
             this.option.data.forEach((obj, i) => {
                 var value = obj[col];
                 if (isLog) {
@@ -757,7 +769,7 @@ import lerp from '@sunify/lerp-color'
                 if (!obj[this.option.lonlat]) {
                     return;
                 }
-                if(!this._checkLegend(obj)){
+                if (!this._checkLegend(obj)) {
                     return;
                 }
                 var lon = obj.$$lon
@@ -776,8 +788,9 @@ import lerp from '@sunify/lerp-color'
             this.flyArr = [];
             this.ConeMeshArry = []
             var hotDataMesh = new THREE.Group();
-            if(!isFly){
-            this.addHotItems(hotDataMesh, isFly);
+            hotDataMesh.name = 'item'
+            if (!isFly) {
+                this.addHotItems(hotDataMesh, isFly);
             }
             if (isFly) {//飞线时需要重新计算起点和终点的值
                 var endData = {};
@@ -822,7 +835,7 @@ import lerp from '@sunify/lerp-color'
 
                         // var flyPoint = this.flylineFun(index, points); //绘制一段飞线
                         //
-                        var  flyPoint=this.addFlyPoint(index,points)
+                        var flyPoint = this.addFlyPoint(index, points)
                         // //飞线取点索引范围：points.length - flyline.num
                         flyPoint.index = Math.floor((points.length - flyPoint.num) * Math.random()); //索引位置随机
                         flyLine.add(flyPoint); //飞线段flyline作为飞线轨迹flyTrack子对象，可以继承飞线轨迹平移旋转等变换
@@ -869,27 +882,28 @@ import lerp from '@sunify/lerp-color'
                 })
             }
             // this.updateLabelPos()
+            this.hotDataMesh = hotDataMesh;
             this.map.add(hotDataMesh)
         },
-        addFlyPoint(index,points){
+        addFlyPoint(index, points) {
             var choosePoints = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
             var num = 11; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
-            var group=new THREE.Group();
+            var group = new THREE.Group();
             var material = new THREE.MeshBasicMaterial({
                 color: 0xffff00,//使用顶点颜色，材质颜色不用设置
                 // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
                 // linewidth: 6.5, // 设置线宽
             });
-            for (var i = 1; i < num+1; i++) {
+            for (var i = 1; i < num + 1; i++) {
                 choosePoints.push(points[i + index])
-                let position=points[i + index];
-                let geometry=new THREE.SphereBufferGeometry(this.mapSize*i/(240*num),32,32);
+                let position = points[i + index];
+                let geometry = new THREE.SphereBufferGeometry(this.mapSize * i / (240 * num), 32, 32);
 
                 // geometry.attributes.position.set();
-                let mesh=new THREE.Mesh(geometry,material);
-                mesh.position.x=position.x;
-                mesh.position.y=position.y;
-                mesh.position.z=position.z;
+                let mesh = new THREE.Mesh(geometry, material);
+                mesh.position.x = position.x;
+                mesh.position.y = position.y;
+                mesh.position.z = position.z;
                 group.add(mesh)
 
             }
@@ -909,7 +923,7 @@ import lerp from '@sunify/lerp-color'
             // 创建一个LineGeometry几何体
             // var geometry = new THREE.BufferGeometry();
             // var geometry = new THREE.SphereBufferGeometry(this.mapSize/10,32,32);
-            var group=new THREE.Group();
+            var group = new THREE.Group();
             var material = new THREE.MeshBasicMaterial({
                 color: 0xffff00,//使用顶点颜色，材质颜色不用设置
                 // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
@@ -917,9 +931,9 @@ import lerp from '@sunify/lerp-color'
             });
             var pointArr = [];
             //把样条曲线返回的顶点坐标Vector3中xyz坐标提取到pointArr数组中
-            choosePoints.forEach((v3)=> {
-                var geometry = new THREE.SphereBufferGeometry(this.mapSize/10,32,32);
-                geometry.attributes.position=v3;
+            choosePoints.forEach((v3) => {
+                var geometry = new THREE.SphereBufferGeometry(this.mapSize / 10, 32, 32);
+                geometry.attributes.position = v3;
                 var flyline = new THREE.Mesh(geometry, material);
                 group.add(flyline)
                 pointArr.push(v3.x, v3.y, v3.z)
@@ -987,7 +1001,7 @@ import lerp from '@sunify/lerp-color'
             return [min, max, isLog]
         },
         addBaseItem(hotDataMesh, attr, lon, lat, basetexture, lightbartexture, wavetexture, value, minNum, maxNum, origindata, isFly) {
-            var circleLight, lightBar, wave, bar, ConeMesh,SphereMesh
+            var circleLight, lightBar, wave, bar, ConeMesh, SphereMesh
             var SphereCoord = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
             var SphereCoord1 = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
             // if (!isFly) {
@@ -1000,7 +1014,7 @@ import lerp from '@sunify/lerp-color'
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
             }
-            var height = 5 + this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
+            var height = this.mapSize * 0.1 + this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
             if (attr.type['lightBar'].show) {
                 // console.log((value - minNum),maxNum , minNum)
                 height = height * parseFloat(attr.type.lightBar.ratio);
@@ -1040,16 +1054,16 @@ import lerp from '@sunify/lerp-color'
                 SphereMesh.origindata = origindata;
             }
 
-            this.changeColor(attr, value, minNum, maxNum, lightBar, circleLight, wave, bar, ConeMesh,SphereMesh);//设置热点Mesh颜色
+            this.changeColor(attr, value, minNum, maxNum, lightBar, circleLight, wave, bar, ConeMesh, SphereMesh);//设置热点Mesh颜色
         },
-        createSphereMesh(attr,radius,SphereCoord){
+        createSphereMesh(attr, radius, SphereCoord) {
             if (radius < 1) {
                 radius = 1;
             }
             // var radius = R / 32;//圆锥半径  和地球半径建立尺寸关系
             var height = radius * attr.type.sphere.ratio;//棱锥高度
             // 圆锥体几何体API(ConeGeometry)圆周方向四等分实现四棱锥效果
-            var geometry = new THREE.SphereBufferGeometry(height, 32,32);
+            var geometry = new THREE.SphereBufferGeometry(height, 32, 32);
             // 缓冲类型几何体BufferGeometry没有computeFlatVertexNormals方法
             // geometry.computeFlatVertexNormals();//一种计算顶点法线方式，非光滑渲染
             // 可以根据需要旋转到特定角度
@@ -1134,8 +1148,9 @@ import lerp from '@sunify/lerp-color'
             mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
             return mesh;
         },
-        changeColor(attr, value, minNum, maxNum, LightPillar, mesh, WaveMesh, barMesh, ConMesh,SphereMesh) {
-            var color = this._calcColorSeg(value, minNum, maxNum, attr.colors)
+        changeColor(attr, value, minNum, maxNum, LightPillar, mesh, WaveMesh, barMesh, ConMesh, SphereMesh) {
+            // var color = this._calcColorSeg(value, minNum, maxNum, attr.colors)
+            var color = new THREE.Color(lerp(attr.colors, Math.sqrt((value - minNum) / (maxNum - minNum))));
             // 光柱颜色设置
             LightPillar && (LightPillar.children[0].material.color.set(color));
             // 光柱底座颜色设置
@@ -1257,7 +1272,7 @@ import lerp from '@sunify/lerp-color'
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var coord = this.lon2xyz(R * 1.001, lon, lat)
-            var size = R * attr.type.wave.width * (valueSize || 1);//矩形平面Mesh的尺寸
+            var size = R * attr.type.wave.width * ((valueSize == undefined ? 1 : valueSize) + 0.1);//矩形平面Mesh的尺寸
             mesh.size = size;//自顶一个属性，表示mesh静态大小
             mesh.scale.set(size, size, size);//设置mesh大小
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
@@ -1305,7 +1320,7 @@ import lerp from '@sunify/lerp-color'
             var mesh = new THREE.Mesh(geometry, material);
             // 经纬度转球面坐标
             // var SphereCoord1 = this.lon2xyz(R * 1.001, lon, lat)
-            var size = this.mapSize * attr.type.circleLight.width * (valueSize || 1);//矩形平面Mesh的尺寸
+            var size = this.mapSize * attr.type.circleLight.width * ((valueSize == undefined ? 1 : valueSize) + 0.1);//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
             //设置mesh位置
             mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth) * 1.03);
@@ -1318,8 +1333,8 @@ import lerp from '@sunify/lerp-color'
             // var color1 = new THREE.Color(this.option.attr.area.colors[0]);
             // var color2 = new THREE.Color(this.option.attr.area.colors[1]);
             var [min, max, isLog] = this.getMaxMin(data, col);
-            var maxNum = max[col];
-            var minNum = min[col];
+            var maxNum = max;
+            var minNum = min;
             data.forEach(obj => {
                 var name = obj[this.option.countryName];
                 var value = obj[col];
@@ -1341,18 +1356,18 @@ import lerp from '@sunify/lerp-color'
         },
         getMaxMin(data1, name) {
             let isLog = false;
-            let {min,max}=this._getMaxMinFunc(data1,name)
-            if (max[name] / min[name] > 1) {
-                min[name] = Math.log(min[name]);
-                max[name] = Math.log(max[name]);
+            let {min, max} = this._getMaxMinFunc(data1, name)
+            if (max / min > 1) {
+                min = Math.log(min);
+                max = Math.log(max);
                 isLog = true;
             }
-            if (min[name] == max[name]) {
-                min[name] = 0;
+            if (min == max) {
+                min = 0;
             }
             return [min, max, isLog]
         },
-        _getMaxMinFunc(data1,name){
+        _getMaxMinFunc(data1, name) {
             var data = $.extend(true, [], data1)
             data.sort((d1, d2) => {
                 if (d1[name] > d2[name]) {
@@ -1361,9 +1376,9 @@ import lerp from '@sunify/lerp-color'
                     return -1;
                 }
             })
-            var min = $.extend(true, {}, data[0]);
-            var max = $.extend(true, {}, data[data.length - 1]);
-            return {min,max}
+            var min = $.extend(true, {}, data[0])[name];
+            var max = $.extend(true, {}, data[data.length - 1])[name];
+            return {min, max}
         },
         initThree() {
             var scene = new THREE.Scene();
@@ -1463,10 +1478,10 @@ import lerp from '@sunify/lerp-color'
             for (var i = 0; i < flyline.num; i++) {
                 var v3 = points[i + index]
                 pointArr.push(v3.x, v3.y, v3.z)
-                let mesh=flyline.children[i];
-                mesh.position.x=v3.x;
-                mesh.position.y=v3.y;
-                mesh.position.z=v3.z;
+                let mesh = flyline.children[i];
+                mesh.position.x = v3.x;
+                mesh.position.y = v3.y;
+                mesh.position.z = v3.z;
             }
             // 设置几何体顶点位置坐标
             // flyline.geometry.attributes.position = new THREE.BufferAttribute(new Float32Array(pointArr), 3);

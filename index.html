@@ -669,12 +669,16 @@
                     "circleLight": {
                         "show": true,
                         "width": 0.12
+                    },
+                    "sphere": {
+                        "show": false,
+                        "ratio": 1
                     }
                 },
                 "colors": [
                     "#2c8ad7",
                     "#3bd5ac",
-                    "#d5860c"
+                    "#ffffff"
                 ]
             }
         },
@@ -687,55 +691,63 @@
             "show": true,
             "opacity": 2
         },
-        // "layer": [
-        //     {
-        //         "col": "ZKWZI2",
-        //         "type": {
-        //             "area": {
-        //                 "show": false,
-        //                 "colors": [
-        //                     "#ffffff",
-        //                     "#ff0000"
-        //                 ]
-        //             },
-        //             "lightBar": {
-        //                 "show": false,
-        //                 "width": "0.012",
-        //                 "ratio": 1
-        //             },
-        //             "bar": {
-        //                 "radiusBottom": 0.04,
-        //                 "show": false,
-        //                 "radiusTop": 0.04,
-        //                 "segments": 4,
-        //                 "ratio": 1
-        //             },
-        //             "cone": {
-        //                 "show": false,
-        //                 "height": "0.0425",
-        //                 "ratio": "2",
-        //                 "segments": 4
-        //             },
-        //             "wave": {
-        //                 "show": false,
-        //                 "width": "0.052"
-        //             },
-        //             "circleLight": {
-        //                 "show": false,
-        //                 "width": "0.012"
-        //             },
-        //             "sphere": {//圆球
-        //                 "show": true,
-        //                 "ratio":0.3
-        //             }
-        //         },
-        //         "colors": [
-        //             "rgba(247,223,143,1)",
-        //             "rgba(255,193,6,1)",
-        //             "rgba(239,83,79,1)"
-        //         ]
-        //     },
-        // ],
+        "layer": [
+            {
+                "col": "ZKWZI2",
+                "type": {
+                    "area": {
+                        "show": true,
+                        "colors": [
+                            "#ffffff",
+                            "#ff0000"
+                        ]
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.012",
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": 4,
+                        "ratio": 1
+                    },
+                    "cone": {
+                        "show": true,
+                        "height": "0.0425",
+                        "ratio": "2",
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": false,
+                        "width": "0.052"
+                    },
+                    "circleLight": {
+                        "show": false,
+                        "width": "0.012"
+                    },
+                    "sphere": {//圆球
+                        "show": false,
+                        "ratio":0.3
+                    }
+                },
+                "colors": [
+                    "rgba(247,223,143,1)",
+                    "rgba(255,193,6,1)",
+                    "rgba(239,83,79,1)"
+                ],
+                "legend":{
+                    "show":true,
+                    "type":"segment",//gradient
+                    "direction":"verticle",//horizon
+                    "position":{
+
+                    }
+                },
+            },
+        ],
         "data": [
             // {
             //     "ZKWZI2": 11072657974.06,
@@ -745,49 +757,49 @@
             //     "lonlat": "116.2,39.55"
             // },
             {
-                "ZKWZI2": 172793912.08,
+                "ZKWZI2": 100,
                 "countryname": "中国",
                 "location": "32.54,39.57",
                 "name_cn": "土耳其",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 148523400.25,
+                "ZKWZI2": 200,
                 "countryname": "中国",
                 "location": "-70.4,-33.24",
                 "name_cn": "智利",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 79200000,
+                "ZKWZI2": 300,
                 "countryname": "中国",
                 "location": "-99.1,19.2",
                 "name_cn": "墨西哥",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 60000000,
+                "ZKWZI2": 400,
                 "countryname": "中国",
                 "location": "-47.55,-15.47",
                 "name_cn": "巴西",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 52799359.2,
+                "ZKWZI2": 500,
                 "countryname": "中国",
                 "location": "-74,4.34",
                 "name_cn": "哥伦比亚",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 48601473.4,
+                "ZKWZI2": 600,
                 "countryname": "中国",
                 "location": "114.10,22.20",
                 "name_cn": "中国香港",
                 "lonlat": "116.2,39.55"
             },
             {
-                "ZKWZI2": 40001000,
+                "ZKWZI2": 700,
                 "countryname": "中国",
                 "location": "106.49,-6.09",
                 "name_cn": "印度尼西亚",
@@ -956,7 +968,7 @@
             // }
         ],
         "legend":{
-            "show":false,
+            "show":true,
             "type":"segment",//gradient
             "direction":"verticle",//horizon
             "position":{
