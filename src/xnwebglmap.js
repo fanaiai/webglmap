@@ -1487,7 +1487,7 @@ import lerp from '@sunify/lerp-color'
             var maxL = this.maxLFun(scaleV3);
             // maxL=100;
             //重新设置s值 乘以0.5适当缩小显示范围，地图占canvas画布比例更大，自然渲染范围更大
-            var s = maxL / 2 * 1;
+            var s = maxL*0.4;
             // camera.rotation.x=0.19;
             camera.left = -s * k;
             camera.right = s * k;
@@ -1581,11 +1581,14 @@ import lerp from '@sunify/lerp-color'
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
             // this.controls.enabled=false;
             // this.scene.add(this.controls);
+            this.controls.maxPolarAngle = Math.PI / 2;
+            this.controls.minPolarAngle = -Math.PI / 2;
+            this.controls.maxAzimuthAngle = Math.PI / 2;
+            this.controls.minAzimuthAngle = -Math.PI / 2;
             this.controls.update();
             this.controls.addEventListener('change', () => {
                 this.updateLabelPos();
             });
-
 
             // this.controls.addEventListener( 'change', this.render );
             //
