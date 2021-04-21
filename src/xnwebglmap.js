@@ -200,7 +200,6 @@ import lerp from '@sunify/lerp-color'
         this.tooltip = this.addtooltip();
         this.scene.add(this.tooltip);
         this.initLegendData();
-        // this.addLegendDom("ZKWZI2")
         this.addLegendEvent();
         this.addEvent();
     }
@@ -223,7 +222,10 @@ import lerp from '@sunify/lerp-color'
             if (this.option.layer && this.option.layer.length > 0) {
                 for (let i = 0; i < this.option.layer.length; i++) {
                     let field = this.option.layer[i].col;
-                    let legend = this.option.legend;
+                    let legend = this.option.layer[i].legend;
+                    if(!legend.show){
+                        continue;
+                    }
                     let colors=this.option.layer[i].colors;
                     if(this.option.layer[i].type.area.show){
                         colors=this.option.layer[i].type.area.colors
@@ -231,7 +233,9 @@ import lerp from '@sunify/lerp-color'
                     this.setLegend(legend, field,colors);
                 }
             } else {
-                this.setLegend(this.option.legend, this.option.valueName,this.option.attr[this.option.type].colors);
+                if(this.option.legend.show){
+                    this.setLegend(this.option.legend, this.option.valueName,this.option.attr[this.option.type].colors);
+                }
             }
             let key=0;
             for (let i in this.legendData) {
@@ -1581,10 +1585,10 @@ import lerp from '@sunify/lerp-color'
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
             // this.controls.enabled=false;
             // this.scene.add(this.controls);
-            this.controls.maxPolarAngle = Math.PI / 2;
-            this.controls.minPolarAngle = -Math.PI / 2;
-            this.controls.maxAzimuthAngle = Math.PI / 2;
-            this.controls.minAzimuthAngle = -Math.PI / 2;
+            // this.controls.maxPolarAngle = Math.PI / 2;
+            // this.controls.minPolarAngle = -Math.PI / 2;
+            // this.controls.maxAzimuthAngle = Math.PI / 2;
+            // this.controls.minAzimuthAngle = -Math.PI / 2;
             this.controls.update();
             this.controls.addEventListener('change', () => {
                 this.updateLabelPos();
