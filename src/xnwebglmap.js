@@ -506,6 +506,8 @@ import lerp from '@sunify/lerp-color'
             //     z: 0
             // }
             var n = 20037508.34;
+            // n=25858105;
+            // n=6858538;
             var x = parseFloat(E) * n / 180;
             var y = Math.log(Math.tan((90 + parseFloat(N)) * Math.PI / 360)) / (Math.PI / 180);
             y = y * n / 180;
@@ -820,7 +822,6 @@ import lerp from '@sunify/lerp-color'
                     value = value==0?0:Math.log(value);
                 }
                 if(isNegative){
-                    console.log('++++',min,max)
                     value=value-minNum;
                 }
                 if (!obj[this.option.lonlat]) {
@@ -1506,18 +1507,26 @@ import lerp from '@sunify/lerp-color'
             var height = this.option.height;
             var k = width / height;
             /*可以根据中国地图mapGroup的包围盒尺寸设置相机参数s */
-            var scaleV3 = new THREE.Vector3(); //scaleV3表示包围盒长宽高尺寸
-            box3.getSize(scaleV3) // .getSize()计算包围盒长宽高尺寸
+            this.scaleV3 = new THREE.Vector3(); //scaleV3表示包围盒长宽高尺寸
+            box3.getSize(this.scaleV3) // .getSize()计算包围盒长宽高尺寸
             // frame.js文件中var s = 150; 150更改为scaleV3.x/2
-            var maxL = this.maxLFun(scaleV3);
+            var maxL = this.maxLFun(this.scaleV3);
             // maxL=100;
             //重新设置s值 乘以0.5适当缩小显示范围，地图占canvas画布比例更大，自然渲染范围更大
-            var s = maxL*0.4;
-            // camera.rotation.x=0.19;
+            // var s = maxL*0.5;
+            var s = this.scaleV3.y*0.55;
+
+            camera.rotation.x=0.19;
             camera.left = -s * k;
             camera.right = s * k;
             camera.top = s;
             camera.bottom = -s;
+
+            // camera.bottom = -s * k;
+            // camera.top = s * k;
+            // camera.right = s;
+            // camera.left = -s;
+
             camera.position.set(0, -maxL/2, maxL); //沿着z轴观察
             camera.lookAt(this.scene.position); //指向中国地图的几何中心
             camera.near = -maxL * 4;
@@ -1831,7 +1840,7 @@ import lerp from '@sunify/lerp-color'
             this.option.width = width;
             this.option.height = height;
             var k = width / height;
-            var s = this.mapSize*0.4;
+            var s = this.scaleV3.y*0.55;
             this.camera.left = -s * k;
             this.camera.right = s * k;
             this.camera.updateProjectionMatrix();
