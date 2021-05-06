@@ -504,42 +504,97 @@
         "valueName":"ZKWZI2"
     };
     option ={
-        "R": 130,
-        "backgroundColor": "#000000",
-        "backgroundOpacity": "0",
-        "type": "hot",
         "baseGlobal": {
-            "color": "#000000",
-            "opacity": 1,
-            "countryPolygonType": "area",
-            "gridSize": 2,
-            "gridStep": 2,
-            "gridColor": "#00ccc2",
-            "areaColor": "rgba(78,195,247,1)",
-            "areaLine": "rgba(144,202,249,1)",
-            "showArea": true,
-            "showLine": false,
-            "texture": {
-                "show": true,
-                "img": ""
-            },
             "areaOpacity": 1,
-            "areaLineOpacity": 1,
+            "color": "#000000",
+            "areaColor": "rgba(0,204,234,1)",
+            "gridStep": 2,
+            "texture": {
+                "img": "",
+                "show": true
+            },
             "gridOpacity": 1,
-            "depth": "0.5"
+            "countryPolygonType": "area",
+            "areaLine": "rgba(127,222,234,1)",
+            "showArea": true,
+            "areaLineOpacity": 1,
+            "gridSize": 2,
+            "depth": "0.3",
+            "gridColor": "#00ccc2",
+            "showLine": false,
+            "opacity": 1
         },
+        "R": 130,
+        "backgroundColor": "rgba(0,29,67,1)",
         "legend": {
+            "color": "#ffffff",
             "show": false,
-            "type": "segment",
-            "direction": "verticle",
             "position": {},
-            "color": "#ffffff"
+            "type": "segment",
+            "direction": "verticle"
         },
-        "lightSphere": {
+        "tooltip": {
+            "padding": 4,
+            "backgroundColor": "rgba(1,87,155,1)",
+            "borderColor": "rgba(1,87,155,1)",
+            "color": "#fff",
+            "borderRadius": 4,
+            "backgroundImage": "",
+            "borderWidth": 1,
             "show": true,
-            "color": "#048989",
-            "opacity": 2
+            "backgroundSize": "",
+            "fontSize": 12,
+            "borderStyle": "solid",
+            "content": "<p class=\"paragraph\"><span class=\"colour\" style=\"color:rgba(1,87,155,1)\"></span><span class=\"colour\" style=\"color:rgba(2,170,244,1)\"></span><span class=\"bi-label-field\" data-key=\"name_cn\" contenteditable=\"false\" data-format=\"undefined\"><span class=\"size\" style=\"font-size: 12px\">name_cn</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">总人口：</span><span class=\"bi-label-field\" data-key=\"population\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">population$_format</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">总确诊：</span><span class=\"bi-label-field\" data-key=\"totalconfirm\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">totalconfirm$_format</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">总接种：</span><span class=\"bi-label-field\" data-key=\"total_vaccinations\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">total_vaccinations$_format</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">科兴接种：</span><span class=\"bi-label-field\" data-key=\"total_vaccinations_kx\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">total_vaccinations_kx$_format</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">科兴占比：</span><span class=\"bi-label-field\" data-key=\"kxpercent\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">kxpercent$_format</span></span><br></p>"
         },
+        "backgroundOpacity": "0.8",
+        "label": {
+            "showAllLabel": false,
+            "start": {
+                "col": "total_vaccinations_kx",
+                "padding": 4,
+                "backgroundColor": "rgba(1,87,155,0.76)",
+                "borderColor": "rgba(1,87,155,0.53)",
+                "color": "#fff",
+                "backgroundImage": "",
+                "show": true,
+                "sort": "desc",
+                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"name_cn\" contenteditable=\"false\" data-format=\"undefined\"><span class=\"size\" style=\"font-size: 12px\">name_cn</span></span><span class=\"size\" style=\"font-size: 12px\">&nbsp; &nbsp;</span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">共接种：</span><span class=\"bi-label-field\" data-key=\"total_vaccinations\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 12px\">total_vaccinations$_format</span></span><span class=\"size\" style=\"font-size: 12px\"></span><br></p><p class=\"paragraph\"><span class=\"size\" style=\"font-size: 12px\">科兴占比：</span><span class=\"size\" style=\"font-size: 12px\">&nbsp;</span><span class=\"bi-label-field\" data-key=\"kxpercent\" contenteditable=\"false\" data-format=\"true\"><span class=\"colour\" style=\"color:rgba(255,213,79,1)\"><span class=\"size\" style=\"font-size: 12px\">kxpercent$_format</span></span></span><br></p>",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "backgroundSize": "",
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "labelScope": [
+                    1,
+                    5
+                ],
+                "hideLabel": true
+            },
+            "wordAvoidance": true,
+            "end": {
+                "col": "",
+                "padding": 4,
+                "backgroundColor": "rgba(8,85,139,.8)",
+                "borderColor": "#00B4FF",
+                "color": "#fff",
+                "backgroundImage": "",
+                "show": true,
+                "sort": "desc",
+                "content": "",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "backgroundSize": "",
+                "fontSize": 12,
+                "borderStyle": "solid",
+                "labelScope": [
+                    1,
+                    5
+                ],
+                "hideLabel": false
+            }
+        },
+        "type": "hot",
         "attr": {
             "area": {
                 "colors": [
@@ -547,406 +602,997 @@
                     "#ffffff"
                 ]
             },
-            "hot": {
-                "type": {
-                    "circleLight": {
-                        "show": false,
-                        "width": 0.12
-                    },
-                    "lightBar": {
-                        "show": false,
-                        "width": 0.12,
-                        "ratio": 1
-                    },
-                    "bar": {
-                        "show": false,
-                        "segments": 4,
-                        "radiusTop": 0.04,
-                        "radiusBottom": 0.04,
-                        "ratio": 1
-                    },
-                    "wave": {
-                        "show": false,
-                        "width": 0.22
-                    },
-                    "cone": {
-                        "show": true,
-                        "height": "0.0325",
-                        "ratio": 3,
-                        "segments": 4
-                    }
-                },
-                "colors": [
-                    "rgba(255,255,255,1)",
-                    "rgba(230,81,0,1)"
-                ]
-            },
             "fly": {
                 "type": {
-                    "circleLight": {
-                        "show": true,
-                        "width": 0.12
-                    },
                     "lightBar": {
                         "show": true,
                         "width": 0.12,
                         "ratio": 1
                     },
                     "bar": {
-                        "show": false,
-                        "segments": "4",
-                        "radiusTop": 0.04,
                         "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": "4",
                         "ratio": 1
                     },
-                    "wave": {
-                        "show": true,
-                        "width": 0.22
-                    },
                     "flyLine": {
-                        "show": true,
-                        "color": "#00ccc2",
-                        "width": 1,
-                        "lineType": "Basic",
                         "dashSize": 3,
+                        "color": "#00ccc2",
+                        "lineType": "Basic",
+                        "show": true,
+                        "width": 1,
                         "gapSize": 1
                     },
                     "flyPoint": {
-                        "show": true,
+                        "pointSize": 6,
                         "color": "#ffaa00",
                         "len": 0.2,
-                        "pointSize": 6
+                        "show": true
                     },
                     "cone": {
                         "show": true,
                         "height": 0.0625,
                         "ratio": 1,
                         "segments": 4
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": 0.22
+                    },
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
                     }
                 },
                 "colors": [
                     "#00ccc2",
                     "#ffff4a"
                 ]
+            },
+            "hot": {
+                "type": {
+                    "lightBar": {
+                        "show": true,
+                        "width": 0.12,
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": 4,
+                        "ratio": 1
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": 0.0625,
+                        "ratio": 3,
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": true,
+                        "width": 0.22
+                    },
+                    "circleLight": {
+                        "show": true,
+                        "width": 0.12
+                    }
+                },
+                "colors": [
+                    "#2c8ad7",
+                    "#3bd5ac",
+                    "#d5860c"
+                ]
             }
         },
         "animate": {
-            "open": true,
-            "rotateStep": 0.012
+            "rotateStep": 0.012,
+            "open": true
         },
-        "tooltip": {
-            "backgroundColor": "rgba(1,87,155,1)",
-            "backgroundImage": "",
-            "backgroundSize": "",
-            "borderColor": "rgba(1,87,155,1)",
-            "color": "#fff",
-            "borderRadius": 4,
-            "borderWidth": 1,
+        "lightSphere": {
+            "color": "#048989",
             "show": true,
-            "fontSize": 12,
-            "borderStyle": "solid",
-            "padding": 4,
-            "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\" data-format=\"undefined\"><span class=\"size\" style=\"font-size: 14px\">province</span></span><span class=\"size\" style=\"font-size: 14px\">&nbsp;&nbsp;</span><span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 14px\">ZKWZI2$_format</span><span class=\"colour\" style=\"color:rgba(1,87,155,1)\"><span class=\"size\" style=\"font-size: 14px\"></span></span></span><br></p>"
+            "opacity": 2
         },
-        "label": {
-            "wordAvoidance": true,
-            "showAllLabel": false,
-            "start": {
-                "hideLabel": false,
-                "labelScope": [
-                    1,
-                    5
-                ],
-                "sort": "desc",
-                "col": "",
-                "backgroundColor": "rgba(1,87,155,1)",
-                "backgroundImage": "",
-                "backgroundSize": "",
-                "borderColor": "rgba(1,87,155,1)",
-                "color": "#fff",
-                "borderRadius": 4,
-                "borderWidth": 1,
-                "show": true,
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "padding": 4,
-                "content": "<p class=\"paragraph\"><span class=\"bi-label-field\" data-key=\"province\" contenteditable=\"false\" data-format=\"undefined\"><span class=\"size\" style=\"font-size: 14px\">province</span></span><span class=\"size\" style=\"font-size: 14px\">&nbsp; &nbsp;</span><span class=\"bi-label-field\" data-key=\"ZKWZI2\" contenteditable=\"false\" data-format=\"true\"><span class=\"size\" style=\"font-size: 14px\">ZKWZI2$_format</span></span><br></p>"
-            },
-            "end": {
-                "hideLabel": false,
-                "labelScope": [
-                    1,
-                    5
-                ],
-                "sort": "desc",
-                "col": "",
-                "backgroundColor": "rgba(8,85,139,.8)",
-                "backgroundImage": "",
-                "backgroundSize": "",
-                "borderColor": "#00B4FF",
-                "color": "#fff",
-                "borderRadius": 4,
-                "borderWidth": 1,
-                "show": true,
-                "fontSize": 12,
-                "borderStyle": "solid",
-                "padding": 4,
-                "content": ""
-            }
-        },
-        "data": [
+        "layer": [
             {
-                "ZKWZI2": 1080060182,
-                "province": "浙江省",
-                "lonlat": "120.153576,30.287459",
-                "$$_format_province": "浙江省",
-                "$$_format_ZKWZI2": 1080060182,
-                "$$_format_lonlat": "120.153576,30.287459"
+                "col": "total_vaccinations_kx",
+                "legend": {
+                    "show": true
+                },
+                "type": {
+                    "area": {
+                        "show": false,
+                        "colors": [
+                            "#ffffff",
+                            "rgba(254,137,84,1)"
+                        ]
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.022",
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": "0.008",
+                        "show": true,
+                        "radiusTop": "0.008",
+                        "segments": 4,
+                        "ratio": "0.15"
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": "0.02",
+                        "ratio": "2",
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": false,
+                        "width": "0.052"
+                    },
+                    "circleLight": {
+                        "show": false,
+                        "width": "0.03"
+                    }
+                },
+                "colors": [
+                    "rgba(255,210,0,1)",
+                    "rgba(254,137,84,1)"
+                ]
             },
             {
-                "ZKWZI2": 220440029,
-                "province": "安徽省",
-                "lonlat": "117.283042,31.86119",
-                "$$_format_province": "安徽省",
-                "$$_format_ZKWZI2": 220440029,
-                "$$_format_lonlat": "117.283042,31.86119"
-            },
-            {
-                "ZKWZI2": 533764704,
-                "province": "河北省",
-                "lonlat": "114.502461,38.045474",
-                "$$_format_province": "河北省",
-                "$$_format_ZKWZI2": 533764704,
-                "$$_format_lonlat": "114.502461,38.045474"
-            },
-            {
-                "ZKWZI2": 406178687,
-                "province": "重庆市",
-                "lonlat": "106.504962,29.533155",
-                "$$_format_province": "重庆市",
-                "$$_format_ZKWZI2": 406178687,
-                "$$_format_lonlat": "106.504962,29.533155"
-            },
-            {
-                "ZKWZI2": 171383934.5,
-                "province": "江西省",
-                "lonlat": "115.892151,28.676493",
-                "$$_format_province": "江西省",
-                "$$_format_ZKWZI2": 171383934.5,
-                "$$_format_lonlat": "115.892151,28.676493"
-            },
-            {
-                "ZKWZI2": 435305281.2,
-                "province": "广西壮族自治区",
-                "lonlat": "108.320004,22.82402",
-                "$$_format_province": "广西壮族自治区",
-                "$$_format_ZKWZI2": 435305281.2,
-                "$$_format_lonlat": "108.320004,22.82402"
-            },
-            {
-                "ZKWZI2": 148138989.5,
-                "province": "天津市",
-                "lonlat": "117.190182,39.125596",
-                "$$_format_province": "天津市",
-                "$$_format_ZKWZI2": 148138989.5,
-                "$$_format_lonlat": "117.190182,39.125596"
-            },
-            {
-                "ZKWZI2": 480829425,
-                "province": "湖南省",
-                "lonlat": "112.982279,28.19409",
-                "$$_format_province": "湖南省",
-                "$$_format_ZKWZI2": 480829425,
-                "$$_format_lonlat": "112.982279,28.19409"
-            },
-            {
-                "ZKWZI2": 77384252,
-                "province": "山西省",
-                "lonlat": "112.549248,37.857014",
-                "$$_format_province": "山西省",
-                "$$_format_ZKWZI2": 77384252,
-                "$$_format_lonlat": "112.549248,37.857014"
-            },
-            {
-                "ZKWZI2": 608809717.5,
-                "province": "河南省",
-                "lonlat": "113.665412,34.757975",
-                "$$_format_province": "河南省",
-                "$$_format_ZKWZI2": 608809717.5,
-                "$$_format_lonlat": "113.665412,34.757975"
-            },
-            {
-                "ZKWZI2": 90943897.5,
-                "province": "福建省",
-                "lonlat": "119.306239,26.075302",
-                "$$_format_province": "福建省",
-                "$$_format_ZKWZI2": 90943897.5,
-                "$$_format_lonlat": "119.306239,26.075302"
-            },
-            {
-                "ZKWZI2": 234950482,
-                "province": "黑龙江省",
-                "lonlat": "126.642464,45.756967",
-                "$$_format_province": "黑龙江省",
-                "$$_format_ZKWZI2": 234950482,
-                "$$_format_lonlat": "126.642464,45.756967"
-            },
-            {
-                "ZKWZI2": 333277770,
-                "province": "上海市",
-                "lonlat": "121.472644,31.231706",
-                "$$_format_province": "上海市",
-                "$$_format_ZKWZI2": 333277770,
-                "$$_format_lonlat": "121.472644,31.231706"
-            },
-            {
-                "ZKWZI2": 454158443.8,
-                "province": "四川省",
-                "lonlat": "104.065735,30.659462",
-                "$$_format_province": "四川省",
-                "$$_format_ZKWZI2": 454158443.8,
-                "$$_format_lonlat": "104.065735,30.659462"
-            },
-            {
-                "ZKWZI2": 1027006940.18,
-                "province": "广东省",
-                "lonlat": "113.280637,23.125178",
-                "$$_format_province": "广东省",
-                "$$_format_ZKWZI2": 1027006940.18,
-                "$$_format_lonlat": "113.280637,23.125178"
-            },
-            {
-                "ZKWZI2": 288103678,
-                "province": "贵州省",
-                "lonlat": "106.713478,26.578343",
-                "$$_format_province": "贵州省",
-                "$$_format_ZKWZI2": 288103678,
-                "$$_format_lonlat": "106.713478,26.578343"
-            },
-            {
-                "ZKWZI2": 660138961,
-                "province": "江苏省",
-                "lonlat": "118.767413,32.041544",
-                "$$_format_province": "江苏省",
-                "$$_format_ZKWZI2": 660138961,
-                "$$_format_lonlat": "118.767413,32.041544"
-            },
-            {
-                "ZKWZI2": 153949446,
-                "province": "陕西省",
-                "lonlat": "108.948024,34.263161",
-                "$$_format_province": "陕西省",
-                "$$_format_ZKWZI2": 153949446,
-                "$$_format_lonlat": "108.948024,34.263161"
-            },
-            {
-                "ZKWZI2": 45353568,
-                "province": "吉林省",
-                "lonlat": "125.3245,43.886841",
-                "$$_format_province": "吉林省",
-                "$$_format_ZKWZI2": 45353568,
-                "$$_format_lonlat": "125.3245,43.886841"
-            },
-            {
-                "ZKWZI2": 323912134.5,
-                "province": "湖北省",
-                "lonlat": "114.298572,30.584355",
-                "$$_format_province": "湖北省",
-                "$$_format_ZKWZI2": 323912134.5,
-                "$$_format_lonlat": "114.298572,30.584355"
-            },
-            {
-                "ZKWZI2": 177135876,
-                "province": "辽宁省",
-                "lonlat": "123.429096,41.796767",
-                "$$_format_province": "辽宁省",
-                "$$_format_ZKWZI2": 177135876,
-                "$$_format_lonlat": "123.429096,41.796767"
-            },
-            {
-                "ZKWZI2": 116709400,
-                "province": "新疆维吾尔族自治区",
-                "lonlat": "87.617733,43.792818",
-                "$$_format_province": "新疆维吾尔族自治区",
-                "$$_format_ZKWZI2": 116709400,
-                "$$_format_lonlat": "87.617733,43.792818"
-            },
-            {
-                "ZKWZI2": 89498452,
-                "province": "内蒙古自治区",
-                "lonlat": "111.670801,40.818311",
-                "$$_format_province": "内蒙古自治区",
-                "$$_format_ZKWZI2": 89498452,
-                "$$_format_lonlat": "111.670801,40.818311"
-            },
-            {
-                "ZKWZI2": 303179386.8,
-                "province": "云南省",
-                "lonlat": "102.712251,25.040609",
-                "$$_format_province": "云南省",
-                "$$_format_ZKWZI2": 303179386.8,
-                "$$_format_lonlat": "102.712251,25.040609"
-            },
-            {
-                "ZKWZI2": 860146354,
-                "province": "山东省",
-                "lonlat": "117.000923,36.675807",
-                "$$_format_province": "山东省",
-                "$$_format_ZKWZI2": 860146354,
-                "$$_format_lonlat": "117.000923,36.675807"
-            },
-            {
-                "ZKWZI2": 77312800,
-                "province": "甘肃省",
-                "lonlat": "103.823557,36.058039",
-                "$$_format_province": "甘肃省",
-                "$$_format_ZKWZI2": 77312800,
-                "$$_format_lonlat": "103.823557,36.058039"
-            },
-            {
-                "ZKWZI2": 27717980,
-                "province": "青海省",
-                "lonlat": "101.778916,36.623178",
-                "$$_format_province": "青海省",
-                "$$_format_ZKWZI2": 27717980,
-                "$$_format_lonlat": "101.778916,36.623178"
-            },
-            {
-                "ZKWZI2": 1492199364.88,
-                "province": "北京市",
-                "lonlat": "116.405285,39.904989",
-                "$$_format_province": "北京市",
-                "$$_format_ZKWZI2": 1492199364.88,
-                "$$_format_lonlat": "116.405285,39.904989"
-            },
-            {
-                "ZKWZI2": 52338000,
-                "province": "西藏自治区",
-                "lonlat": "91.132212,29.660361",
-                "$$_format_province": "西藏自治区",
-                "$$_format_ZKWZI2": 52338000,
-                "$$_format_lonlat": "91.132212,29.660361"
-            },
-            {
-                "ZKWZI2": 47072200,
-                "province": "宁夏回族自治区",
-                "lonlat": "106.278179,38.46637",
-                "$$_format_province": "宁夏回族自治区",
-                "$$_format_ZKWZI2": 47072200,
-                "$$_format_lonlat": "106.278179,38.46637"
-            },
-            {
-                "ZKWZI2": 48601473.4,
-                "province": "香港特别行政区",
-                "lonlat": "114.173355,22.320048",
-                "$$_format_province": "香港特别行政区",
-                "$$_format_ZKWZI2": 48601473.4,
-                "$$_format_lonlat": "114.173355,22.320048"
+                "col": "totalconfirm",
+                "legend": {
+                    "show": false
+                },
+                "type": {
+                    "area": {
+                        "show": true,
+                        "colors": [
+                            "rgba(0,204,234,1)",
+                            "rgba(0,138,234,1)"
+                        ]
+                    },
+                    "lightBar": {
+                        "show": false,
+                        "width": "0.012",
+                        "ratio": 1
+                    },
+                    "bar": {
+                        "radiusBottom": 0.04,
+                        "show": false,
+                        "radiusTop": 0.04,
+                        "segments": 4,
+                        "ratio": 1
+                    },
+                    "cone": {
+                        "show": false,
+                        "height": "0.0425",
+                        "ratio": "2",
+                        "segments": 4
+                    },
+                    "wave": {
+                        "show": false,
+                        "width": "0.052"
+                    },
+                    "circleLight": {
+                        "show": false,
+                        "width": "0.012"
+                    }
+                },
+                "colors": [
+                    "rgba(247,223,143,1)",
+                    "rgba(255,193,6,1)",
+                    "rgba(239,83,79,1)"
+                ]
             }
         ],
-        "countryName": "province",
-        "lonlat": "lonlat",
-        "valueName": "ZKWZI2"
+        "data": [
+            {
+                "total_vaccinations": 247769049,
+                "totalconfirm": 33321244,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-77.02,39.91",
+                "name_cn": "美国",
+                "population": 326766748,
+                "$$_format_name_cn": "美国",
+                "$$_format_population": "32,677万人",
+                "$$_format_location": "-77.02,39.91",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "24,777万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "3,332万人"
+            },
+            {
+                "total_vaccinations": 17916566,
+                "totalconfirm": 3551262,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-3.45,40.25",
+                "name_cn": "西班牙",
+                "population": 46397452,
+                "$$_format_name_cn": "西班牙",
+                "$$_format_population": "4,640万人",
+                "$$_format_location": "-3.45,40.25",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "1,792万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "355万人"
+            },
+            {
+                "total_vaccinations": 157750752,
+                "totalconfirm": 18754925,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "77.13,28.37",
+                "name_cn": "印度",
+                "population": 1354051854,
+                "$$_format_name_cn": "印度",
+                "$$_format_population": "135,405万人",
+                "$$_format_location": "77.13,28.37",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "15,775万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "1,875万人"
+            },
+            {
+                "total_vaccinations": 45273825,
+                "totalconfirm": 14340787,
+                "kxpercent": 0.1325269,
+                "total_vaccinations_kx": 6000000,
+                "location": "-47.55,-15.47",
+                "name_cn": "巴西",
+                "population": 210867954,
+                "$$_format_name_cn": "巴西",
+                "$$_format_population": "21,087万人",
+                "$$_format_location": "-47.55,-15.47",
+                "$$_format_kxpercent": "13%",
+                "$$_format_total_vaccinations": "4,527万剂",
+                "$$_format_total_vaccinations_kx": "600万剂",
+                "$$_format_totalconfirm": "1,434万人"
+            },
+            {
+                "total_vaccinations": 23404537,
+                "totalconfirm": 5560699,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "2.2,48.5",
+                "name_cn": "法国",
+                "population": 65233271,
+                "$$_format_name_cn": "法国",
+                "$$_format_population": "6,523万人",
+                "$$_format_location": "2.2,48.5",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "2,340万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "556万人"
+            },
+            {
+                "total_vaccinations": 20168443,
+                "totalconfirm": 4717321,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "37.35,55.45",
+                "name_cn": "俄罗斯联邦",
+                "population": 143964709,
+                "$$_format_name_cn": "俄罗斯联邦",
+                "$$_format_population": "14,396万人",
+                "$$_format_location": "37.35,55.45",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "2,017万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "472万人"
+            },
+            {
+                "total_vaccinations": 23729113,
+                "totalconfirm": 4629969,
+                "kxpercent": 0.5344311,
+                "total_vaccinations_kx": 12681575,
+                "location": "32.54,39.57",
+                "name_cn": "土耳其",
+                "population": 81916871,
+                "$$_format_name_cn": "土耳其",
+                "$$_format_population": "8,192万人",
+                "$$_format_location": "32.54,39.57",
+                "$$_format_kxpercent": "53%",
+                "$$_format_total_vaccinations": "2,373万剂",
+                "$$_format_total_vaccinations_kx": "1,268万剂",
+                "$$_format_totalconfirm": "463万人"
+            },
+            {
+                "total_vaccinations": 50682567,
+                "totalconfirm": 4420458,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-0.05,51.36",
+                "name_cn": "英国",
+                "population": 66573504,
+                "$$_format_name_cn": "英国",
+                "$$_format_population": "6,657万人",
+                "$$_format_location": "-0.05,51.36",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "5,068万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "442万人"
+            },
+            {
+                "total_vaccinations": 21654336,
+                "totalconfirm": 3971114,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "12.29,41.54",
+                "name_cn": "意大利",
+                "population": 60482200,
+                "$$_format_name_cn": "意大利",
+                "$$_format_population": "6,048万人",
+                "$$_format_location": "12.29,41.54",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "2,165万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "397万人"
+            },
+            {
+                "total_vaccinations": 31468712,
+                "totalconfirm": 3306692,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "13.25,52.3",
+                "name_cn": "德国",
+                "population": 82293457,
+                "$$_format_name_cn": "德国",
+                "$$_format_population": "8,229万人",
+                "$$_format_location": "13.25,52.3",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "3,147万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "331万人"
+            },
+            {
+                "total_vaccinations": 8197011,
+                "totalconfirm": 2860884,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-60,-36.3",
+                "name_cn": "阿根廷",
+                "population": 44688864,
+                "$$_format_name_cn": "阿根廷",
+                "$$_format_population": "4,469万人",
+                "$$_format_location": "-60,-36.3",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "820万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "286万人"
+            },
+            {
+                "total_vaccinations": 5220330,
+                "totalconfirm": 2774464,
+                "kxpercent": 0.5746694,
+                "total_vaccinations_kx": 2999964,
+                "location": "-74,4.34",
+                "name_cn": "哥伦比亚",
+                "population": 49464683,
+                "$$_format_name_cn": "哥伦比亚",
+                "$$_format_population": "4,946万人",
+                "$$_format_location": "-74,4.34",
+                "$$_format_kxpercent": "57%",
+                "$$_format_total_vaccinations": "522万剂",
+                "$$_format_total_vaccinations_kx": "300万剂",
+                "$$_format_totalconfirm": "277万人"
+            },
+            {
+                "total_vaccinations": 12225861,
+                "totalconfirm": 2762323,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "21,52.13",
+                "name_cn": "波兰",
+                "population": 38104832,
+                "$$_format_name_cn": "波兰",
+                "$$_format_population": "3,810万人",
+                "$$_format_location": "21,52.13",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "1,223万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "276万人"
+            },
+            {
+                "total_vaccinations": 1314641,
+                "totalconfirm": 2417230,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "51.30,35.44",
+                "name_cn": "伊朗",
+                "population": 82011735,
+                "$$_format_name_cn": "伊朗",
+                "$$_format_population": "8,201万人",
+                "$$_format_location": "51.30,35.44",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "131万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "242万人"
+            },
+            {
+                "total_vaccinations": 18827623,
+                "totalconfirm": 2328391,
+                "kxpercent": 0.2124538,
+                "total_vaccinations_kx": 4000000,
+                "location": "-99.1,19.2",
+                "name_cn": "墨西哥",
+                "population": 130759074,
+                "$$_format_name_cn": "墨西哥",
+                "$$_format_population": "13,076万人",
+                "$$_format_location": "-99.1,19.2",
+                "$$_format_kxpercent": "21%",
+                "$$_format_total_vaccinations": "1,883万剂",
+                "$$_format_total_vaccinations_kx": "400万剂",
+                "$$_format_totalconfirm": "233万人"
+            },
+            {
+                "total_vaccinations": 759735,
+                "totalconfirm": 2084384,
+                "kxpercent": 0.2829934,
+                "total_vaccinations_kx": 215000,
+                "location": "30.28,50.3",
+                "name_cn": "乌克兰",
+                "population": 44009214,
+                "$$_format_name_cn": "乌克兰",
+                "$$_format_population": "4,401万人",
+                "$$_format_location": "30.28,50.3",
+                "$$_format_kxpercent": "28%",
+                "$$_format_total_vaccinations": "76万剂",
+                "$$_format_total_vaccinations_kx": "22万剂",
+                "$$_format_totalconfirm": "208万人"
+            },
+            {
+                "total_vaccinations": 1815892,
+                "totalconfirm": 1761575,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-77,-12",
+                "name_cn": "秘鲁",
+                "population": 32551815,
+                "$$_format_name_cn": "秘鲁",
+                "$$_format_population": "3,255万人",
+                "$$_format_location": "-77,-12",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "182万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "176万人"
+            },
+            {
+                "total_vaccinations": 20701804,
+                "totalconfirm": 1647138,
+                "kxpercent": 0.1136616,
+                "total_vaccinations_kx": 2353000,
+                "location": "106.49,-6.09",
+                "name_cn": "印度尼西亚",
+                "population": 266794980,
+                "$$_format_name_cn": "印度尼西亚",
+                "$$_format_population": "26,679万人",
+                "$$_format_location": "106.49,-6.09",
+                "$$_format_kxpercent": "11%",
+                "$$_format_total_vaccinations": "2,070万剂",
+                "$$_format_total_vaccinations_kx": "235万剂",
+                "$$_format_totalconfirm": "165万人"
+            },
+            {
+                "total_vaccinations": 3343811,
+                "totalconfirm": 1620206,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "14.22,50.05",
+                "name_cn": "捷克共和国",
+                "population": 10625250,
+                "$$_format_name_cn": "捷克共和国",
+                "$$_format_population": "1,063万人",
+                "$$_format_location": "14.22,50.05",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "334万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "162万人"
+            },
+            {
+                "total_vaccinations": 353181,
+                "totalconfirm": 1575471,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "28,-25",
+                "name_cn": "南非",
+                "population": 57398421,
+                "$$_format_name_cn": "南非",
+                "$$_format_population": "5,740万人",
+                "$$_format_location": "28,-25",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "35万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "158万人"
+            },
+            {
+                "total_vaccinations": 5651843,
+                "totalconfirm": 1492405,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "4.54,52.23",
+                "name_cn": "荷兰",
+                "population": 17084459,
+                "$$_format_name_cn": "荷兰",
+                "$$_format_population": "1,708万人",
+                "$$_format_location": "4.54,52.23",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "565万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "149万人"
+            },
+            {
+                "total_vaccinations": 14284234,
+                "totalconfirm": 1187809,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-75.42,45.27",
+                "name_cn": "加拿大",
+                "population": 36953765,
+                "$$_format_name_cn": "加拿大",
+                "$$_format_population": "3,695万人",
+                "$$_format_location": "-75.42,45.27",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "1,428万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "119万人"
+            },
+            {
+                "total_vaccinations": 15132910,
+                "totalconfirm": 1204755,
+                "kxpercent": 0.85717,
+                "total_vaccinations_kx": 12971476,
+                "location": "-70.4,-33.24",
+                "name_cn": "智利",
+                "population": 18197209,
+                "$$_format_name_cn": "智利",
+                "$$_format_population": "1,820万人",
+                "$$_format_location": "-70.4,-33.24",
+                "$$_format_kxpercent": "85%",
+                "$$_format_total_vaccinations": "1,513万剂",
+                "$$_format_total_vaccinations_kx": "1,297万剂",
+                "$$_format_totalconfirm": "120万人"
+            },
+            {
+                "total_vaccinations": 5493913,
+                "totalconfirm": 1047520,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "26.1,44.27",
+                "name_cn": "罗马尼亚",
+                "population": 19580634,
+                "$$_format_name_cn": "罗马尼亚",
+                "$$_format_population": "1,958万人",
+                "$$_format_location": "26.1,44.27",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "549万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "105万人"
+            },
+            {
+                "total_vaccinations": 298377,
+                "totalconfirm": 1037858,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "44.3,33.2",
+                "name_cn": "伊拉克",
+                "population": 39339753,
+                "$$_format_name_cn": "伊拉克",
+                "$$_format_population": "3,934万人",
+                "$$_format_location": "44.3,33.2",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "30万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "104万人"
+            },
+            {
+                "total_vaccinations": 1999214,
+                "totalconfirm": 1006428,
+                "kxpercent": 0.7502949,
+                "total_vaccinations_kx": 1500000,
+                "location": "121.03,14.4",
+                "name_cn": "菲律宾",
+                "population": 106512074,
+                "$$_format_name_cn": "菲律宾",
+                "$$_format_population": "10,651万人",
+                "$$_format_location": "121.03,14.4",
+                "$$_format_kxpercent": "75%",
+                "$$_format_total_vaccinations": "200万剂",
+                "$$_format_total_vaccinations_kx": "150万剂",
+                "$$_format_totalconfirm": "101万人"
+            },
+            {
+                "total_vaccinations": 4070766,
+                "totalconfirm": 974418,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "4.21,50.51",
+                "name_cn": "比利时",
+                "population": 11498519,
+                "$$_format_name_cn": "比利时",
+                "$$_format_population": "1,150万人",
+                "$$_format_location": "4.21,50.51",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "407万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "97万人"
+            },
+            {
+                "total_vaccinations": 3451239,
+                "totalconfirm": 938343,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "18.03,59.2",
+                "name_cn": "瑞典",
+                "population": 9982709,
+                "$$_format_name_cn": "瑞典",
+                "$$_format_population": "998万人",
+                "$$_format_location": "18.03,59.2",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "345万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "94万人"
+            },
+            {
+                "total_vaccinations": 10476094,
+                "totalconfirm": 838084,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "35.12,31.47",
+                "name_cn": "以色列",
+                "population": 8452841,
+                "$$_format_name_cn": "以色列",
+                "$$_format_population": "845万人",
+                "$$_format_location": "35.12,31.47",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "1,048万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "84万人"
+            },
+            {
+                "total_vaccinations": 3507577,
+                "totalconfirm": 834638,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-9.1,38.42",
+                "name_cn": "葡萄牙",
+                "population": 10291196,
+                "$$_format_name_cn": "葡萄牙",
+                "$$_format_population": "1,029万人",
+                "$$_format_location": "-9.1,38.42",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "351万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "83万人"
+            },
+            {
+                "total_vaccinations": 800000,
+                "totalconfirm": 800452,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "73.1,33.4",
+                "name_cn": "巴基斯坦",
+                "population": 200813818,
+                "$$_format_name_cn": "巴基斯坦",
+                "$$_format_population": "20,081万人",
+                "$$_format_location": "73.1,33.4",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "80万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "80万人"
+            },
+            {
+                "total_vaccinations": 6372472,
+                "totalconfirm": 771454,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "19.05,47.29",
+                "name_cn": "匈牙利",
+                "population": 9688847,
+                "$$_format_name_cn": "匈牙利",
+                "$$_format_population": "969万人",
+                "$$_format_location": "19.05,47.29",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "637万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "77万人"
+            },
+            {
+                "total_vaccinations": 8926466,
+                "totalconfirm": 748628,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "90.26,23.43",
+                "name_cn": "孟加拉国",
+                "population": 166368149,
+                "$$_format_name_cn": "孟加拉国",
+                "$$_format_population": "16,637万人",
+                "$$_format_location": "90.26,23.43",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "893万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "75万人"
+            },
+            {
+                "total_vaccinations": 1091048,
+                "totalconfirm": 704540,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "35.52,31.57",
+                "name_cn": "约旦",
+                "population": 9903802,
+                "$$_format_name_cn": "约旦",
+                "$$_format_population": "990万人",
+                "$$_format_location": "35.52,31.57",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "109万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "70万人"
+            },
+            {
+                "total_vaccinations": 0,
+                "totalconfirm": 681654,
+                "kxpercent": "",
+                "total_vaccinations_kx": 0,
+                "location": "",
+                "name_cn": "",
+                "population": 0,
+                "$$_format_name_cn": "",
+                "$$_format_population": "0万人",
+                "$$_format_location": "",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "0万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "68万人"
+            },
+            {
+                "total_vaccinations": 2791978,
+                "totalconfirm": 651822,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "7.28,46.57",
+                "name_cn": "瑞士",
+                "population": 8544034,
+                "$$_format_name_cn": "瑞士",
+                "$$_format_population": "854万人",
+                "$$_format_location": "7.28,46.57",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "279万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "65万人"
+            },
+            {
+                "total_vaccinations": 3287176,
+                "totalconfirm": 610545,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "16.22,48.12",
+                "name_cn": "奥地利",
+                "population": 8751820,
+                "$$_format_name_cn": "奥地利",
+                "$$_format_population": "875万人",
+                "$$_format_location": "16.22,48.12",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "329万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "61万人"
+            },
+            {
+                "total_vaccinations": 3489719,
+                "totalconfirm": 571904,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "139.46,35.42",
+                "name_cn": "日本",
+                "population": 127185332,
+                "$$_format_name_cn": "日本",
+                "$$_format_population": "12,719万人",
+                "$$_format_location": "139.46,35.42",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "349万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "57万人"
+            },
+            {
+                "total_vaccinations": 487974,
+                "totalconfirm": 520939,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "35.31,33.53",
+                "name_cn": "黎巴嫩",
+                "population": 6093509,
+                "$$_format_name_cn": "黎巴嫩",
+                "$$_format_population": "609万人",
+                "$$_format_location": "35.31,33.53",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "49万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "52万人"
+            },
+            {
+                "total_vaccinations": 10779163,
+                "totalconfirm": 510738,
+                "kxpercent": 0.0018554,
+                "total_vaccinations_kx": 20000,
+                "location": "55.17,25.13",
+                "name_cn": "阿联酋",
+                "population": 9541615,
+                "$$_format_name_cn": "阿联酋",
+                "$$_format_population": "954万人",
+                "$$_format_location": "55.17,25.13",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "1,078万剂",
+                "$$_format_total_vaccinations_kx": "2万剂",
+                "$$_format_totalconfirm": "51万人"
+            },
+            {
+                "total_vaccinations": 9558639,
+                "totalconfirm": 509363,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-6.51,34.02",
+                "name_cn": "摩洛哥",
+                "population": 36191805,
+                "$$_format_name_cn": "摩洛哥",
+                "$$_format_population": "3,619万人",
+                "$$_format_location": "-6.51,34.02",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "956万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "51万人"
+            },
+            {
+                "total_vaccinations": 9816391,
+                "totalconfirm": 413174,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "46.42,24.41",
+                "name_cn": "沙特阿拉伯",
+                "population": 33554343,
+                "$$_format_name_cn": "沙特阿拉伯",
+                "$$_format_population": "3,355万人",
+                "$$_format_location": "46.42,24.41",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "982万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "41万人"
+            },
+            {
+                "total_vaccinations": 844643,
+                "totalconfirm": 397500,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "23.2,42.45",
+                "name_cn": "保加利亚",
+                "population": 7036848,
+                "$$_format_name_cn": "保加利亚",
+                "$$_format_population": "704万人",
+                "$$_format_location": "23.2,42.45",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "84万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "40万人"
+            },
+            {
+                "total_vaccinations": 1500202,
+                "totalconfirm": 395718,
+                "kxpercent": 0.2799623,
+                "total_vaccinations_kx": 420000,
+                "location": "101.41,3.09",
+                "name_cn": "马来西亚",
+                "population": 32042458,
+                "$$_format_name_cn": "马来西亚",
+                "$$_format_population": "3,204万人",
+                "$$_format_location": "101.41,3.09",
+                "$$_format_kxpercent": "27%",
+                "$$_format_total_vaccinations": "150万剂",
+                "$$_format_total_vaccinations_kx": "42万剂",
+                "$$_format_totalconfirm": "40万人"
+            },
+            {
+                "total_vaccinations": 1690513,
+                "totalconfirm": 380010,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "17.07,48.1",
+                "name_cn": "斯洛伐克",
+                "population": 5449816,
+                "$$_format_name_cn": "斯洛伐克",
+                "$$_format_population": "545万人",
+                "$$_format_location": "17.07,48.1",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "169万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "38万人"
+            },
+            {
+                "total_vaccinations": 1067472,
+                "totalconfirm": 373362,
+                "kxpercent": 0.9367927,
+                "total_vaccinations_kx": 1000000,
+                "location": "-78.35,-0.15",
+                "name_cn": "厄瓜多尔",
+                "population": 16863425,
+                "$$_format_name_cn": "厄瓜多尔",
+                "$$_format_population": "1,686万人",
+                "$$_format_location": "-78.35,-0.15",
+                "$$_format_kxpercent": "93%",
+                "$$_format_total_vaccinations": "107万剂",
+                "$$_format_total_vaccinations_kx": "100万剂",
+                "$$_format_totalconfirm": "37万人"
+            },
+            {
+                "total_vaccinations": 695783,
+                "totalconfirm": 362967,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "-79.25,9",
+                "name_cn": "巴拿马",
+                "population": 4162618,
+                "$$_format_name_cn": "巴拿马",
+                "$$_format_population": "416万人",
+                "$$_format_location": "-79.25,9",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "70万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "36万人"
+            },
+            {
+                "total_vaccinations": 1769678,
+                "totalconfirm": 361575,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "71.3,51.1",
+                "name_cn": "哈萨克斯坦",
+                "population": 18403860,
+                "$$_format_name_cn": "哈萨克斯坦",
+                "$$_format_population": "1,840万人",
+                "$$_format_location": "71.3,51.1",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "177万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "36万人"
+            },
+            {
+                "total_vaccinations": 328500,
+                "totalconfirm": 353846,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "27.3,53.52",
+                "name_cn": "白俄罗斯",
+                "population": 9452113,
+                "$$_format_name_cn": "白俄罗斯",
+                "$$_format_population": "945万人",
+                "$$_format_location": "27.3,53.52",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "33万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "35万人"
+            },
+            {
+                "total_vaccinations": 3201212,
+                "totalconfirm": 333129,
+                "kxpercent": 0,
+                "total_vaccinations_kx": 0,
+                "location": "23.46,37.58",
+                "name_cn": "希腊",
+                "population": 11142161,
+                "$$_format_name_cn": "希腊",
+                "$$_format_population": "1,114万人",
+                "$$_format_location": "23.46,37.58",
+                "$$_format_kxpercent": "0%",
+                "$$_format_total_vaccinations": "320万剂",
+                "$$_format_total_vaccinations_kx": "0万剂",
+                "$$_format_totalconfirm": "33万人"
+            }
+        ],
+        "countryName": "name_cn",
+        "lonlat": "location",
+        "valueName": "population"
     };
     var xnwebglmap = new XNWebglMap(document.getElementById("globeArea"), option)
     function openFullscreen(element) {

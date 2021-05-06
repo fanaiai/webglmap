@@ -1059,6 +1059,10 @@ import lerp from '@sunify/lerp-color'
             return [min, max, isLog]
         },
         addBaseItem(hotDataMesh, attr, lon, lat, basetexture, lightbartexture, wavetexture, value, minNum, maxNum, origindata, isFly) {
+            var height = this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
+            if(height<=0){
+                return;
+            }
             var circleLight, lightBar, wave, bar, ConeMesh, SphereMesh
             var SphereCoord = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
             var SphereCoord1 = this.lonLat2Mercator(lon, lat);//SphereCoord球面坐标
@@ -1072,7 +1076,7 @@ import lerp from '@sunify/lerp-color'
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
             }
-            var height = this.mapSize * 0.1 + this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
+
             if (attr.type['lightBar'].show) {
                 // console.log((value - minNum),maxNum , minNum)
                 height = height * parseFloat(attr.type.lightBar.ratio);
