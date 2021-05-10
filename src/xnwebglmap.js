@@ -12,6 +12,7 @@ import {OrbitControls} from './three/OrbitControls.js';
 // import {TransformControls} from './three/TransformControls.js';
 import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
 import lerp from '@sunify/lerp-color'
+// import * as d3geo from 'd3-geo'
 
 (function (window, $) {
     // var that;
@@ -37,7 +38,8 @@ import lerp from '@sunify/lerp-color'
             },
             "areaOpacity": 1,
             "areaLineOpacity": 1,
-            "gridOpacity": 1
+            "gridOpacity": 1,
+            "resize":0.7
         },
         tooltip: {
             "show": true,
@@ -178,6 +180,7 @@ import lerp from '@sunify/lerp-color'
     }
 
     function XNWebglMap(dom, options, mapData) {
+        // this.projection = d3geo.geoMercator().center([104.0, 37.5]).scale(80).translate([0, 0]);
         this.dom = dom;
         this.dom.innerHTML = ''
         this.mapData = mapData;
@@ -438,7 +441,7 @@ import lerp from '@sunify/lerp-color'
                     this.map.add(mesh)
                 })
                 let backLine = this.boxGroup.clone();
-                backLine.position.z = -10;
+                backLine.position.z = 0;
                 this.map.add(backLine)
                 this.boxGroup.position.z = this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.05;
                 if(this.option.baseGlobal.depth<=0){
@@ -496,26 +499,47 @@ import lerp from '@sunify/lerp-color'
             };
             // console.log(extrudeSettings)
             var geometry = new THREE.ExtrudeBufferGeometry(shapeArr, extrudeSettings);
+            // var geometry=new THREE.BufferGeometry(shapeArr)
             var mesh = new THREE.Mesh(geometry, material); //网格模型对象
             return mesh;
         },
         lonLat2Mercator(E, N) {
-            // return {
-            //     x: E, //墨卡托x坐标——对应经度
-            //     y: N, //墨卡托y坐标——对应维度
-            //     z: 0
-            // }
-            var n = 20037508.34;
-            // n=25858105;
-            // n=6858538;
-            var x = parseFloat(E) * n / 180;
-            var y = Math.log(Math.tan((90 + parseFloat(N)) * Math.PI / 360)) / (Math.PI / 180);
-            y = y * n / 180;
+            // var x = ((E / 360) + 0.5) * this.option.width;
+            // var y = ( ((N / 180) + 0.5)) * this.option.height;
+
+            var x = ((E / 360) + 0.5)*1.5;
+            var y = ( ((N / 180) + 0.5))*1;
+            // x=E;
+            // y=Math.log(Math.tan(Math.PI / 4 + N/ 2));
+            // var x=parseFloat(N)/360
+            // var y=(-180/Math.PI*Math.log(Math.tan(Math.PI/4+parseFloat(E)*Math.PI/360)))/360;
             return {
                 x: x, //墨卡托x坐标——对应经度
                 y: y, //墨卡托y坐标——对应维度
                 z: 0
             }
+            // var [x,y]=this.projection([E,N])
+            // return {
+            //     x: x, //墨卡托x坐标——对应经度
+            //     y: y, //墨卡托y坐标——对应维度
+            //     z: 0
+            // }
+            // return {
+            //     x: E, //墨卡托x坐标——对应经度
+            //     y: N, //墨卡托y坐标——对应维度
+            //     z: 0
+            // }
+            // var n = 1;
+            // n=25858105;
+            // // n=6858538;
+            // var x = parseFloat(E) * n / 180;
+            // var y = Math.log(Math.tan((90 + parseFloat(N)) * Math.PI / 360)) / (Math.PI / 180);
+            // y = y * n / 180;
+            // return {
+            //     x: x, //墨卡托x坐标——对应经度
+            //     y: y, //墨卡托y坐标——对应维度
+            //     z: 0
+            // }
         },
         getMapData(callback) {
             if (this.mapData) {
@@ -1339,7 +1363,7 @@ import lerp from '@sunify/lerp-color'
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
             // mesh.scale.set(mesh.size*mesh._s,mesh.size*mesh._s,mesh.size*mesh._s);
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.07);
 
             return mesh;
         },
@@ -1384,7 +1408,7 @@ import lerp from '@sunify/lerp-color'
             var size = this.mapSize * attr.type.circleLight.width * ((valueSize == undefined ? 1 : valueSize) + 0.1);//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.07);
             return mesh;
         },
         calcAreaCountryColor(data, col, attr) {
@@ -1509,7 +1533,7 @@ import lerp from '@sunify/lerp-color'
 
             var width = this.option.width;
             var height = this.option.height;
-            var k = width / height;
+            var k = width/height;
             /*可以根据中国地图mapGroup的包围盒尺寸设置相机参数s */
             this.scaleV3 = new THREE.Vector3(); //scaleV3表示包围盒长宽高尺寸
             box3.getSize(this.scaleV3) // .getSize()计算包围盒长宽高尺寸
@@ -1518,7 +1542,7 @@ import lerp from '@sunify/lerp-color'
             // maxL=100;
             //重新设置s值 乘以0.5适当缩小显示范围，地图占canvas画布比例更大，自然渲染范围更大
             // var s = maxL*0.5;
-            var s = this.scaleV3.y*0.55;
+            var s = this.scaleV3.y*(parseFloat(this.option.baseGlobal.resize)||0.7);
 
             camera.rotation.x=0.19;
             camera.left = -s * k;
@@ -1531,7 +1555,7 @@ import lerp from '@sunify/lerp-color'
             // camera.right = s;
             // camera.left = -s;
 
-            camera.position.set(0, -maxL/2, maxL); //沿着z轴观察
+            camera.position.set(0, this.option.baseGlobal.isPlane?0:-maxL/2, maxL); //沿着z轴观察
             camera.lookAt(this.scene.position); //指向中国地图的几何中心
             camera.near = -maxL * 4;
             camera.far = maxL * 4;
@@ -1617,6 +1641,8 @@ import lerp from '@sunify/lerp-color'
         },
         addControl() {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+            if(this.option.baseGlobal.isPlane){
+            this.controls.enableRotate=false;}
             // this.controls.enabled=false;
             // this.scene.add(this.controls);
             // this.controls.maxPolarAngle = Math.PI / 2;
@@ -1843,8 +1869,8 @@ import lerp from '@sunify/lerp-color'
             this.renderer.setSize(width, height);
             this.option.width = width;
             this.option.height = height;
-            var k = width / height;
-            var s = this.scaleV3.y*0.55;
+            var k = width/height;
+            var s = this.scaleV3.y*(parseFloat(this.option.baseGlobal.resize)||0.7);
             this.camera.left = -s * k;
             this.camera.right = s * k;
             this.camera.updateProjectionMatrix();

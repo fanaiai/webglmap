@@ -44,7 +44,7 @@
 <!--</div>-->
 <a id="destory">销毁</a>
 <a id="full">全屏</a>
-<div id="globeArea" style="width:1016px; height: 680px"></div>
+<div id="globeArea" style="width:1016px; height: 980px"></div>
 
 </body>
 <script type="module">
@@ -67,7 +67,8 @@
             "depth": 0.04,
             "gridColor": "#00ccc2",
             "showLine": false,
-            "opacity": 1
+            "opacity": 1,
+            "resize":0.7
         },
         "R": 130,
         "backgroundColor": "#000000",
@@ -522,7 +523,8 @@
             "depth": "0.3",
             "gridColor": "#00ccc2",
             "showLine": false,
-            "opacity": 1
+            "opacity": 1,
+            "isPlane":true
         },
         "R": 130,
         "backgroundColor": "rgba(0,29,67,1)",
@@ -716,7 +718,7 @@
                     },
                     "bar": {
                         "radiusBottom": "0.008",
-                        "show": true,
+                        "show": false,
                         "radiusTop": "0.008",
                         "segments": 4,
                         "ratio": "0.15"
@@ -728,11 +730,11 @@
                         "segments": 4
                     },
                     "wave": {
-                        "show": false,
+                        "show": true,
                         "width": "0.052"
                     },
                     "circleLight": {
-                        "show": false,
+                        "show": true,
                         "width": "0.03"
                     }
                 },
