@@ -71,9 +71,10 @@ module.exports = (env) => {
                                 targets: {
                                     browsers: ['> 1%']
                                 },
-                                debug: false
+                                debug: true
                             }]
                         ],
+                        "plugins": ["transform-object-rest-spread"]
                     }
                 },
                 {

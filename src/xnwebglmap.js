@@ -13,7 +13,6 @@ import {OrbitControls} from './three/OrbitControls.js';
 import {CSS2DRenderer, CSS2DObject} from './three/CSS2DRenderer.js';
 import lerp from '@sunify/lerp-color'
 // import * as d3geo from 'd3-geo'
-
 (function (window, $) {
     // var that;
     var option = {
