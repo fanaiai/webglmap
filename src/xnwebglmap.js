@@ -510,10 +510,10 @@ import lerp from '@sunify/lerp-color'
             let min=[105.9,26.3];
             let max=[123.5,1.42];
             if(E>=min[0] && E<=max[0] && N>=max[1] && N<=min[1]){
-                E+=30;
+                E+=140;
                 N-=10;
-                E=(E-min[0])/10;
-                // N=-(N-max[1])/10;
+                E=min[0]+(E-min[0])/6;
+                N=min[1]+(N-min[1])/6;
             }
             return [E,N];
         },
