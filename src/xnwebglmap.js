@@ -370,6 +370,7 @@ import lerp from '@sunify/lerp-color'
             }
             return r;
         },
+
         addarea(isNotArea, callback) {
             this.map = new THREE.Group();
             this.boxGroup = new THREE.Group();
@@ -385,6 +386,9 @@ import lerp from '@sunify/lerp-color'
                     if (!item.properties.nameZh) {
                         item.properties.nameZh = item.properties.name
                     }
+                    // if(item.properties.nameZh=='海南省'){
+                    //     this.translateHN(item);
+                    // }
                     var line = this.countryLine1(item.geometry.coordinates);//国家边界
                     this.boxGroup.add(line)
 
@@ -502,10 +506,21 @@ import lerp from '@sunify/lerp-color'
             var mesh = new THREE.Mesh(geometry, material); //网格模型对象
             return mesh;
         },
+        translateHN(E,N){
+            let min=[105.9,26.3];
+            let max=[123.5,1.42];
+            if(E>=min[0] && E<=max[0] && N>=max[1] && N<=min[1]){
+                E+=30;
+                N-=10;
+                E=(E-min[0])/10;
+                // N=-(N-max[1])/10;
+            }
+            return [E,N];
+        },
         lonLat2Mercator(E, N) {
             // var x = ((E / 360) + 0.5) * this.option.width;
             // var y = ( ((N / 180) + 0.5)) * this.option.height;
-
+            [E,N]=this.translateHN(E,N)
             var x = ((E / 360) + 0.5)*1.5;
             var y = ( ((N / 180) + 0.5))*1;
             // x=E;
@@ -547,7 +562,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/worldZh.json', (data) => {
+            loader.load(staticpath + '/static/china1.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
