@@ -520,7 +520,7 @@ import lerp from '@sunify/lerp-color'
         lonLat2Mercator(E, N) {
             // var x = ((E / 360) + 0.5) * this.option.width;
             // var y = ( ((N / 180) + 0.5)) * this.option.height;
-            [E,N]=this.translateHN(E,N)
+            // [E,N]=this.translateHN(E,N)
             var x = ((E / 360) + 0.5)*1.5;
             var y = ( ((N / 180) + 0.5))*1;
             // x=E;
@@ -562,7 +562,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/china1.json', (data) => {
+            loader.load(staticpath + '/static/chinahn.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
