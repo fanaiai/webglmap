@@ -562,7 +562,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/chinahn.json', (data) => {
+            loader.load(staticpath + '/static/china.nanhai.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
