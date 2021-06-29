@@ -137,7 +137,7 @@
         "type": "Feature",
         "properties": {
             "id": "62",
-            "name": "甘肃",
+            "name": "甘肃省",
             "latitude": 38.7393,
             "longitude": 100.735
         },
@@ -585,7 +585,7 @@
         "type": "Feature",
         "properties": {
             "id": "63",
-            "name": "青海",
+            "name": "青海省",
             "latitude": 35.2652,
             "longitude": 96.2377
         },
@@ -960,7 +960,7 @@
         "type": "Feature",
         "properties": {
             "id": "45",
-            "name": "广西",
+            "name": "广西壮族自治区",
             "latitude": 23.7451,
             "longitude": 108.756
         },
@@ -1240,7 +1240,7 @@
         "type": "Feature",
         "properties": {
             "id": "52",
-            "name": "贵州",
+            "name": "贵州省",
             "latitude": 26.8033,
             "longitude": 106.559
         },
@@ -1473,7 +1473,7 @@
         "type": "Feature",
         "properties": {
             "id": "50",
-            "name": "重庆",
+            "name": "重庆市",
             "latitude": 30.0173,
             "longitude": 107.73
         },
@@ -1646,7 +1646,7 @@
         "type": "Feature",
         "properties": {
             "id": "11",
-            "name": "北京",
+            "name": "北京市",
             "latitude": 39.9488,
             "longitude": 116.389
         },
@@ -1714,7 +1714,7 @@
         "type": "Feature",
         "properties": {
             "id": "35",
-            "name": "福建",
+            "name": "福建省",
             "latitude": 26.408,
             "longitude": 118.178
         },
@@ -2018,7 +2018,7 @@
         "type": "Feature",
         "properties": {
             "id": "34",
-            "name": "安徽",
+            "name": "安徽省",
             "latitude": 31.9537,
             "longitude": 117.253
         },
@@ -2228,7 +2228,7 @@
         "type": "Feature",
         "properties": {
             "id": "44",
-            "name": "广东",
+            "name": "广东省",
             "latitude": 23.7924,
             "longitude": 113.72
         },
@@ -2649,7 +2649,7 @@
         "type": "Feature",
         "properties": {
             "id": "54",
-            "name": "西藏",
+            "name": "西藏自治区",
             "latitude": 31.4515,
             "longitude": 88.4137
         },
@@ -3209,7 +3209,7 @@
         "type": "Feature",
         "properties": {
             "id": "65",
-            "name": "新疆",
+            "name": "新疆维吾尔自治区",
             "latitude": 41.122,
             "longitude": 85.4253
         },
@@ -3692,7 +3692,7 @@
         "type": "Feature",
         "properties": {
             "id": "46",
-            "name": "海南",
+            "name": "海南省",
             "latitude": 19.1865,
             "longitude": 109.825
         },
@@ -3781,7 +3781,7 @@
         "type": "Feature",
         "properties": {
             "id": "64",
-            "name": "宁夏",
+            "name": "宁夏回族自治区",
             "latitude": 37.1762,
             "longitude": 106.038
         },
@@ -3905,7 +3905,7 @@
         "type": "Feature",
         "properties": {
             "id": "61",
-            "name": "陕西",
+            "name": "陕西省",
             "latitude": 33.7713,
             "longitude": 108.363
         },
@@ -4164,7 +4164,7 @@
         "type": "Feature",
         "properties": {
             "id": "14",
-            "name": "山西",
+            "name": "山西省",
             "latitude": 37.7586,
             "longitude": 112.389
         },
@@ -4336,7 +4336,7 @@
         "type": "Feature",
         "properties": {
             "id": "42",
-            "name": "湖北",
+            "name": "湖北省",
             "latitude": 30.9857,
             "longitude": 112.264
         },
@@ -4569,7 +4569,7 @@
         "type": "Feature",
         "properties": {
             "id": "43",
-            "name": "湖南",
+            "name": "湖南省",
             "latitude": 27.6667,
             "longitude": 111.712
         },
@@ -4799,7 +4799,7 @@
         "type": "Feature",
         "properties": {
             "id": "51",
-            "name": "四川",
+            "name": "四川省",
             "latitude": 30.5431,
             "longitude": 102.384
         },
@@ -5194,7 +5194,7 @@
         "type": "Feature",
         "properties": {
             "id": "53",
-            "name": "云南",
+            "name": "云南省",
             "latitude": 24.4603,
             "longitude": 101.661
         },
@@ -5599,7 +5599,7 @@
         "type": "Feature",
         "properties": {
             "id": "13",
-            "name": "河北",
+            "name": "河北省",
             "latitude": 38.5205,
             "longitude": 115.314
         },
@@ -5914,7 +5914,7 @@
         "type": "Feature",
         "properties": {
             "id": "41",
-            "name": "河南",
+            "name": "河南省",
             "latitude": 33.9055,
             "longitude": 113.484
         },
@@ -6123,7 +6123,7 @@
         "type": "Feature",
         "properties": {
             "id": "21",
-            "name": "辽宁",
+            "name": "辽宁省",
             "latitude": 41.386,
             "longitude": 123.07
         },
@@ -6386,7 +6386,7 @@
         "type": "Feature",
         "properties": {
             "id": "37",
-            "name": "山东",
+            "name": "山东省",
             "latitude": 36.3271,
             "longitude": 118.114
         },
@@ -6620,7 +6620,7 @@
         "type": "Feature",
         "properties": {
             "id": "12",
-            "name": "天津",
+            "name": "天津市",
             "latitude": 39.3708,
             "longitude": 117.347
         },
@@ -6683,7 +6683,7 @@
         "type": "Feature",
         "properties": {
             "id": "36",
-            "name": "江西",
+            "name": "江西省",
             "latitude": 27.6397,
             "longitude": 116.017
         },
@@ -6876,7 +6876,7 @@
         "type": "Feature",
         "properties": {
             "id": "32",
-            "name": "江苏",
+            "name": "江苏省",
             "latitude": 32.9844,
             "longitude": 119.942
         },
@@ -7097,7 +7097,7 @@
         "type": "Feature",
         "properties": {
             "id": "31",
-            "name": "上海",
+            "name": "上海市",
             "latitude": 31.0909,
             "longitude": 121.409
         },
@@ -7166,7 +7166,7 @@
         "type": "Feature",
         "properties": {
             "id": "33",
-            "name": "浙江",
+            "name": "浙江省",
             "latitude": 29.1084,
             "longitude": 119.97
         },
@@ -7434,7 +7434,7 @@
         "type": "Feature",
         "properties": {
             "id": "22",
-            "name": "吉林",
+            "name": "吉林省",
             "latitude": 43.2978,
             "longitude": 126.466
         },
@@ -7699,7 +7699,7 @@
         "type": "Feature",
         "properties": {
             "id": "15",
-            "name": "内蒙古",
+            "name": "内蒙古自治区",
             "latitude": 41.5938,
             "longitude": 111.623
         },
@@ -8368,7 +8368,7 @@
         "type": "Feature",
         "properties": {
             "id": "23",
-            "name": "黑龙江",
+            "name": "黑龙江省",
             "latitude": 46.8451,
             "longitude": 127.97
         },
@@ -8784,7 +8784,7 @@
         "type": "Feature",
         "properties": {
             "id": "71",
-            "name": "台湾",
+            "name": "台湾省",
             "latitude": 23.5986,
             "longitude": 121.0254
         },
@@ -9399,7 +9399,7 @@
         "type": "Feature",
         "properties": {
             "id": "81",
-            "name": "香港",
+            "name": "香港特别行政区",
             "latitude": 22.3242,
             "longitude": 114.2578
         },
@@ -9425,7 +9425,7 @@
         "type": "Feature",
         "properties": {
             "id": "82",
-            "name": "澳门",
+            "name": "澳门特别行政区",
             "latitude": 22.1484,
             "longitude": 113.5547
         },
