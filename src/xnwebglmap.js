@@ -1178,44 +1178,6 @@ import lerp from '@sunify/lerp-color'
             mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
             return mesh;
         },
-        // createDropMesh(attr,radius,SphereCoord){
-        //     if (radius < 1) {
-        //         radius = 1;
-        //     }
-        //     // var radius = R / 32;//圆锥半径  和地球半径建立尺寸关系
-        //     var height = radius * attr.type.cone.ratio;//棱锥高度
-        //     // 圆锥体几何体API(ConeGeometry)圆周方向四等分实现四棱锥效果
-        //     var geometry = new THREE.ConeGeometry(radius, height,32);
-        //     // 缓冲类型几何体BufferGeometry没有computeFlatVertexNormals方法
-        //     geometry.computeFlatVertexNormals();//一种计算顶点法线方式，非光滑渲染
-        //     // 可以根据需要旋转到特定角度
-        //     // geometry.rotateX(Math.PI);
-        //     geometry.rotateX(-Math.PI / 2);
-        //     geometry.translate(0, 0, height / 2);
-        //     // MeshBasicMaterial MeshLambertMaterial
-        //     var material = new THREE.MeshLambertMaterial({
-        //         color: 0x00ffff,
-        //         side: THREE.DoubleSide,
-        //     });
-        //     var mesh = new THREE.Mesh(geometry, material);
-        //
-        //     // 棱锥上在叠加一个棱锥
-        //     var geometry2 = new THREE.SphereBufferGeometry(radius, 32,32);
-        //     // 缓冲类型几何体BufferGeometry没有computeFlatVertexNormals方法
-        //     // geometry2.computeFlatVertexNormals();//一种计算顶点法线方式，非光滑渲染
-        //     // 可以根据需要旋转到特定角度
-        //     // geometry.rotateX(Math.PI);
-        //     geometry2.rotateX(-Math.PI / 2);
-        //     geometry2.translate(0, 0, height / 2);
-        //     var mesh2 = new THREE.Mesh(geometry2, material);
-        //     // mesh2.scale.z = 0.5;
-        //     mesh2.position.z = height * (1 + mesh2.scale.z);
-        //     mesh2.rotateX(Math.PI);
-        //     mesh.add(mesh2);
-        //
-        //     mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
-        //     return mesh;
-        // },
         createConeMesh(attr, radius, SphereCoord) {
             if (radius < 1) {
                 radius = 1;
