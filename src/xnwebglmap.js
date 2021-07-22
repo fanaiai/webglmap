@@ -97,7 +97,7 @@ import lerp from '@sunify/lerp-color'
         },
         attr: {
             area: {
-                colors: ['#ffff00', '#ffcc00', '#ff0000', '#cc0000'],
+                colors: [],
             },
             hot: {
                 type: {
@@ -126,7 +126,7 @@ import lerp from '@sunify/lerp-color'
                         segments: 4,
                     }
                 },//都添加什么元素
-                colors: ['#2c8ad7', '#3bd5ac', '#d5860c'],
+                colors: [],
             },
             fly: {
                 type: {
@@ -169,7 +169,7 @@ import lerp from '@sunify/lerp-color'
                         segments: 4,
                     }
                 },//都添加什么元素
-                colors: ['#00ccc2', '#ffff4a',],
+                colors: [],
             }
         },
         animate: {
