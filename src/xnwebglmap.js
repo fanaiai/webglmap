@@ -38,7 +38,7 @@ import lerp from '@sunify/lerp-color'
             "areaOpacity": 1,
             "areaLineOpacity": 1,
             "gridOpacity": 1,
-            "resize":0.7
+            "resize": 0.7
         },
         tooltip: {
             "show": true,
@@ -207,7 +207,7 @@ import lerp from '@sunify/lerp-color'
     }
 
     XNWebglMap.prototype = {
-        setLegend(legend, field,colors) {
+        setLegend(legend, field, colors) {
             if (legend) {
                 let {min, max} = this._getMaxMinFunc(this.option.data, field);
                 this.legendData[field] = {
@@ -216,42 +216,42 @@ import lerp from '@sunify/lerp-color'
                     curmin: min,
                     curmax: max,
                     colors: colors,
-                    attr:legend
+                    attr: legend
                 }
             }
         },
         initLegendData() {
-            if(!this.option.data || this.option.data.length<=0){
+            if (!this.option.data || this.option.data.length <= 0) {
                 return;
             }
             if (this.option.layer && this.option.layer.length > 0) {
                 for (let i = 0; i < this.option.layer.length; i++) {
                     let field = this.option.layer[i].col;
                     let legend = this.option.layer[i].legend;
-                    if(!legend.show){
+                    if (!legend.show) {
                         continue;
                     }
-                    let colors=this.option.layer[i].colors;
-                    if(this.option.layer[i].type.area.show){
-                        colors=this.option.layer[i].type.area.colors
+                    let colors = this.option.layer[i].colors;
+                    if (this.option.layer[i].type.area.show) {
+                        colors = this.option.layer[i].type.area.colors
                     }
-                    this.setLegend(legend, field,colors);
+                    this.setLegend(legend, field, colors);
                 }
             } else {
-                if(this.option.legend.show){
-                    this.setLegend(this.option.legend, this.option.valueName,this.option.attr[this.option.type].colors);
+                if (this.option.legend.show) {
+                    this.setLegend(this.option.legend, this.option.valueName, this.option.attr[this.option.type].colors);
                 }
             }
-            let key=0;
+            let key = 0;
             for (let i in this.legendData) {
-                this.addLegendDom(i,key);
+                this.addLegendDom(i, key);
                 key++;
             }
         },
-        addLegendDom(id,key) {
+        addLegendDom(id, key) {
             let legend = this.legendData[id]
             let background = $.extend(true, [], legend.colors).reverse().join(",")
-            let dom = `<div class="xnwebglobal-legend" data-legendkey="${id}" style="left:${key * 100+30}px;color:${this.option.legend.color}">
+            let dom = `<div class="xnwebglobal-legend" data-legendkey="${id}" style="left:${key * 100 + 30}px;color:${this.option.legend.color}">
     <p class="max-text">高</p>
     <div class="legend-bar">
         <div class="color-bar" style="background:linear-gradient(${background})"></div>
@@ -296,17 +296,16 @@ import lerp from '@sunify/lerp-color'
                         top = ele.height;
                     }
                     let value = (legend.max - legend.min) * (ele.height - top) / ele.height + legend.min;
-                    if(legend.max>10){
-                        value=parseInt(value);
+                    if (legend.max > 10) {
+                        value = parseInt(value);
+                    } else {//10以内的数，最多保留2位小数
+                        value = Math.round(value * 100) / 100
                     }
-                    else{//10以内的数，最多保留2位小数
-                        value=Math.round(value * 100) / 100
+                    if (top == 0) {
+                        value = legend.max;
                     }
-                    if(top==0){
-                        value=legend.max;
-                    }
-                    if(top==ele.height){
-                        value=legend.min;
+                    if (top == ele.height) {
+                        value = legend.min;
                     }
                     legend['cur' + ele.bar] = value;
                     let otherbar = ele.bar == 'min' ? 'max' : 'min';
@@ -327,7 +326,7 @@ import lerp from '@sunify/lerp-color'
                         ele.$legendDom.find('.' + otherbar + '-bar').find('p').html(value);
                     }
                     ele.$dom.css("top", top + 'px')
-                    ele.$dom.find('p').get(0).innerHTML=(value);
+                    ele.$dom.find('p').get(0).innerHTML = (value);
                     this.updateItemsVisible(ele.id, legend);
                 }
             })
@@ -339,22 +338,21 @@ import lerp from '@sunify/lerp-color'
         updateItemsVisible(id, legend) {
             this.hotDataMesh.children.forEach(e => {
                 let v = e.origindata[id]
-                e.origindata.$$_hide=false;
+                e.origindata.$$_hide = false;
                 e.visible = true;
                 if (v < legend.curmin || v > legend.curmax) {
                     e.visible = false;
-                    e.origindata.$$_hide=true;
+                    e.origindata.$$_hide = true;
                 }
             })
             this.areaGroup.forEach(e => {
                 let v = e.origindata[id]
-                e.origindata.$$_hide=false;
+                e.origindata.$$_hide = false;
                 if (v < legend.curmin || v > legend.curmax) {
-                    e.origindata.$$_hide=true;
+                    e.origindata.$$_hide = true;
                     e.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
                     // e.color = e.material.color.clone();//自定义颜色属性 用于射线拾取交互
-                }
-                else{
+                } else {
                     e.material.color.set(e.color);
                 }
             })
@@ -409,7 +407,7 @@ import lerp from '@sunify/lerp-color'
                     this.calcMeshArry.push(mesh)
                     if (!isNotArea) {
                         if (dataColor[mesh.name]) {//worldZh.json部分国家或地区在gdp.json文件中不存在，判断下，以免报错
-                            mesh.material.color.copy(dataColor[mesh.name].color);
+                            mesh.material.color.set(dataColor[mesh.name].color);
                             mesh.color = dataColor[mesh.name].color;//自定义颜色属性 用于射线拾取交互
                             mesh.origindata = dataColor[mesh.name].origindata;//自定义颜色属性 用于射线拾取HTML标签显示
                             this.areaGroup.push(mesh)
@@ -420,34 +418,40 @@ import lerp from '@sunify/lerp-color'
                     } else {//hot 或 fly
                         mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
                         mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
-                        if (this.option.layer && this.option.layer.length > 0 && this.option.type == 'hot') {
+                        if (this.option.layer && this.option.layer.length > 0) {
                             for (let i = 0; i < this.option.layer.length; i++) {
                                 let attr = this.option.layer[i];
-                                mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
-                                mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
+                                // mesh.material.color.set(this.option.baseGlobal[this.option.baseGlobal.countryPolygonType + 'Color']);
+                                // mesh.color = mesh.material.color.clone();//自定义颜色属性 用于射线拾取交互
                                 if (!this.option.data[0] || this.option.data[0][attr.col] == undefined) {
                                     continue;
                                 }
                                 if (attr.type.area.show) {
                                     let dataColor = this.calcAreaCountryColor(this.option.data, attr.col, attr.type.area);
-                                    if (dataColor[mesh.name]) {//worldZh.json部分国家或地区在gdp.json文件中不存在，判断下，以免报错
-                                        mesh.material.color.copy(dataColor[mesh.name].color);
-                                        mesh.color = dataColor[mesh.name].color;//自定义颜色属性 用于射线拾取交互
+                                    if (dataColor[mesh.name] && dataColor[mesh.name].color) {//worldZh.json部分国家或地区在gdp.json文件中不存在，判断下，以免报错
                                         mesh.origindata = dataColor[mesh.name].origindata;//自定义颜色属性 用于射线拾取HTML标签显示
+
+                                        let color = dataColor[mesh.name].color.clone()
+                                        mesh.material.color.set(color);
+                                        // mesh.material.color.copy(dataColor[mesh.name].color);
+                                        mesh.color = dataColor[mesh.name].color;//自定义颜色属性 用于射线拾取交互
                                         this.areaGroup.push(mesh)
                                     }
                                 }
                             }
                         }
                     }
-
+                    mesh.material.color.set(mesh.color)
                     this.map.add(mesh)
+                    // console.log(mesh.color);
+
+
                 })
                 let backLine = this.boxGroup.clone();
                 backLine.position.z = 0;
                 this.map.add(backLine)
-                this.boxGroup.position.z = this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.05;
-                if(this.option.baseGlobal.depth<=0){
+                this.boxGroup.position.z = this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.05;
+                if (this.option.baseGlobal.depth <= 0) {
                     this.boxGroup.position.z = this.mapSize * 0.001;
                 }
                 if (typeof callback == 'function') {
@@ -496,7 +500,7 @@ import lerp from '@sunify/lerp-color'
                 side: THREE.DoubleSide, //两面可见
             }); //材质对象
             var extrudeSettings = {
-                depth: this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1), //拉伸长度
+                depth: this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1), //拉伸长度
                 // depth:10,
                 bevelEnabled: false //无倒角
             };
@@ -506,23 +510,23 @@ import lerp from '@sunify/lerp-color'
             var mesh = new THREE.Mesh(geometry, material); //网格模型对象
             return mesh;
         },
-        translateHN(E,N){
-            let min=[105.9,26.3];
-            let max=[123.5,1.42];
-            if(E>=min[0] && E<=max[0] && N>=max[1] && N<=min[1]){
-                E+=140;
-                N-=10;
-                E=min[0]+(E-min[0])/6;
-                N=min[1]+(N-min[1])/6;
+        translateHN(E, N) {
+            let min = [105.9, 26.3];
+            let max = [123.5, 1.42];
+            if (E >= min[0] && E <= max[0] && N >= max[1] && N <= min[1]) {
+                E += 140;
+                N -= 10;
+                E = min[0] + (E - min[0]) / 6;
+                N = min[1] + (N - min[1]) / 6;
             }
-            return [E,N];
+            return [E, N];
         },
         lonLat2Mercator(E, N) {
             // var x = ((E / 360) + 0.5) * this.option.width;
             // var y = ( ((N / 180) + 0.5)) * this.option.height;
             // [E,N]=this.translateHN(E,N)
-            var x = ((E / 360) + 0.5)*1.5;
-            var y = ( ((N / 180) + 0.5))*1;
+            var x = ((E / 360) + 0.5) * 1.5;
+            var y = (((N / 180) + 0.5)) * 1;
             // x=E;
             // y=Math.log(Math.tan(Math.PI / 4 + N/ 2));
             // var x=parseFloat(N)/360
@@ -562,7 +566,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/china.nanhai.json', (data) => {
+            loader.load(staticpath + '/static/worldZh.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
@@ -610,7 +614,7 @@ import lerp from '@sunify/lerp-color'
                 position: position,
                 x: x,
                 y: y,
-                origindata:data
+                origindata: data
             })
         },
         calcTextLabel: function (content, v) {
@@ -701,7 +705,7 @@ import lerp from '@sunify/lerp-color'
                 for (let i = 0; i < this.labelArry.length; i++) {
                     let temp = this.labelArry[i];
                     let div = temp.dom;
-                    if(temp.origindata.$$_hide){
+                    if (temp.origindata.$$_hide) {
                         div.style.display = 'none'
                         continue;
                     }
@@ -828,8 +832,8 @@ import lerp from '@sunify/lerp-color'
                 return;
             }
             this.option.data.forEach((obj, i) => {
-                var lonlat = obj[this.option.lonlat].split(',');//经度
-                if (!obj[this.option.lonlat]) {
+                var lonlat = obj[isFly ? this.option.toLonlat : this.option.lonlat].split(',');//经度
+                if (!obj[isFly ? this.option.toLonlat : this.option.lonlat]) {
                     return;
                 }
                 obj.$$lon = lonlat[0]
@@ -851,16 +855,16 @@ import lerp from '@sunify/lerp-color'
 
         },
         addOneLayerItem(col, attr, hotDataMesh) {
-            var [min, max, isLog,isNegative] = this.getMaxMin(this.option.data, col);
+            var [min, max, isLog, isNegative] = this.getMaxMin(this.option.data, col);
             var maxNum = max;
             var minNum = min;
             this.option.data.forEach((obj, i) => {
                 var value = obj[col];
                 if (isLog) {
-                    value = value==0?0:Math.log(value);
+                    value = value == 0 ? 0 : Math.log(value);
                 }
-                if(isNegative){
-                    value=value-minNum;
+                if (isNegative) {
+                    value = value - minNum;
                 }
                 if (!obj[this.option.lonlat]) {
                     return;
@@ -878,16 +882,16 @@ import lerp from '@sunify/lerp-color'
             var textureLoader = new THREE.TextureLoader(); // TextureLoader创建一个纹理加载器对象
             this.basetexture = textureLoader.load(staticpath + '/static/标注.png');
             this.lightbartexture = textureLoader.load(staticpath + '/static/光柱.png');
-            this.wavetexture = textureLoader.load(staticpath + '/static/光圈贴图.png');
+            this.wavetexture = textureLoader.load(staticpath + '/static/标注.png');
             // this.calcMeshArry = [];
             this.WaveMeshArr = [];
             this.flyArr = [];
             this.ConeMeshArry = []
             var hotDataMesh = new THREE.Group();
             hotDataMesh.name = 'item'
-            if (!isFly) {
-                this.addHotItems(hotDataMesh, isFly);
-            }
+            // if (!isFly) {
+            this.addHotItems(hotDataMesh, isFly);
+            // }
             if (isFly) {//飞线时需要重新计算起点和终点的值
                 var endData = {};
                 var startData = {};
@@ -914,27 +918,29 @@ import lerp from '@sunify/lerp-color'
                     var tlon = tlonlat[0]
                     var tlat = tlonlat[1]//纬度
 
-                    var flyLine = this.flyArc(lon, lat, tlon, tlat)
-                    // if(attr.type.flyLine.show){
-                    hotDataMesh.add(flyLine); //飞线插入flyArcGroup中
-                    this.calcMeshArry.push(flyLine);
-                    // }
-                    this.flyArr.push(flyLine);//获取飞线段
-                    flyLine.meshType = 'flyline'
-                    flyLine.origindata = obj;
-                    if (!attr.type.flyLine.show) {
-                        flyLine.material.opacity = 0;
-                    }
-                    if (attr.type.flyPoint.show) {
-                        var points = flyLine.flyTrackPoints;
-                        var index = 20; //飞线索引起点
+                    if ((attr.type.flyLine.show || attr.type.flyPoint.show) && obj[this.option.valueName]!=0) {
+                        var flyLine = this.flyArc(lon, lat, tlon, tlat)
+                        // if(attr.type.flyLine.show){
+                        hotDataMesh.add(flyLine); //飞线插入flyArcGroup中
+                        // this.calcMeshArry.push(flyLine);
+                        // }
+                        this.flyArr.push(flyLine);//获取飞线段
+                        flyLine.meshType = 'flyline'
+                        flyLine.origindata = obj;
+                        if (!attr.type.flyLine.show) {
+                            flyLine.material.visible = false;
+                        }
+                        if (attr.type.flyPoint.show) {
+                            var points = flyLine.flyTrackPoints;
+                            var index = 20; //飞线索引起点
 
-                        // var flyPoint = this.flylineFun(index, points); //绘制一段飞线
-                        //
-                        var flyPoint = this.addFlyPoint(index, points)
-                        // //飞线取点索引范围：points.length - flyline.num
-                        flyPoint.index = Math.floor((points.length - flyPoint.num) * Math.random()); //索引位置随机
-                        flyLine.add(flyPoint); //飞线段flyline作为飞线轨迹flyTrack子对象，可以继承飞线轨迹平移旋转等变换
+                            // var flyPoint = this.flylineFun(index, points); //绘制一段飞线
+                            //
+                            var flyPoint = this.addFlyPoint(index, points)
+                            // //飞线取点索引范围：points.length - flyline.num
+                            flyPoint.index = Math.floor((points.length - flyPoint.num) * Math.random()); //索引位置随机
+                            flyLine.add(flyPoint); //飞线段flyline作为飞线轨迹flyTrack子对象，可以继承飞线轨迹平移旋转等变换
+                        }
                     }
 
                     obj.$$_endData = endData[obj[this.option.toCountryName]];
@@ -983,17 +989,17 @@ import lerp from '@sunify/lerp-color'
         },
         addFlyPoint(index, points) {
             var choosePoints = []; //存储飞线轨迹上选择的顶点坐标，用于飞线绘制
-            var num = 11; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
+            var num = 21; //从曲线上取11个点 飞线长度占飞线轨迹长度的10%  你可通过获取的点数调节飞线长度
             var group = new THREE.Group();
             var material = new THREE.MeshBasicMaterial({
-                color: 0xffff00,//使用顶点颜色，材质颜色不用设置
+                color: this.option.attr.fly.type.flyPoint.color,//使用顶点颜色，材质颜色不用设置
                 // vertexColors: THREE.VertexColors, //使用顶点颜色插值计算
                 // linewidth: 6.5, // 设置线宽
             });
             for (var i = 1; i < num + 1; i++) {
                 choosePoints.push(points[i + index])
                 let position = points[i + index];
-                let geometry = new THREE.SphereBufferGeometry(this.mapSize * i / (240 * num), 32, 32);
+                let geometry = new THREE.SphereBufferGeometry(this.mapSize * this.option.attr.fly.type.flyPoint.pointSize * i / (240 * num), 32, 32);
 
                 // geometry.attributes.position.set();
                 let mesh = new THREE.Mesh(geometry, material);
@@ -1097,8 +1103,8 @@ import lerp from '@sunify/lerp-color'
             return [min, max, isLog]
         },
         addBaseItem(hotDataMesh, attr, lon, lat, basetexture, lightbartexture, wavetexture, value, minNum, maxNum, origindata, isFly) {
-            var height = this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
-            if(height<=0){
+            var height = (maxNum - minNum) == 0 ? 1 : this.mapSize * (value - minNum) / (maxNum - minNum);// 热度越高，光柱高度越高
+            if (height <= 0) {
                 return;
             }
             var circleLight, lightBar, wave, bar, ConeMesh, SphereMesh
@@ -1109,7 +1115,7 @@ import lerp from '@sunify/lerp-color'
             // }
             // SphereCoord1={x:lon,y:lat,z:0}
             if (attr.type['circleLight'].show) {
-                circleLight = this.createPointBaseMesh(attr, SphereCoord1, basetexture, (value - minNum) / (maxNum - minNum));//光柱底座矩形平面
+                circleLight = this.createPointBaseMesh(attr, SphereCoord1, basetexture, (attr.type['circleLight'].isConst||(maxNum - minNum) == 0) ? 1 : (value - minNum) / (maxNum - minNum));//光柱底座矩形平面
                 hotDataMesh.add(circleLight);
                 this.calcMeshArry.push(circleLight)
                 circleLight.origindata = origindata;
@@ -1118,14 +1124,14 @@ import lerp from '@sunify/lerp-color'
             if (attr.type['lightBar'].show) {
                 // console.log((value - minNum),maxNum , minNum)
                 height = height * parseFloat(attr.type.lightBar.ratio);
-                lightBar = this.createLightPillar(attr, SphereCoord, height, lightbartexture);//光柱
+                lightBar = this.createLightPillar(attr, SphereCoord, attr.type['lightBar'].isConst?1:height, lightbartexture);//光柱
                 hotDataMesh.add(lightBar);
                 this.calcMeshArry.push(lightBar)
                 lightBar.origindata = origindata;
             }
 
             if (attr.type['wave'].show) {
-                wave = this.createWaveMesh(attr, this.mapSize, SphereCoord1, wavetexture, (value - minNum) / (maxNum - minNum));//波动光圈
+                wave = this.createWaveMesh(attr, this.mapSize, SphereCoord1, wavetexture, (attr.type['wave'].isConst||(maxNum - minNum) == 0) ? 1 : (value - minNum) / (maxNum - minNum));//波动光圈
                 hotDataMesh.add(wave);
                 this.WaveMeshArr.push(wave);
                 this.calcMeshArry.push(wave)
@@ -1134,13 +1140,13 @@ import lerp from '@sunify/lerp-color'
 
             if (attr.type['bar'].show) {
                 height = height * parseFloat(attr.type.bar.ratio);
-                bar = this.createPrism(this.mapSize, SphereCoord, height, attr)
+                bar = this.createPrism(this.mapSize, SphereCoord, attr.type['bar'].isConst?1:height, attr)
                 hotDataMesh.add(bar)
                 this.calcMeshArry.push(bar)
                 bar.origindata = origindata;
             }
             if (attr.type['cone'].show && !isFly) {
-                ConeMesh = this.createConeMesh(attr, height * attr.type['cone'].height, SphereCoord);//棱锥
+                ConeMesh = this.createConeMesh(attr, (attr.type['bar'].isConst?1:height) * attr.type['cone'].height, SphereCoord);//棱锥
                 hotDataMesh.add(ConeMesh);
                 this.ConeMeshArry.push(ConeMesh)
                 this.calcMeshArry.push(ConeMesh)
@@ -1175,13 +1181,13 @@ import lerp from '@sunify/lerp-color'
                 side: THREE.DoubleSide,
             });
             var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.003);
             return mesh;
         },
         createConeMesh(attr, radius, SphereCoord) {
-            if (radius < 1) {
-                radius = 1;
-            }
+            // if (radius < 1) {
+            //     radius = 1;
+            // }
             // var radius = R / 32;//圆锥半径  和地球半径建立尺寸关系
             var height = radius * attr.type.cone.ratio;//棱锥高度
             // 圆锥体几何体API(ConeGeometry)圆周方向四等分实现四棱锥效果
@@ -1206,12 +1212,12 @@ import lerp from '@sunify/lerp-color'
             mesh2.rotateX(Math.PI);
             mesh.add(mesh2);
 
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * (parseFloat(this.option.baseGlobal.depth * 0.1) * 1.03 + 0.001));
             return mesh;
         },
         changeColor(attr, value, minNum, maxNum, LightPillar, mesh, WaveMesh, barMesh, ConMesh, SphereMesh) {
             // console.log(value,minNum,maxNum,color)
-            var color = new THREE.Color(lerp(attr.colors, Math.sqrt((value - minNum) / (maxNum - minNum))));
+            var color = new THREE.Color(lerp(attr.colors, (maxNum - minNum) == 0 ? 1 : Math.sqrt((value - minNum) / (maxNum - minNum))));
             // 光柱颜色设置
             LightPillar && (LightPillar.children[0].material.color.set(color));
             // 光柱底座颜色设置
@@ -1235,13 +1241,13 @@ import lerp from '@sunify/lerp-color'
             var gapSize = attr.gapSize;
             var sphereCoord1 = this.lonLat2Mercator(lon1, lat1);//经纬度坐标转球面坐标
             // startSphereCoord：轨迹线起点球面坐标
-            var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            var start = new THREE.Vector3(sphereCoord1.x, sphereCoord1.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.03);
             var sphereCoord2 = this.lonLat2Mercator(lon2, lat2);
             // startSphereCoord：轨迹线结束点球面坐标
-            var end = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);
+            var end = new THREE.Vector3(sphereCoord2.x, sphereCoord2.y, this.mapSize * (parseFloat(this.option.baseGlobal.depth * 0.1) * 1.03));
 
             var length = start.clone().sub(end).length();
-            var H = length * 0.1; //根据两点之间距离设置弧线高度
+            var H = length * 0.2; //根据两点之间距离设置弧线高度
             var middle = new THREE.Vector3(0, 0, 0);
             middle.add(start).add(end).divideScalar(2)
             // middle.y += H;
@@ -1254,7 +1260,7 @@ import lerp from '@sunify/lerp-color'
                 middle,
                 end
             ]);
-            var points = curve.getPoints(100); //分段数100，返回101个顶点，返回一个vector3对象作为元素组成的数组
+            var points = curve.getPoints(200); //分段数100，返回101个顶点，返回一个vector3对象作为元素组成的数组
             geometry.setFromPoints(points); // setFromPoints方法从points中提取数据改变几何体的顶点属性vertices
             //材质对象
             var materialoption = {
@@ -1298,7 +1304,7 @@ import lerp from '@sunify/lerp-color'
                 color: '#ffffff',
             });
             var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);//设置mesh位置
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.03);//设置mesh位置
             this.calcMeshArry.push(mesh)
             return mesh;
         },
@@ -1339,7 +1345,7 @@ import lerp from '@sunify/lerp-color'
             mesh._s = Math.random() * 1.0 + 1.0;//自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
             // mesh.scale.set(mesh.size*mesh._s,mesh.size*mesh._s,mesh.size*mesh._s);
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.07);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.075 + 0.001);
 
             return mesh;
         },
@@ -1363,7 +1369,7 @@ import lerp from '@sunify/lerp-color'
             group.add(mesh, mesh.clone().rotateZ(Math.PI / 2));//几何体绕x轴旋转了，所以mesh旋转轴变为z
             // 经纬度转球面坐标
             // var SphereCoord = this.lon2xyz(R, lon, lat);//SphereCoord球面坐标
-            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.03);//设置mesh位置
+            group.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.03);//设置mesh位置
             // mesh姿态设置
             // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
             return group;
@@ -1384,7 +1390,7 @@ import lerp from '@sunify/lerp-color'
             var size = this.mapSize * attr.type.circleLight.width * ((valueSize == undefined ? 1 : valueSize) + 0.1);//矩形平面Mesh的尺寸
             mesh.scale.set(size, size, size);//设置mesh大小
             //设置mesh位置
-            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth*0.1) * 1.07);
+            mesh.position.set(SphereCoord.x, SphereCoord.y, this.mapSize * parseFloat(this.option.baseGlobal.depth * 0.1) * 1.07 + 0.001);
             return mesh;
         },
         calcAreaCountryColor(data, col, attr) {
@@ -1393,17 +1399,17 @@ import lerp from '@sunify/lerp-color'
             var colors = attr ? attr.colors : this.option.attr.area.colors;
             // var color1 = new THREE.Color(this.option.attr.area.colors[0]);
             // var color2 = new THREE.Color(this.option.attr.area.colors[1]);
-            var [min, max, isLog,isNegative] = this.getMaxMin(data, col);
+            var [min, max, isLog, isNegative] = this.getMaxMin(data, col);
             var maxNum = max;
             var minNum = min;
             data.forEach(obj => {
-                var name = obj[this.option.countryName];
+                var name = obj[this.option[this.option.type == 'fly' ? 'toCountryName' : 'countryName']];
                 var value = obj[col];
                 if (isLog) {
-                    value = value==0?0:Math.log(value);
+                    value = value == 0 ? 0 : Math.log(value);
                 }
-                if(isNegative){
-                    value=value+minNum;
+                if (isNegative) {
+                    value = value + minNum;
                 }
                 var color = null;
                 if (!value) {
@@ -1420,22 +1426,22 @@ import lerp from '@sunify/lerp-color'
         },
         getMaxMin(data1, name) {
             let isLog = false;
-            let isNegative=false;
+            let isNegative = false;
             let {min, max} = this._getMaxMinFunc(data1, name)
-            if (max / min > 1 && min>1) {
-                min = min==0?0:Math.log(min);
+            if (max / min > 1 && min > 1) {
+                min = min == 0 ? 0 : Math.log(min);
                 max = Math.log(max);
                 isLog = true;
             }
             if (min == max) {
                 min = 0;
             }
-            if(min<0){
-                min=-min;
-                max=max-min;
-                isNegative=true;
+            if (min < 0) {
+                min = -min;
+                max = max - min;
+                isNegative = true;
             }
-            return [min, max, isLog,isNegative]
+            return [min, max, isLog, isNegative]
         },
         _getMaxMinFunc(data1, name) {
             var data = $.extend(true, [], data1)
@@ -1509,7 +1515,7 @@ import lerp from '@sunify/lerp-color'
 
             var width = this.option.width;
             var height = this.option.height;
-            var k = width/height;
+            var k = width / height;
             /*可以根据中国地图mapGroup的包围盒尺寸设置相机参数s */
             this.scaleV3 = new THREE.Vector3(); //scaleV3表示包围盒长宽高尺寸
             box3.getSize(this.scaleV3) // .getSize()计算包围盒长宽高尺寸
@@ -1518,9 +1524,9 @@ import lerp from '@sunify/lerp-color'
             // maxL=100;
             //重新设置s值 乘以0.5适当缩小显示范围，地图占canvas画布比例更大，自然渲染范围更大
             // var s = maxL*0.5;
-            var s = this.scaleV3.y*(parseFloat(this.option.baseGlobal.resize)||0.7);
+            var s = this.scaleV3.y * (parseFloat(this.option.baseGlobal.resize) || 0.7);
 
-            camera.rotation.x=0.19;
+            camera.rotation.x = 0.19;
             camera.left = -s * k;
             camera.right = s * k;
             camera.top = s;
@@ -1531,7 +1537,7 @@ import lerp from '@sunify/lerp-color'
             // camera.right = s;
             // camera.left = -s;
 
-            camera.position.set(0, this.option.baseGlobal.isPlane?0:-maxL/2, maxL); //沿着z轴观察
+            camera.position.set(0, this.option.baseGlobal.isPlane ? 0 : -maxL / 2, maxL); //沿着z轴观察
             camera.lookAt(this.scene.position); //指向中国地图的几何中心
             camera.near = -maxL * 4;
             camera.far = maxL * 4;
@@ -1566,6 +1572,7 @@ import lerp from '@sunify/lerp-color'
             // flyline.geometry.verticesNeedUpdate = true; //通知three.js几何体顶点位置坐标数据更新
         },
         render() {
+            this.time = new Date().getTime();
             if (!this.scene) {
                 cancelAnimationFrame(this.animationId)
                 return;
@@ -1573,6 +1580,7 @@ import lerp from '@sunify/lerp-color'
             let startAnimate = false;
             if (this.flyArr && this.flyArr.length > 0) {
                 startAnimate = true;
+
                 this.flyArr.forEach((flyTrack, i) => {
                     // 获取飞线轨迹线上的顶点坐标，用于飞线段绘制
                     var points = flyTrack.flyTrackPoints;
@@ -1617,8 +1625,9 @@ import lerp from '@sunify/lerp-color'
         },
         addControl() {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-            if(this.option.baseGlobal.isPlane){
-            this.controls.enableRotate=false;}
+            if (this.option.baseGlobal.isPlane) {
+                this.controls.enableRotate = false;
+            }
             // this.controls.enabled=false;
             // this.scene.add(this.controls);
             // this.controls.maxPolarAngle = Math.PI / 2;
@@ -1741,6 +1750,7 @@ import lerp from '@sunify/lerp-color'
                 this.mouseoverearth = false;
                 if ($(e.target).parents('.xnmap-container').get(0) && $(e.target).parents('.xnmap-container').get(0).getAttribute('data-id') == this.id) {
                     this.mouseoverearth = true;
+
                     if (this.chooseMesh) {
                         if (this.chooseMesh.meshType == 'area') {
                             this.chooseMesh.material.color.set(this.chooseMesh.color)
@@ -1767,15 +1777,16 @@ import lerp from '@sunify/lerp-color'
                         // this.tooltip.position.copy(intersects[0].point);
                         this.tooltip.innerHTML = this.chooseMesh.name;
                         this.tooltip.style.visibility = 'visible';
-                        this.tooltip.style.left = Sx+10+'px';
-                        this.tooltip.style.top = Sy+10+'px';
+                        this.tooltip.style.left = Sx + 10 + 'px';
+                        this.tooltip.style.top = Sy + 10 + 'px';
                         if (this.chooseMesh.meshType == 'area') {
                             this.chooseMesh.material.color.set(this.option.baseGlobal.hoverColor)
+                        }
                             if (this.chooseMesh.origindata) {
                                 var content = (this.calcTextTooltip(this.option.tooltip.content, this.chooseMesh.origindata))
                                 this.tooltip.innerHTML = content;
                             }
-                        }
+                        // }
                         if (this.chooseMesh.origindata) {
                             var content = (this.calcTextTooltip(this.option.tooltip.content, this.chooseMesh.origindata))
                             this.tooltip.innerHTML = content;
@@ -1845,8 +1856,8 @@ import lerp from '@sunify/lerp-color'
             this.renderer.setSize(width, height);
             this.option.width = width;
             this.option.height = height;
-            var k = width/height;
-            var s = this.scaleV3.y*(parseFloat(this.option.baseGlobal.resize)||0.7);
+            var k = width / height;
+            var s = this.scaleV3.y * (parseFloat(this.option.baseGlobal.resize) || 0.7);
             this.camera.left = -s * k;
             this.camera.right = s * k;
             this.camera.updateProjectionMatrix();
