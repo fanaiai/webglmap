@@ -566,7 +566,7 @@ import lerp from '@sunify/lerp-color'
             }
             var loader = new THREE.FileLoader()
             loader.setResponseType('json')
-            loader.load(staticpath + '/static/worldZh.json', (data) => {
+            loader.load(staticpath + '/static/china.nanhai.json', (data) => {
                 if (typeof callback == 'function') {
                     callback(data)
                 }
@@ -874,7 +874,6 @@ import lerp from '@sunify/lerp-color'
                 }
                 var lon = obj.$$lon
                 var lat = obj.$$lat//纬度
-                // console.log(value,col)
                 this.addBaseItem(hotDataMesh, attr, lon, lat, this.basetexture, this.lightbartexture, this.wavetexture, value, minNum, maxNum, obj, false)
             })
         },
@@ -1088,12 +1087,13 @@ import lerp from '@sunify/lerp-color'
             var min, max;
             let isLog = false;
             for (let i in json) {
+                if(json[i].value){
                 if (json[i].value < min || min == undefined) {
                     min = json[i].value
                 }
                 if (json[i].value > max || max == undefined) {
                     max = json[i].value
-                }
+                }}
             }
             if (Math.log(max - min) > 2) {
                 max = Math.log(max)
@@ -1216,7 +1216,7 @@ import lerp from '@sunify/lerp-color'
             return mesh;
         },
         changeColor(attr, value, minNum, maxNum, LightPillar, mesh, WaveMesh, barMesh, ConMesh, SphereMesh) {
-            // console.log(value,minNum,maxNum,color)
+            // console.log(lerp(attr.colors,1))
             var color = new THREE.Color(lerp(attr.colors, (maxNum - minNum) == 0 ? 1 : Math.sqrt((value - minNum) / (maxNum - minNum))));
             // 光柱颜色设置
             LightPillar && (LightPillar.children[0].material.color.set(color));
