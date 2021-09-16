@@ -188,6 +188,7 @@ import lerp from '@sunify/lerp-color'
         this.id = this.getRandomString();
         dom.setAttribute('data-id', this.id);
         this.option = $.extend(true, {}, option, options);
+        console.log(this.option);
         this.option.width = this.dom.offsetWidth;
         this.option.height = this.dom.offsetHeight;
         this.labelArry = [];
