@@ -38,7 +38,8 @@ import lerp from '@sunify/lerp-color'
             "areaOpacity": 1,
             "areaLineOpacity": 1,
             "gridOpacity": 1,
-            "resize": 0.7
+            "resize": 0.7,
+            'canResize':true,
         },
         tooltip: {
             "show": true,
@@ -1628,7 +1629,10 @@ import lerp from '@sunify/lerp-color'
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
             if (this.option.baseGlobal.isPlane) {
                 this.controls.enableRotate = false;
+
             }
+            this.controls.minZoom = 0.8;
+            this.controls.maxZoom = 1.2;
             // this.controls.enabled=false;
             // this.scene.add(this.controls);
             // this.controls.maxPolarAngle = Math.PI / 2;
